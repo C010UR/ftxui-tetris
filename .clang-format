@@ -1,0 +1,22 @@
+BasedOnStyle: Microsoft
+
+ColumnLimit: 120
+LineEnding: LF
+RemoveSemicolon: true
+IndentWidth: 4
+
+AlignAfterOpenBracket: BlockIndent
+AlignArrayOfStructures: Left
+AlignConsecutiveAssignments: Consecutive
+AlignConsecutiveBitFields: Consecutive
+AlignConsecutiveDeclarations: Consecutive
+AlignConsecutiveMacros: Consecutive
+AlignEscapedNewlines: Left
+AlignOperands: Align
+AlignTrailingComments: Always
+
+BinPackArguments: false
+BinPackParameters: false
+
+BreakBeforeBinaryOperators: true
+BreakBeforeTernaryOperators: true

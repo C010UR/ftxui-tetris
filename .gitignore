@@ -1,0 +1,9 @@
+# Meson subprojects
+/subprojects/*
+!/subprojects/*.wrap
+
+# Build directory
+/build/*
+
+# Cache
+/.cache/*

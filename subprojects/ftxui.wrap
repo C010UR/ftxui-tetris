@@ -1,0 +1,15 @@
+[wrap-file]
+directory = FTXUI-4.0.0
+source_url = https://github.com/ArthurSonzogni/FTXUI/archive/refs/tags/v4.0.0.tar.gz
+source_filename = FTXUI-4.0.0.tar.gz
+source_hash = 7276e4117429ebf8e34ea371c3ea4e66eb99e0f234cb4c5c85fca17174a53dfa
+patch_filename = ftxui_4.0.0-1_patch.zip
+patch_url = https://wrapdb.mesonbuild.com/v2/ftxui_4.0.0-1/get_patch
+patch_hash = f5ef76c0a983826131992f302355cb95ab1465ddc6b6815ebccc33a21e85f90e
+source_fallback_url = https://github.com/mesonbuild/wrapdb/releases/download/ftxui_4.0.0-1/FTXUI-4.0.0.tar.gz
+wrapdb_version = 4.0.0-1
+
+[provide]
+ftxui-screen = screen_dep
+ftxui-dom = dom_dep
+ftxui-component = component_dep

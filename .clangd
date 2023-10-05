@@ -1,0 +1,14 @@
+CompileFlags:
+  Add: [
+    --target=x86_64-w64-mingw64
+    -pedantic,
+    -Wall,
+    -Wextra,
+    -Wuninitialized,
+    -fsanitize=undefined,
+    -Wno-unused-macros,
+    -Wno-unused-function,
+    -Wno-unreachable-code,
+    -Wno-padded,
+    -Wno-reserved-identifier
+  ]
