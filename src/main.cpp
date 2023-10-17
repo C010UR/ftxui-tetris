@@ -1,39 +1,71 @@
-#include <iostream>
-
+#include "ftxui/component/event.hpp"
+#include <ftxui/component/component.hpp>
+#include <ftxui/component/screen_interactive.hpp>
+#include <ftxui/dom/canvas.hpp>
 #include <ftxui/dom/elements.hpp>
 #include <ftxui/screen/screen.hpp>
-#include <ftxui/screen/string.hpp>
+#include <iostream>
+#include <utility>
 
-int main(void) {
-  using namespace ftxui;
+int main(void)
+{
+    using namespace ftxui;
 
-  auto summary = [&] {
-    auto content = vbox({
-        hbox({text(L"- done:   "), text(L"3") | bold}) | color(Color::Green),
-        hbox({text(L"- active: "), text(L"2") | bold}) | color(Color::RedLight),
-        hbox({text(L"- queue:  "), text(L"9") | bold}) | color(Color::Red),
+    auto screen = ScreenInteractive::FitComponent();
+
+    const int width  = 11;
+    const int height = 21;
+
+    const int stepX = 4;
+    const int stepY = 4;
+
+    int x = 0;
+    int y = 0;
+
+    auto renderer = Renderer([&] {
+        auto c = Canvas(width * stepX, height * stepY);
+        c.DrawText(x, y, "II", [](Pixel &p) {
+            p.foreground_color = Color::Yellow;
+            p.bold             = true;
+        });
+
+        return canvas(c);
     });
-    return window(text(L" Summary "), content);
-  };
 
-  auto document =  //
-      vbox({
-          hbox({
-              summary(),
-              summary(),
-              summary() | flex,
-          }),
-          summary(),
-          summary(),
-      });
+    auto component = CatchEvent(renderer | border, [&](Event event) {
+        if (event == Event::Character('a') && x >= stepX)
+        {
+            x -= stepX;
+        }
 
-  // Limit the size of the document to 80 char.
-  document = document | size(WIDTH, LESS_THAN, 80);
+        if (event == Event::Character('d') && x < (width - 1) * stepX)
+        {
+            x += stepX;
+        }
 
-  auto screen = Screen::Create(Dimension::Full(), Dimension::Fit(document));
-  Render(screen, document);
+        if (event == Event::Character('w') && y >= stepY)
+        {
+            y -= stepY;
+        }
 
-  std::cout << screen.ToString() << '\0' << std::endl;
+        if (event == Event::Character('s') && y < (height - 1) * stepY)
+        {
+            y += stepY;
+        }
 
-  return EXIT_SUCCESS;
+        if (event == Event::Character(' '))
+        {
+            y = (height - 1) * stepY;
+        }
+
+        if (event == Event::Character('q'))
+        {
+            screen.ExitLoopClosure();
+            return true;
+        }
+
+        return false;
+    });
+    
+    screen.Loop(component);
 }
