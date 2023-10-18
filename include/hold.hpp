@@ -21,20 +21,14 @@ class Hold
         this->hold.reset();
     }
 
-    void swapHold(Tetris::Tetromino *tetromino)
+    void setHold(Tetris::Tetromino tetromino)
     {
-        if (!this->hasHold())
-        {
-            this->hold = *tetromino;
-            tetromino  = nullptr;
+        this->hold = tetromino;
+    }
 
-            return;
-        }
-
-        Tetromino hold = this->hold.value();
-
-        this->hold = *tetromino;
-        tetromino  = &hold;
+    Tetris::Tetromino getHold()
+    {
+        return this->hold.value();
     }
 
     bool hasHold()
@@ -48,7 +42,7 @@ class Hold
 
         if (this->hasHold())
         {
-            Tetris::Canvas::drawTetromino(canvas, this->hold.value(), false);
+            Tetris::Canvas::drawTetromino(canvas, this->hold.value(), true);
         }
 
         return ftxui::window(ftxui::text("Hold"), ftxui::canvas(canvas));

@@ -41,7 +41,39 @@ class Tetromino
         this->currentRotation = 0;
         this->color           = color;
 
-        auto firstPosition = position.front();
+        this->x = 0;
+        this->y = 0;
+    }
+
+    int rotateLeft(int current)
+    {
+        return current == 0 ? (int)this->position.size() - 1 : current - 1;
+    }
+
+    int rotateRight(int current)
+    {
+        return current == (int)this->position.size() - 1 ? 0 : current + 1;
+    }
+
+    void rotate(Tetris::RotationType rotation)
+    {
+        switch (rotation)
+        {
+        case Tetris::RotationType::LEFT:
+            this->currentRotation = this->rotateLeft(this->currentRotation);
+            break;
+        case Tetris::RotationType::RIGHT:
+            this->currentRotation = this->rotateRight(this->currentRotation);
+            break;
+        default:
+            break;
+        }
+    }
+
+    void reset(int width)
+    {
+        this->currentRotation = 0;
+        auto firstPosition = this->get();
 
         int minX = INT_MAX;
         int maxX = 0;
@@ -68,33 +100,8 @@ class Tetromino
             }
         }
 
-        this->x = -minX;
+        this->x = (width / 2) - 1 - minX;
         this->y = -minY;
-    }
-
-    int rotateLeft(int current)
-    {
-        return current == 0 ? (int)this->position.size() - 1 : current - 1;
-    }
-
-    int rotateRight(int current)
-    {
-        return current == (int)this->position.size() - 1 ? 0 : current + 1;
-    }
-
-    void rotate(Tetris::RotationType rotation)
-    {
-        switch (rotation)
-        {
-        case Tetris::RotationType::LEFT:
-            this->currentRotation = this->rotateLeft(this->currentRotation);
-            break;
-        case Tetris::RotationType::RIGHT:
-            this->currentRotation = this->rotateRight(this->currentRotation);
-            break;
-        default:
-            break;
-        }
     }
 
     void move(int x, int y)
@@ -131,6 +138,16 @@ class Tetromino
     int getY()
     {
         return this->y;
+    }
+
+    void setX(int x)
+    {
+        this->x = x;
+    }
+
+    void setY(int y)
+    {
+        this->y = y;
     }
 
     int getRotation()

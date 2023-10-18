@@ -10,7 +10,7 @@
 
 int main(void)
 {
-    Tetris::Game game;
+    Tetris::Game game(true);
 
     auto screen = ftxui::ScreenInteractive::FitComponent();
 

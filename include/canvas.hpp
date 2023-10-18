@@ -11,11 +11,14 @@ namespace Tetris
 class Canvas
 {
   public:
-    inline static const int         stepX       = 4;
-    inline static const int         stepY       = 4;
-    inline static const std::string blockSymbol = "██";
+    inline static const int         stepX             = 4;
+    inline static const int         stepY             = 4;
+    inline static const std::string blockSymbol       = "██";
+    inline static const std::string shadowBlockSymbol = "░░";
 
-    static void drawTetromino(ftxui::Canvas &canvas, Tetris::Tetromino tetromino, bool isDefault = true)
+    static void drawTetromino(
+        ftxui::Canvas &canvas, Tetris::Tetromino tetromino, bool isDefault = false, bool isShadow = false
+    )
     {
         auto data = tetromino.get();
 
@@ -35,9 +38,10 @@ class Canvas
 
                 Tetris::Canvas::drawBlock(
                     canvas,
-                    (isDefault ? tetromino.getX() : 0) + j,
-                    (isDefault ? tetromino.getY() : 0) + i,
-                    tetromino.getColor()
+                    (!isDefault ? tetromino.getX() : 0) + j,
+                    (!isDefault ? tetromino.getY() : 0) + i,
+                    tetromino.getColor(),
+                    isShadow
                 );
             }
         }
@@ -59,11 +63,14 @@ class Canvas
         }
     }
 
-    static void drawBlock(ftxui::Canvas &canvas, int x, int y, ftxui::Color color)
+    static void drawBlock(ftxui::Canvas &canvas, int x, int y, ftxui::Color color, bool isShadow = false)
     {
-        canvas.DrawText(x * stepX, y * stepY, blockSymbol, [&](ftxui::Pixel &p) {
+        canvas.DrawText(x * stepX, y * stepY, isShadow ? shadowBlockSymbol : blockSymbol, [&](ftxui::Pixel &p) {
             p.foreground_color = color;
-            p.background_color = color;
+            if (!isShadow)
+            {
+                p.background_color = color;
+            }
         });
     }
 

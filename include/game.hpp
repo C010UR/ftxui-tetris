@@ -9,24 +9,34 @@
 
 #include "board.hpp"
 #include "canvas.hpp"
+#include "ftxui/screen/color.hpp"
 #include "hold.hpp"
 #include "next.hpp"
+#include "output_helper.hpp"
 #include "score.hpp"
 #include "tetromino.hpp"
 
 namespace Tetris
 {
+
 class Game
 {
   private:
+    bool isEasyMode;
+
     Tetris::Board board;
     Tetris::Score score;
     Tetris::Next  next;
     Tetris::Hold  hold;
 
+    std::string         lastInput;
+    Tetris::TriggerType trigger;
+
   public:
-    Game()
+    Game(bool isEasyMode = false)
     {
+        this->isEasyMode = isEasyMode;
+
         this->score = Tetris::Score();
         this->next  = Tetris::Next();
         this->hold  = Tetris::Hold();
@@ -35,39 +45,139 @@ class Game
 
     bool handleEvent(ftxui::Event event)
     {
-        auto tetromino = this->board.getCurrent();
+        this->lastInput = event.character();
 
-        int                  x        = 0;
-        int                  y        = 0;
+        bool isCorrectEvent = false;
+        int  x              = 0;
+        int  y              = 0;
+
         Tetris::RotationType rotation = Tetris::RotationType::NO_ROTATE;
 
-        if (event == ftxui::Event::Character('d'))
+        if (event == ftxui::Event::Character('d') || event == ftxui::Event::Character('D'))
         {
             x = 1;
+
+            this->trigger  = Tetris::TriggerType::MOVE_RIGHT;
+            isCorrectEvent = true;
         }
 
-        if (event == ftxui::Event::Character('a'))
+        if (event == ftxui::Event::Character('a') || event == ftxui::Event::Character('A'))
         {
             x = -1;
+
+            this->trigger  = Tetris::TriggerType::MOVE_LEFT;
+            isCorrectEvent = true;
+        }
+
+        if (event == ftxui::Event::Character('s') || event == ftxui::Event::Character('S'))
+        {
+            y = 1;
+
+            this->trigger  = Tetris::TriggerType::SOFT_DROP;
+            isCorrectEvent = true;
+        }
+
+        if (event == ftxui::Event::Character('.') || event == ftxui::Event::Character('>'))
+        {
+            rotation = Tetris::RotationType::RIGHT;
+
+            this->trigger  = Tetris::TriggerType::ROTATE_RIGHT;
+            isCorrectEvent = true;
+        };
+
+        if (event == ftxui::Event::Character(',') || event == ftxui::Event::Character('<'))
+        {
+            rotation = Tetris::RotationType::LEFT;
+
+            this->trigger  = Tetris::TriggerType::ROTATE_LEFT;
+            isCorrectEvent = true;
+        };
+
+        if (isCorrectEvent && this->board.canMove(x, y, rotation))
+        {
+            this->board.getCurrent()->move(x, y);
+            this->board.getCurrent()->rotate(rotation);
+
+            return true;
         }
 
         if (event == ftxui::Event::Character(' '))
         {
-            while (this->board.canMove(x, y++, rotation))
-                ;
+            y = this->board.getHardDropY();
+
+            this->board.getCurrent()->move(0, y);
+
+            this->board.store(this->score, this->next.pop(), this->trigger);
+
+            this->trigger = Tetris::TriggerType::HARD_DROP;
         }
 
-        if (event == ftxui::Event::Character('s'))
+        if (event == ftxui::Event::Character('z') || event == ftxui::Event::Character('Z'))
         {
-            y += 1;
-        }
+            Tetris::Tetromino tetromino;
 
-        if (this->board.canMove(x, y, rotation)) {
-          this->board.getCurrent().move(x, y);
-          this->board.getCurrent().rotate(rotation);
-        }
+            if (this->hold.hasHold())
+            {
+                tetromino = this->hold.getHold();
+            }
+            else
+            {
+                tetromino = this->next.pop();
+            }
+
+            this->hold.setHold(*this->board.getCurrent());
+
+            this->board.setCurrent(tetromino);
+
+            this->trigger = Tetris::TriggerType::SWAP_HOLD;
+            return true;
+        };
+
+        this->trigger = Tetris::TriggerType::NO_TRIGGER;
 
         return false;
+    }
+
+    ftxui::Element getDebugElement()
+    {
+        std::string trigger;
+
+        switch (this->trigger)
+        {
+        case MOVE_LEFT:
+            trigger = "Move Left";
+            break;
+        case MOVE_RIGHT:
+            trigger = "Move Right";
+            break;
+        case SOFT_DROP:
+            trigger = "Soft Drop";
+            break;
+        case HARD_DROP:
+            trigger = "Hard Drop";
+            break;
+        case ROTATE_LEFT:
+            trigger = "Rotate Left";
+            break;
+        case ROTATE_RIGHT:
+            trigger = "Rotate Right";
+            break;
+        case SWAP_HOLD:
+            trigger = "Swap Hold";
+            break;
+        case NO_TRIGGER:
+            trigger = "<NULL>";
+            break;
+        }
+
+        return ftxui::window(
+            ftxui::text("Debug"),
+            ftxui::vbox({
+                Tetris::OutputHelper::getKeyValueText("Easy Mode", this->isEasyMode),
+                Tetris::OutputHelper::getKeyValueText("Last Input", this->lastInput),
+                Tetris::OutputHelper::getKeyValueText("Event Trigger", trigger),
+            })
+        );
     }
 
     ftxui::Component getRenderer(bool debug = false)
@@ -75,7 +185,7 @@ class Game
         return ftxui::Renderer([debug, this] {
             std::vector<ftxui::Element> elements;
 
-            elements.push_back(this->board.getBoardElement());
+            elements.push_back(this->board.getBoardElement(this->isEasyMode));
 
             elements.push_back(ftxui::vbox(
                 {this->next.getElement(),
@@ -86,7 +196,7 @@ class Game
 
             if (debug)
             {
-                elements.push_back(this->board.getDebugElement());
+                elements.push_back(ftxui::vbox({this->board.getDebugElement(), this->getDebugElement()}));
             }
 
             return ftxui::hbox(elements);
