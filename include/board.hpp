@@ -60,6 +60,29 @@ class Board
             this->boardColor.push_back(std::vector<ftxui::Color>(width, ftxui::Color::Default));
         }
 
+        this->board = {
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
+            {0, 0, 1, 1, 1, 1, 0, 0, 0, 0},
+            {0, 0, 0, 0, 1, 0, 0, 0, 0, 0},
+            {1, 1, 1, 0, 1, 0, 1, 1, 1, 0},
+            {1, 1, 0, 0, 1, 0, 0, 1, 1, 0},
+            {1, 1, 1, 0, 1, 0, 1, 1, 1, 0},
+        };
+
         this->setCurrent(tetromino);
     }
 
@@ -74,7 +97,7 @@ class Board
         this->current.reset(this->width);
     }
 
-    bool canMove(int x, int y, int rotation)
+    bool canRotate(int &x, int &y, Tetris::RotationType rotation)
     {
         if (!this->board.size() || !this->board[0].size())
         {
@@ -97,7 +120,79 @@ class Board
             break;
         }
 
-        auto data = tetromino.get(currentRotation);
+        auto data = tetromino.getMatrix(currentRotation);
+
+        if (!data.size() || !data[0].size())
+        {
+            return false;
+        }
+
+        auto wallKickData = tetromino.getRotationData(rotation);
+
+        for (auto wallKickEntry : wallKickData)
+        {
+            bool isCanMove = true;
+            for (int i = 0; i < (int)data.size(); i++)
+            {
+                for (int j = 0; j < (int)data[0].size(); j++)
+                {
+                    if (data[i][j] == Tetris::BlockType::NIL)
+                    {
+                        continue;
+                    }
+
+                    int nextX = tetromino.getX() + x + wallKickEntry.first + j;
+                    int nextY = tetromino.getY() + y + wallKickEntry.second + i;
+
+                    if (nextX < 0 || nextX + 1 > (int)this->board[0].size())
+                    {
+                        isCanMove = false;
+
+                        break;
+                    }
+
+                    if (nextY < 0 || nextY + 1 > (int)this->board.size())
+                    {
+                        isCanMove = false;
+
+                        break;
+                    }
+
+                    if (this->board[nextY][nextX])
+                    {
+                        isCanMove = false;
+
+                        break;
+                    }
+                }
+
+                if (!isCanMove)
+                {
+                    break;
+                }
+            }
+
+            if (isCanMove)
+            {
+                x += wallKickEntry.first;
+                y += wallKickEntry.second;
+
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    bool canMove(int x, int y)
+    {
+        if (!this->board.size() || !this->board[0].size())
+        {
+            return false;
+        }
+
+        auto tetromino = this->current;
+        auto data      = tetromino.getMatrix();
 
         if (!data.size() || !data[0].size())
         {
@@ -140,7 +235,7 @@ class Board
     {
         int y = 0;
 
-        while (this->canMove(0, ++y, Tetris::RotationType::NO_ROTATE))
+        while (this->canMove(0, ++y))
             ;
 
         --y;
@@ -150,13 +245,13 @@ class Board
 
     bool canStore()
     {
-        return this->canMove(0, 1, Tetris::RotationType::NO_ROTATE);
+        return this->canMove(0, 1);
     }
 
   private:
     void store(Tetris::Tetromino newTetromino)
     {
-        auto data = this->current.get();
+        auto data = this->current.getMatrix();
 
         int          x     = this->current.getX();
         int          y     = this->current.getY();
@@ -242,25 +337,45 @@ class Board
 
     ftxui::Element getDebugElement()
     {
-        bool canMoveLeft    = this->canMove(-1, 0, Tetris::RotationType::NO_ROTATE);
-        bool canMoveRight   = this->canMove(1, 0, Tetris::RotationType::NO_ROTATE);
-        bool canMoveDown    = this->canMove(0, 1, Tetris::RotationType::NO_ROTATE);
-        bool canRotateLeft  = this->canMove(0, 0, Tetris::RotationType::LEFT);
-        bool canRotateRight = this->canMove(0, 0, Tetris::RotationType::RIGHT);
+        bool canMoveLeft  = this->canMove(-1, 0);
+        bool canMoveRight = this->canMove(1, 0);
+        bool canMoveDown  = this->canMove(0, 1);
 
-        return ftxui::vbox({ftxui::window(
-            ftxui::text("Tetromino"),
-            ftxui::vbox({
-                Tetris::OutputHelper::getKeyValueText("X", this->current.getX()),
-                Tetris::OutputHelper::getKeyValueText("y", this->current.getY()),
-                Tetris::OutputHelper::getKeyValueText("Colour", this->current.getColor()),
-                Tetris::OutputHelper::getKeyValueText("Can move left", canMoveLeft),
-                Tetris::OutputHelper::getKeyValueText("Can move right", canMoveRight),
-                Tetris::OutputHelper::getKeyValueText("Can move down", canMoveDown),
-                Tetris::OutputHelper::getKeyValueText("Can rotate left", canRotateLeft),
-                Tetris::OutputHelper::getKeyValueText("Can rotate right", canRotateRight),
-            })
-        )});
+        int x = 0, y = 0;
+
+        bool canRotateLeft     = this->canRotate(x, y, Tetris::RotationType::LEFT);
+        int  rotationIndexLeft = this->current.getRotationIndex(Tetris::RotationType::LEFT);
+
+        x = 0;
+        y = 0;
+
+        bool canRotateRight     = this->canRotate(x, y, Tetris::RotationType::RIGHT);
+        int  rotationIndexRight = this->current.getRotationIndex(Tetris::RotationType::RIGHT);
+
+        return ftxui::vbox(
+            {ftxui::window(
+                 ftxui::text("Tetromino Movement"),
+                 ftxui::vbox({
+                     Tetris::OutputHelper::getKeyValueText("X", this->current.getX()),
+                     Tetris::OutputHelper::getKeyValueText("y", this->current.getY()),
+                     Tetris::OutputHelper::getKeyValueText("Colour", this->current.getColor()),
+                     Tetris::OutputHelper::getKeyValueText("Can move left", canMoveLeft),
+                     Tetris::OutputHelper::getKeyValueText("Can move right", canMoveRight),
+                     Tetris::OutputHelper::getKeyValueText("Can move down", canMoveDown),
+                     Tetris::OutputHelper::getKeyValueText("Is Even", this->current.isEven()),
+                 })
+             ),
+             ftxui::window(
+                 ftxui::text("Tetromino Rotation"),
+                 ftxui::vbox({
+                     Tetris::OutputHelper::getKeyValueText("Current Rotation", this->current.getRotation()),
+                     Tetris::OutputHelper::getKeyValueText("Can rotate left", canRotateLeft),
+                     Tetris::OutputHelper::getKeyValueText("Rotation index left", rotationIndexLeft),
+                     Tetris::OutputHelper::getKeyValueText("Can rotate right", canRotateRight),
+                     Tetris::OutputHelper::getKeyValueText("Rotation index right", rotationIndexRight),
+                 })
+             )}
+        );
     }
 
     ftxui::Element getBoardElement(bool isEasyMode = false)

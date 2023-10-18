@@ -2,6 +2,7 @@
 
 #include "ftxui/dom/canvas.hpp"
 #include <ftxui/screen/color.hpp>
+#include <utility>
 #include <vector>
 
 namespace Tetris
@@ -25,6 +26,8 @@ class Tetromino
   private:
     std::vector<std::vector<std::vector<Tetris::BlockType>>> position;
 
+    std::vector<std::vector<std::pair<int, int>>> wallKickData;
+
     int currentRotation;
 
     int x;
@@ -32,17 +35,80 @@ class Tetromino
 
     ftxui::Color color;
 
-  public:
-    Tetromino() : position({}), currentRotation(0), x(0), y(0), color(ftxui::Color::Default){};
+    bool _isEven;
 
-    Tetromino(std::vector<std::vector<std::vector<Tetris::BlockType>>> position, ftxui::Color color)
+  public:
+    Tetromino()
+        : position({}), wallKickData({}), currentRotation(0), x(0), y(0), color(ftxui::Color::Default), _isEven(false){};
+
+    Tetromino(
+        std::vector<std::vector<std::vector<Tetris::BlockType>>> position,
+        std::vector<std::vector<std::pair<int, int>>>            wallKickData,
+        ftxui::Color                                             color,
+        bool                                                     isEven
+    )
     {
+        this->wallKickData    = wallKickData;
         this->position        = position;
         this->currentRotation = 0;
         this->color           = color;
+        this->_isEven = isEven;
 
         this->x = 0;
         this->y = 0;
+    }
+
+    int getRotationIndex(Tetris::RotationType rotation)
+    {
+        if (rotation == Tetris::RotationType::NO_ROTATE)
+        {
+            return -1;
+        }
+
+        if (rotation == Tetris::RotationType::LEFT)
+        {
+            switch (this->currentRotation)
+            {
+            case 1:
+                return 1;
+            case 2:
+                return 3;
+            case 3:
+                return 5;
+            case 0:
+                return 7;
+            }
+        }
+        else
+        {
+            switch (this->currentRotation)
+            {
+            case 0:
+                return 0;
+            case 1:
+                return 2;
+            case 2:
+                return 4;
+            case 3:
+                return 6;
+            }
+        }
+
+        return -1;
+    }
+
+    std::vector<std::pair<int, int>> getRotationData(Tetris::RotationType rotation)
+    {
+        int rotationIndex = this->getRotationIndex(rotation);
+
+        if (rotationIndex == -1)
+        {
+            return {
+                {0, 0}
+            };
+        }
+
+        return this->wallKickData[rotationIndex];
     }
 
     int rotateLeft(int current)
@@ -73,7 +139,7 @@ class Tetromino
     void reset(int width)
     {
         this->currentRotation = 0;
-        auto firstPosition = this->get();
+        auto firstPosition    = this->getMatrix();
 
         int minX = INT_MAX;
         int maxX = 0;
@@ -104,23 +170,20 @@ class Tetromino
         this->y = -minY;
     }
 
-    void move(int x, int y)
+    void move(int x, int y, Tetris::RotationType rotation = Tetris::RotationType::NO_ROTATE)
     {
         this->x += x;
         this->y += y;
+
+        this->rotate(rotation);
     }
 
-    void rotateRight()
-    {
-        this->currentRotation = this->rotateRight(this->currentRotation);
-    }
-
-    std::vector<std::vector<Tetris::BlockType>> get()
+    std::vector<std::vector<Tetris::BlockType>> getMatrix()
     {
         return this->position[this->currentRotation];
     }
 
-    std::vector<std::vector<Tetris::BlockType>> get(int rotation)
+    std::vector<std::vector<Tetris::BlockType>> getMatrix(int rotation)
     {
         return this->position[rotation];
     }
@@ -128,6 +191,11 @@ class Tetromino
     ftxui::Color getColor()
     {
         return this->color;
+    }
+
+    int getRotation()
+    {
+        return this->currentRotation;
     }
 
     int getX()
@@ -150,9 +218,9 @@ class Tetromino
         this->y = y;
     }
 
-    int getRotation()
+    bool isEven()
     {
-        return this->currentRotation;
+        return this->_isEven;
     }
 };
 } // namespace Tetris

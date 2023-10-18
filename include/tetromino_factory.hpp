@@ -5,6 +5,7 @@
 #include <algorithm>
 #include <random>
 #include <stdexcept>
+#include <utility>
 #include <vector>
 namespace Tetris
 {
@@ -24,245 +25,184 @@ class TetrominoFactory
   public:
     static Tetromino generate(Tetris::TetrominoType type)
     {
+        std::vector<std::vector<std::pair<int, int>>> JLTSZWallKick = {
+            {{0, 0}, {-1, 0}, {-1, -1}, {0, 2}, {-1, 2}},
+            {{0, 0}, {1, 0}, {1, 1}, {0, -2}, {1, -2}},
+            {{0, 0}, {1, 0}, {1, 1}, {0, -2}, {1, -2}},
+            {{0, 0}, {-1, 0}, {-1, -1}, {0, 2}, {-1, 2}},
+            {{0, 0}, {1, 0}, {1, -1}, {0, 2}, {1, 2}},
+            {{0, 0}, {-1, 0}, {-1, 1}, {0, -2}, {-1, -2}},
+            {{0, 0}, {-1, 0}, {-1, 1}, {0, -2}, {-1, -2}},
+            {{0, 0}, {1, 0}, {1, -1}, {0, 2}, {1, 2}}
+        };
+
+        std::vector<std::vector<std::pair<int, int>>> OWallKick = {
+            {{0, 0}},
+            {{0, 0}},
+            {{0, 0}},
+            {{0, 0}},
+            {{0, 0}},
+            {{0, 0}},
+            {{0, 0}},
+            {{0, 0}},
+        };
+
+        std::vector<std::vector<std::pair<int, int>>> IWallKick = {
+            {{0, 0}, {-2, 0}, {1, 0},  {-2, 1},  {1, -2} },
+            {{0, 0}, {2, 0},  {-1, 0}, {2, -1},  {-1, 2} },
+            {{0, 0}, {-1, 0}, {2, 0},  {-1, -2}, {2, 1}  },
+            {{0, 0}, {1, 0},  {-2, 0}, {1, 2},   {-2, -1}},
+            {{0, 0}, {2, 0},  {-1, 0}, {2, -1},  {-1, 2} },
+            {{0, 0}, {-2, 0}, {1, 0},  {-2, 1},  {1, -2} },
+            {{0, 0}, {1, 0},  {-2, 0}, {1, 2},   {-2, -1}},
+            {{0, 0}, {-1, 0}, {2, 0},  {-1, 2},  {2, -1} },
+        };
+
         switch (type)
         {
         case Tetris::TetrominoType::I:
             return Tetris::Tetromino(
                 {
-                    {
-                     {BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL},
-                     {BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL},
-                     {BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL},
-                     {BlockType::NIL, BlockType::BLK, BlockType::PVT, BlockType::BLK, BlockType::BLK},
-                     {BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL},
-                     },
-                    {
-                     {BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL},
-                     {BlockType::NIL, BlockType::NIL, BlockType::BLK, BlockType::NIL, BlockType::NIL},
-                     {BlockType::NIL, BlockType::NIL, BlockType::PVT, BlockType::NIL, BlockType::NIL},
-                     {BlockType::NIL, BlockType::NIL, BlockType::BLK, BlockType::NIL, BlockType::NIL},
-                     {BlockType::NIL, BlockType::NIL, BlockType::BLK, BlockType::NIL, BlockType::NIL},
-                     },
-                    {
-                     {BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL},
-                     {BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL},
-                     {BlockType::BLK, BlockType::BLK, BlockType::PVT, BlockType::BLK, BlockType::NIL},
-                     {BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL},
-                     {BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL},
-                     },
-                    {
-                     {BlockType::NIL, BlockType::NIL, BlockType::BLK, BlockType::NIL, BlockType::NIL},
-                     {BlockType::NIL, BlockType::NIL, BlockType::BLK, BlockType::NIL, BlockType::NIL},
-                     {BlockType::NIL, BlockType::NIL, BlockType::PVT, BlockType::NIL, BlockType::NIL},
-                     {BlockType::NIL, BlockType::NIL, BlockType::BLK, BlockType::NIL, BlockType::NIL},
-                     {BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL},
-                     }
+                    {{BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL},
+                     {BlockType::BLK, BlockType::BLK, BlockType::BLK, BlockType::BLK},
+                     {BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL},
+                     {BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL}},
+                    {{BlockType::NIL, BlockType::NIL, BlockType::BLK, BlockType::NIL},
+                     {BlockType::NIL, BlockType::NIL, BlockType::BLK, BlockType::NIL},
+                     {BlockType::NIL, BlockType::NIL, BlockType::BLK, BlockType::NIL},
+                     {BlockType::NIL, BlockType::NIL, BlockType::BLK, BlockType::NIL}},
+                    {{BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL},
+                     {BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL},
+                     {BlockType::BLK, BlockType::BLK, BlockType::BLK, BlockType::BLK},
+                     {BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL}},
+                    {{BlockType::NIL, BlockType::BLK, BlockType::NIL, BlockType::NIL},
+                     {BlockType::NIL, BlockType::BLK, BlockType::NIL, BlockType::NIL},
+                     {BlockType::NIL, BlockType::BLK, BlockType::NIL, BlockType::NIL},
+                     {BlockType::NIL, BlockType::BLK, BlockType::NIL, BlockType::NIL}}
             },
-                ftxui::Color::Cyan1
+                IWallKick,
+                ftxui::Color::Cyan1,
+                true
             );
         case Tetris::TetrominoType::O:
             return Tetris::Tetromino(
                 {
-                    {
-                     {BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL},
-                     {BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL},
-                     {BlockType::NIL, BlockType::NIL, BlockType::PVT, BlockType::BLK, BlockType::NIL},
-                     {BlockType::NIL, BlockType::NIL, BlockType::BLK, BlockType::BLK, BlockType::NIL},
-                     {BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL},
-                     },
-                    {
-                     {BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL},
-                     {BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL},
-                     {BlockType::NIL, BlockType::NIL, BlockType::PVT, BlockType::BLK, BlockType::NIL},
-                     {BlockType::NIL, BlockType::NIL, BlockType::BLK, BlockType::BLK, BlockType::NIL},
-                     {BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL},
-                     },
-                    {
-                     {BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL},
-                     {BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL},
-                     {BlockType::NIL, BlockType::NIL, BlockType::PVT, BlockType::BLK, BlockType::NIL},
-                     {BlockType::NIL, BlockType::NIL, BlockType::BLK, BlockType::BLK, BlockType::NIL},
-                     {BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL},
-                     },
-                    {
-                     {BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL},
-                     {BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL},
-                     {BlockType::NIL, BlockType::NIL, BlockType::PVT, BlockType::BLK, BlockType::NIL},
-                     {BlockType::NIL, BlockType::NIL, BlockType::BLK, BlockType::BLK, BlockType::NIL},
-                     {BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL},
-                     }
+                    {{BlockType::NIL, BlockType::BLK, BlockType::BLK},
+                     {BlockType::NIL, BlockType::BLK, BlockType::BLK},
+                     {BlockType::NIL, BlockType::NIL, BlockType::NIL}},
+                    {{BlockType::NIL, BlockType::BLK, BlockType::BLK},
+                     {BlockType::NIL, BlockType::BLK, BlockType::BLK},
+                     {BlockType::NIL, BlockType::NIL, BlockType::NIL}},
+                    {{BlockType::NIL, BlockType::BLK, BlockType::BLK},
+                     {BlockType::NIL, BlockType::BLK, BlockType::BLK},
+                     {BlockType::NIL, BlockType::NIL, BlockType::NIL}},
+                    {{BlockType::NIL, BlockType::BLK, BlockType::BLK},
+                     {BlockType::NIL, BlockType::BLK, BlockType::BLK},
+                     {BlockType::NIL, BlockType::NIL, BlockType::NIL}}
             },
-                ftxui::Color::Yellow1
+                OWallKick,
+                ftxui::Color::Yellow1,
+                true
             );
         case Tetris::TetrominoType::T:
             return Tetris::Tetromino(
                 {
-                    {
-                     {BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL},
-                     {BlockType::NIL, BlockType::NIL, BlockType::BLK, BlockType::NIL, BlockType::NIL},
-                     {BlockType::NIL, BlockType::NIL, BlockType::PVT, BlockType::BLK, BlockType::NIL},
-                     {BlockType::NIL, BlockType::NIL, BlockType::BLK, BlockType::NIL, BlockType::NIL},
-                     {BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL},
-                     },
-                    {
-                     {BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL},
-                     {BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL},
-                     {BlockType::NIL, BlockType::BLK, BlockType::PVT, BlockType::BLK, BlockType::NIL},
-                     {BlockType::NIL, BlockType::NIL, BlockType::BLK, BlockType::NIL, BlockType::NIL},
-                     {BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL},
-                     },
-                    {
-                     {BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL},
-                     {BlockType::NIL, BlockType::NIL, BlockType::BLK, BlockType::NIL, BlockType::NIL},
-                     {BlockType::NIL, BlockType::BLK, BlockType::PVT, BlockType::NIL, BlockType::NIL},
-                     {BlockType::NIL, BlockType::NIL, BlockType::BLK, BlockType::NIL, BlockType::NIL},
-                     {BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL},
-                     },
-                    {
-                     {BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL},
-                     {BlockType::NIL, BlockType::NIL, BlockType::BLK, BlockType::NIL, BlockType::NIL},
-                     {BlockType::NIL, BlockType::BLK, BlockType::PVT, BlockType::BLK, BlockType::NIL},
-                     {BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL},
-                     {BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL},
-                     }
+                    {{BlockType::NIL, BlockType::BLK, BlockType::NIL},
+                     {BlockType::BLK, BlockType::BLK, BlockType::BLK},
+                     {BlockType::NIL, BlockType::NIL, BlockType::NIL}},
+                    {{BlockType::NIL, BlockType::BLK, BlockType::NIL},
+                     {BlockType::NIL, BlockType::BLK, BlockType::BLK},
+                     {BlockType::NIL, BlockType::BLK, BlockType::NIL}},
+                    {{BlockType::NIL, BlockType::NIL, BlockType::NIL},
+                     {BlockType::BLK, BlockType::BLK, BlockType::BLK},
+                     {BlockType::NIL, BlockType::BLK, BlockType::NIL}},
+                    {{BlockType::NIL, BlockType::BLK, BlockType::NIL},
+                     {BlockType::BLK, BlockType::BLK, BlockType::NIL},
+                     {BlockType::NIL, BlockType::BLK, BlockType::NIL}}
             },
-                ftxui::Color::MediumPurple1
+                JLTSZWallKick,
+                ftxui::Color::MediumPurple1,
+                false
             );
         case Tetris::TetrominoType::J:
             return Tetris::Tetromino(
                 {
-                    {
-                     {BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL},
-                     {BlockType::NIL, BlockType::NIL, BlockType::BLK, BlockType::NIL, BlockType::NIL},
-                     {BlockType::NIL, BlockType::NIL, BlockType::PVT, BlockType::NIL, BlockType::NIL},
-                     {BlockType::NIL, BlockType::BLK, BlockType::BLK, BlockType::NIL, BlockType::NIL},
-                     {BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL},
-                     },
-                    {
-                     {BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL},
-                     {BlockType::NIL, BlockType::BLK, BlockType::NIL, BlockType::NIL, BlockType::NIL},
-                     {BlockType::NIL, BlockType::BLK, BlockType::PVT, BlockType::BLK, BlockType::NIL},
-                     {BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL},
-                     {BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL},
-                     },
-                    {
-                     {BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL},
-                     {BlockType::NIL, BlockType::NIL, BlockType::BLK, BlockType::BLK, BlockType::NIL},
-                     {BlockType::NIL, BlockType::NIL, BlockType::PVT, BlockType::NIL, BlockType::NIL},
-                     {BlockType::NIL, BlockType::NIL, BlockType::BLK, BlockType::NIL, BlockType::NIL},
-                     {BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL},
-                     },
-                    {
-                     {BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL},
-                     {BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL},
-                     {BlockType::NIL, BlockType::BLK, BlockType::PVT, BlockType::BLK, BlockType::NIL},
-                     {BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::BLK, BlockType::NIL},
-                     {BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL},
-                     }
+                    {{BlockType::BLK, BlockType::NIL, BlockType::NIL},
+                     {BlockType::BLK, BlockType::BLK, BlockType::BLK},
+                     {BlockType::NIL, BlockType::NIL, BlockType::NIL}},
+                    {{BlockType::NIL, BlockType::BLK, BlockType::BLK},
+                     {BlockType::NIL, BlockType::BLK, BlockType::NIL},
+                     {BlockType::NIL, BlockType::BLK, BlockType::NIL}},
+                    {{BlockType::NIL, BlockType::NIL, BlockType::NIL},
+                     {BlockType::BLK, BlockType::BLK, BlockType::BLK},
+                     {BlockType::NIL, BlockType::NIL, BlockType::BLK}},
+                    {{BlockType::NIL, BlockType::BLK, BlockType::NIL},
+                     {BlockType::NIL, BlockType::BLK, BlockType::NIL},
+                     {BlockType::BLK, BlockType::BLK, BlockType::NIL}}
             },
-                ftxui::Color::Blue1
+                JLTSZWallKick,
+                ftxui::Color::Blue1,
+                false
             );
         case Tetris::TetrominoType::L:
             return Tetris::Tetromino(
                 {
-                    {
-                     {BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL},
-                     {BlockType::NIL, BlockType::NIL, BlockType::BLK, BlockType::NIL, BlockType::NIL},
-                     {BlockType::NIL, BlockType::NIL, BlockType::PVT, BlockType::NIL, BlockType::NIL},
-                     {BlockType::NIL, BlockType::NIL, BlockType::BLK, BlockType::BLK, BlockType::NIL},
-                     {BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL},
-                     },
-                    {
-                     {BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL},
-                     {BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL},
-                     {BlockType::NIL, BlockType::BLK, BlockType::PVT, BlockType::BLK, BlockType::NIL},
-                     {BlockType::NIL, BlockType::BLK, BlockType::NIL, BlockType::NIL, BlockType::NIL},
-                     {BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL},
-                     },
-                    {
-                     {BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL},
-                     {BlockType::NIL, BlockType::BLK, BlockType::BLK, BlockType::NIL, BlockType::NIL},
-                     {BlockType::NIL, BlockType::NIL, BlockType::PVT, BlockType::NIL, BlockType::NIL},
-                     {BlockType::NIL, BlockType::NIL, BlockType::BLK, BlockType::NIL, BlockType::NIL},
-                     {BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL},
-                     },
-                    {
-                     {BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL},
-                     {BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::BLK, BlockType::NIL},
-                     {BlockType::NIL, BlockType::BLK, BlockType::PVT, BlockType::BLK, BlockType::NIL},
-                     {BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL},
-                     {BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL},
-                     }
+                    {{BlockType::NIL, BlockType::NIL, BlockType::BLK},
+                     {BlockType::BLK, BlockType::BLK, BlockType::BLK},
+                     {BlockType::NIL, BlockType::NIL, BlockType::NIL}},
+                    {{BlockType::NIL, BlockType::BLK, BlockType::NIL},
+                     {BlockType::NIL, BlockType::BLK, BlockType::NIL},
+                     {BlockType::NIL, BlockType::BLK, BlockType::BLK}},
+                    {{BlockType::NIL, BlockType::NIL, BlockType::NIL},
+                     {BlockType::BLK, BlockType::BLK, BlockType::BLK},
+                     {BlockType::BLK, BlockType::NIL, BlockType::NIL}},
+                    {{BlockType::BLK, BlockType::BLK, BlockType::NIL},
+                     {BlockType::NIL, BlockType::BLK, BlockType::NIL},
+                     {BlockType::NIL, BlockType::BLK, BlockType::NIL}}
             },
-                ftxui::Color::Orange1
+                JLTSZWallKick,
+                ftxui::Color::Orange1,
+                false
             );
         case Tetris::TetrominoType::S:
             return Tetris::Tetromino(
                 {
-                    {
-                     {BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL},
-                     {BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL},
-                     {BlockType::NIL, BlockType::NIL, BlockType::PVT, BlockType::BLK, BlockType::NIL},
-                     {BlockType::NIL, BlockType::BLK, BlockType::BLK, BlockType::NIL, BlockType::NIL},
-                     {BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL},
-                     },
-                    {
-                     {BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL},
-                     {BlockType::NIL, BlockType::BLK, BlockType::NIL, BlockType::NIL, BlockType::NIL},
-                     {BlockType::NIL, BlockType::BLK, BlockType::PVT, BlockType::NIL, BlockType::NIL},
-                     {BlockType::NIL, BlockType::NIL, BlockType::BLK, BlockType::NIL, BlockType::NIL},
-                     {BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL},
-                     },
-                    {
-                     {BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL},
-                     {BlockType::NIL, BlockType::NIL, BlockType::BLK, BlockType::BLK, BlockType::NIL},
-                     {BlockType::NIL, BlockType::BLK, BlockType::PVT, BlockType::NIL, BlockType::NIL},
-                     {BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL},
-                     {BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL},
-                     },
-                    {
-                     {BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL},
-                     {BlockType::NIL, BlockType::NIL, BlockType::BLK, BlockType::NIL, BlockType::NIL},
-                     {BlockType::NIL, BlockType::NIL, BlockType::PVT, BlockType::BLK, BlockType::NIL},
-                     {BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::BLK, BlockType::NIL},
-                     {BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL},
-                     }
+                    {{BlockType::NIL, BlockType::BLK, BlockType::BLK},
+                     {BlockType::BLK, BlockType::BLK, BlockType::NIL},
+                     {BlockType::NIL, BlockType::NIL, BlockType::NIL}},
+                    {{BlockType::NIL, BlockType::BLK, BlockType::NIL},
+                     {BlockType::NIL, BlockType::BLK, BlockType::BLK},
+                     {BlockType::NIL, BlockType::NIL, BlockType::BLK}},
+                    {{BlockType::NIL, BlockType::NIL, BlockType::NIL},
+                     {BlockType::NIL, BlockType::BLK, BlockType::BLK},
+                     {BlockType::BLK, BlockType::BLK, BlockType::NIL}},
+                    {{BlockType::BLK, BlockType::NIL, BlockType::NIL},
+                     {BlockType::BLK, BlockType::BLK, BlockType::NIL},
+                     {BlockType::NIL, BlockType::BLK, BlockType::NIL}}
             },
-                ftxui::Color::Green1
+                JLTSZWallKick,
+                ftxui::Color::Green1,
+                false
             );
         case Tetris::TetrominoType::Z:
             return Tetris::Tetromino(
                 {
-                    {
-                     {BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL},
-                     {BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL},
-                     {BlockType::NIL, BlockType::BLK, BlockType::PVT, BlockType::NIL, BlockType::NIL},
-                     {BlockType::NIL, BlockType::NIL, BlockType::BLK, BlockType::BLK, BlockType::NIL},
-                     {BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL},
-                     },
-                    {
-                     {BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL},
-                     {BlockType::NIL, BlockType::NIL, BlockType::BLK, BlockType::NIL, BlockType::NIL},
-                     {BlockType::NIL, BlockType::BLK, BlockType::PVT, BlockType::NIL, BlockType::NIL},
-                     {BlockType::NIL, BlockType::BLK, BlockType::NIL, BlockType::NIL, BlockType::NIL},
-                     {BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL},
-                     },
-                    {
-                     {BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL},
-                     {BlockType::NIL, BlockType::BLK, BlockType::BLK, BlockType::NIL, BlockType::NIL},
-                     {BlockType::NIL, BlockType::NIL, BlockType::PVT, BlockType::BLK, BlockType::NIL},
-                     {BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL},
-                     {BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL},
-                     },
-                    {
-                     {BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL},
-                     {BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::BLK, BlockType::NIL},
-                     {BlockType::NIL, BlockType::NIL, BlockType::PVT, BlockType::BLK, BlockType::NIL},
-                     {BlockType::NIL, BlockType::NIL, BlockType::BLK, BlockType::NIL, BlockType::NIL},
-                     {BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL},
-                     }
+                    {{BlockType::BLK, BlockType::BLK, BlockType::NIL},
+                     {BlockType::NIL, BlockType::BLK, BlockType::BLK},
+                     {BlockType::NIL, BlockType::NIL, BlockType::NIL}},
+                    {{BlockType::NIL, BlockType::NIL, BlockType::BLK},
+                     {BlockType::NIL, BlockType::BLK, BlockType::BLK},
+                     {BlockType::NIL, BlockType::BLK, BlockType::NIL}},
+                    {{BlockType::NIL, BlockType::NIL, BlockType::NIL},
+                     {BlockType::BLK, BlockType::BLK, BlockType::NIL},
+                     {BlockType::NIL, BlockType::BLK, BlockType::BLK}},
+                    {{BlockType::NIL, BlockType::BLK, BlockType::NIL},
+                     {BlockType::BLK, BlockType::BLK, BlockType::NIL},
+                     {BlockType::BLK, BlockType::NIL, BlockType::NIL}}
             },
-                ftxui::Color::Red1
+                JLTSZWallKick,
+                ftxui::Color::Red1,
+                false
             );
         default:
             throw std::invalid_argument("Tetromino type is not supported.");

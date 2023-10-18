@@ -2,6 +2,7 @@
 
 #include <ftxui/dom/canvas.hpp>
 #include <string>
+#include <vector>
 
 #include "ftxui/screen/color.hpp"
 #include "tetromino.hpp"
@@ -11,6 +12,7 @@ namespace Tetris
 class Canvas
 {
   public:
+
     inline static const int         stepX             = 4;
     inline static const int         stepY             = 4;
     inline static const std::string blockSymbol       = "██";
@@ -20,11 +22,11 @@ class Canvas
         ftxui::Canvas &canvas, Tetris::Tetromino tetromino, bool isDefault = false, bool isShadow = false
     )
     {
-        auto data = tetromino.get();
+        auto data = tetromino.getMatrix();
 
         if (isDefault)
         {
-            tetromino.get(0);
+            data = tetromino.getMatrix(0);
         }
 
         for (int i = 0; i < (int)data.size(); i++)
@@ -38,10 +40,11 @@ class Canvas
 
                 Tetris::Canvas::drawBlock(
                     canvas,
-                    (!isDefault ? tetromino.getX() : 0) + j,
-                    (!isDefault ? tetromino.getY() : 0) + i,
+                    (!isDefault ? tetromino.getX() : 1) + j,
+                    (!isDefault ? tetromino.getY() : 1) + i,
                     tetromino.getColor(),
-                    isShadow
+                    isShadow,
+                    isDefault && tetromino.isEven()
                 );
             }
         }
@@ -63,15 +66,22 @@ class Canvas
         }
     }
 
-    static void drawBlock(ftxui::Canvas &canvas, int x, int y, ftxui::Color color, bool isShadow = false)
+    static void drawBlock(
+        ftxui::Canvas &canvas, int x, int y, ftxui::Color color, bool isShadow = false, bool isDrawEven = false
+    )
     {
-        canvas.DrawText(x * stepX, y * stepY, isShadow ? shadowBlockSymbol : blockSymbol, [&](ftxui::Pixel &p) {
-            p.foreground_color = color;
-            if (!isShadow)
-            {
-                p.background_color = color;
+        canvas.DrawText(
+            x * stepX - (isDrawEven ? stepX / 2 : 0),
+            y * stepY,
+            isShadow ? shadowBlockSymbol : blockSymbol,
+            [&](ftxui::Pixel &p) {
+                p.foreground_color = color;
+                if (!isShadow)
+                {
+                    p.background_color = color;
+                }
             }
-        });
+        );
     }
 
     static ftxui::Canvas createCanvas(int width, int height)

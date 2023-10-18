@@ -47,56 +47,64 @@ class Game
     {
         this->lastInput = event.character();
 
-        bool isCorrectEvent = false;
-        int  x              = 0;
-        int  y              = 0;
+        bool isMoveEvent   = false;
+        bool isRotateEvent = false;
 
-        Tetris::RotationType rotation = Tetris::RotationType::NO_ROTATE;
+        int x = 0;
+        int y = 0;
 
         if (event == ftxui::Event::Character('d') || event == ftxui::Event::Character('D'))
         {
             x = 1;
 
-            this->trigger  = Tetris::TriggerType::MOVE_RIGHT;
-            isCorrectEvent = true;
+            this->trigger = Tetris::TriggerType::MOVE_RIGHT;
+            isMoveEvent   = true;
         }
 
         if (event == ftxui::Event::Character('a') || event == ftxui::Event::Character('A'))
         {
             x = -1;
 
-            this->trigger  = Tetris::TriggerType::MOVE_LEFT;
-            isCorrectEvent = true;
+            this->trigger = Tetris::TriggerType::MOVE_LEFT;
+            isMoveEvent   = true;
         }
 
         if (event == ftxui::Event::Character('s') || event == ftxui::Event::Character('S'))
         {
             y = 1;
 
-            this->trigger  = Tetris::TriggerType::SOFT_DROP;
-            isCorrectEvent = true;
+            this->trigger = Tetris::TriggerType::SOFT_DROP;
+            isMoveEvent   = true;
         }
+
+        if (isMoveEvent && this->board.canMove(x, y))
+        {
+            this->board.getCurrent()->move(x, y);
+
+            return true;
+        }
+
+        Tetris::RotationType rotation = Tetris::RotationType::NO_ROTATE;
 
         if (event == ftxui::Event::Character('.') || event == ftxui::Event::Character('>'))
         {
             rotation = Tetris::RotationType::RIGHT;
 
-            this->trigger  = Tetris::TriggerType::ROTATE_RIGHT;
-            isCorrectEvent = true;
+            this->trigger = Tetris::TriggerType::ROTATE_RIGHT;
+            isRotateEvent = true;
         };
 
         if (event == ftxui::Event::Character(',') || event == ftxui::Event::Character('<'))
         {
             rotation = Tetris::RotationType::LEFT;
 
-            this->trigger  = Tetris::TriggerType::ROTATE_LEFT;
-            isCorrectEvent = true;
+            this->trigger = Tetris::TriggerType::ROTATE_LEFT;
+            isRotateEvent = true;
         };
 
-        if (isCorrectEvent && this->board.canMove(x, y, rotation))
+        if (isRotateEvent && this->board.canRotate(x, y, rotation))
         {
-            this->board.getCurrent()->move(x, y);
-            this->board.getCurrent()->rotate(rotation);
+            this->board.getCurrent()->move(x, y, rotation);
 
             return true;
         }
@@ -106,7 +114,6 @@ class Game
             y = this->board.getHardDropY();
 
             this->board.getCurrent()->move(0, y);
-
             this->board.store(this->score, this->next.pop(), this->trigger);
 
             this->trigger = Tetris::TriggerType::HARD_DROP;
@@ -190,7 +197,7 @@ class Game
             elements.push_back(ftxui::vbox(
                 {this->next.getElement(),
                  this->score.getElement(),
-                 ftxui::canvas(Tetris::Canvas::createCanvas(5, 5)),
+                 ftxui::canvas(Tetris::Canvas::createCanvas(5, 7)),
                  this->hold.getElement()}
             ));
 

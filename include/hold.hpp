@@ -38,7 +38,7 @@ class Hold
 
     ftxui::Element getElement()
     {
-        ftxui::Canvas canvas = Tetris::Canvas::createCanvas(5, 5);
+        ftxui::Canvas canvas = Tetris::Canvas::createCanvas(5, 4);
 
         if (this->hasHold())
         {

@@ -19,7 +19,7 @@ class Next
 
     void validateBag()
     {
-        if (!bag.size() || this->index + 1 == (int)this->bag.size())
+        if (!bag.size() || this->index == (int)this->bag.size())
         {
             this->bag   = Tetris::TetrominoFactory::generateBag();
             this->index = 0;
@@ -35,15 +35,17 @@ class Next
 
     Tetris::Tetromino pop()
     {
-        this->validateBag();
+        Tetris::Tetromino next = this->bag[this->index];
         this->index++;
 
-        return this->bag[this->index - 1];
+        this->validateBag();
+
+        return next;
     }
 
     ftxui::Element getElement()
     {
-        ftxui::Canvas canvas = Tetris::Canvas::createCanvas(5, 5);
+        ftxui::Canvas canvas = Tetris::Canvas::createCanvas(5, 4);
 
         Tetris::Canvas::drawTetromino(canvas, this->bag[this->index], true);
 
