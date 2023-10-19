@@ -26,14 +26,10 @@ class TetrominoFactory
     static Tetromino generate(Tetris::TetrominoType type)
     {
         std::vector<std::vector<std::pair<int, int>>> JLTSZWallKick = {
-            {{0, 0}, {-1, 0}, {-1, -1}, {0, 2}, {-1, 2}},
-            {{0, 0}, {1, 0}, {1, 1}, {0, -2}, {1, -2}},
-            {{0, 0}, {1, 0}, {1, 1}, {0, -2}, {1, -2}},
-            {{0, 0}, {-1, 0}, {-1, -1}, {0, 2}, {-1, 2}},
-            {{0, 0}, {1, 0}, {1, -1}, {0, 2}, {1, 2}},
-            {{0, 0}, {-1, 0}, {-1, 1}, {0, -2}, {-1, -2}},
-            {{0, 0}, {-1, 0}, {-1, 1}, {0, -2}, {-1, -2}},
-            {{0, 0}, {1, 0}, {1, -1}, {0, 2}, {1, 2}}
+            {{0, 0}, {0, 0},  {0, 0},  {0, 0},  {0, 0}  },
+            {{0, 0}, {1, 0},  {1, 1},  {0, -2}, {1, -2} },
+            {{0, 0}, {0, 0},  {0, 0},  {0, 0},  {0, 0}  },
+            {{0, 0}, {-1, 0}, {-1, 1}, {0, -2}, {-1, -2}}
         };
 
         std::vector<std::vector<std::pair<int, int>>> OWallKick = {
@@ -41,21 +37,13 @@ class TetrominoFactory
             {{0, 0}},
             {{0, 0}},
             {{0, 0}},
-            {{0, 0}},
-            {{0, 0}},
-            {{0, 0}},
-            {{0, 0}},
         };
 
         std::vector<std::vector<std::pair<int, int>>> IWallKick = {
-            {{0, 0}, {-2, 0}, {1, 0},  {-2, 1},  {1, -2} },
-            {{0, 0}, {2, 0},  {-1, 0}, {2, -1},  {-1, 2} },
-            {{0, 0}, {-1, 0}, {2, 0},  {-1, -2}, {2, 1}  },
-            {{0, 0}, {1, 0},  {-2, 0}, {1, 2},   {-2, -1}},
-            {{0, 0}, {2, 0},  {-1, 0}, {2, -1},  {-1, 2} },
-            {{0, 0}, {-2, 0}, {1, 0},  {-2, 1},  {1, -2} },
-            {{0, 0}, {1, 0},  {-2, 0}, {1, 2},   {-2, -1}},
-            {{0, 0}, {-1, 0}, {2, 0},  {-1, 2},  {2, -1} },
+            {{0, 0},   {-1, 0}, {2, 0},   {-1, 0}, {2, 0} },
+            {{-1, 0},  {0, 0},  {0, 0},   {0, -1}, {0, 2} },
+            {{-1, -1}, {1, -1}, {-2, -1}, {1, 0},  {-2, 0}},
+            {{0, -1},  {0, -1}, {0, -1},  {0, 1},  {0, -2}}
         };
 
         switch (type)
@@ -63,22 +51,26 @@ class TetrominoFactory
         case Tetris::TetrominoType::I:
             return Tetris::Tetromino(
                 {
-                    {{BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL},
-                     {BlockType::BLK, BlockType::BLK, BlockType::BLK, BlockType::BLK},
-                     {BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL},
-                     {BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL}},
-                    {{BlockType::NIL, BlockType::NIL, BlockType::BLK, BlockType::NIL},
-                     {BlockType::NIL, BlockType::NIL, BlockType::BLK, BlockType::NIL},
-                     {BlockType::NIL, BlockType::NIL, BlockType::BLK, BlockType::NIL},
-                     {BlockType::NIL, BlockType::NIL, BlockType::BLK, BlockType::NIL}},
-                    {{BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL},
-                     {BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL},
-                     {BlockType::BLK, BlockType::BLK, BlockType::BLK, BlockType::BLK},
-                     {BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL}},
-                    {{BlockType::NIL, BlockType::BLK, BlockType::NIL, BlockType::NIL},
-                     {BlockType::NIL, BlockType::BLK, BlockType::NIL, BlockType::NIL},
-                     {BlockType::NIL, BlockType::BLK, BlockType::NIL, BlockType::NIL},
-                     {BlockType::NIL, BlockType::BLK, BlockType::NIL, BlockType::NIL}}
+                    {{BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL},
+                     {BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL},
+                     {BlockType::NIL, BlockType::BLK, BlockType::BLK, BlockType::BLK, BlockType::BLK},
+                     {BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL},
+                     {BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL}},
+                    {{BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL},
+                     {BlockType::NIL, BlockType::NIL, BlockType::BLK, BlockType::NIL, BlockType::NIL},
+                     {BlockType::NIL, BlockType::NIL, BlockType::BLK, BlockType::NIL, BlockType::NIL},
+                     {BlockType::NIL, BlockType::NIL, BlockType::BLK, BlockType::NIL, BlockType::NIL},
+                     {BlockType::NIL, BlockType::NIL, BlockType::BLK, BlockType::NIL, BlockType::NIL}},
+                    {{BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL},
+                     {BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL},
+                     {BlockType::BLK, BlockType::BLK, BlockType::BLK, BlockType::BLK, BlockType::NIL},
+                     {BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL},
+                     {BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL}},
+                    {{BlockType::NIL, BlockType::NIL, BlockType::BLK, BlockType::NIL, BlockType::NIL},
+                     {BlockType::NIL, BlockType::NIL, BlockType::BLK, BlockType::NIL, BlockType::NIL},
+                     {BlockType::NIL, BlockType::NIL, BlockType::BLK, BlockType::NIL, BlockType::NIL},
+                     {BlockType::NIL, BlockType::NIL, BlockType::BLK, BlockType::NIL, BlockType::NIL},
+                     {BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL}}
             },
                 IWallKick,
                 ftxui::Color::Cyan1,
@@ -87,18 +79,22 @@ class TetrominoFactory
         case Tetris::TetrominoType::O:
             return Tetris::Tetromino(
                 {
-                    {{BlockType::NIL, BlockType::BLK, BlockType::BLK},
-                     {BlockType::NIL, BlockType::BLK, BlockType::BLK},
-                     {BlockType::NIL, BlockType::NIL, BlockType::NIL}},
-                    {{BlockType::NIL, BlockType::BLK, BlockType::BLK},
-                     {BlockType::NIL, BlockType::BLK, BlockType::BLK},
-                     {BlockType::NIL, BlockType::NIL, BlockType::NIL}},
-                    {{BlockType::NIL, BlockType::BLK, BlockType::BLK},
-                     {BlockType::NIL, BlockType::BLK, BlockType::BLK},
-                     {BlockType::NIL, BlockType::NIL, BlockType::NIL}},
-                    {{BlockType::NIL, BlockType::BLK, BlockType::BLK},
-                     {BlockType::NIL, BlockType::BLK, BlockType::BLK},
-                     {BlockType::NIL, BlockType::NIL, BlockType::NIL}}
+                    {
+                     {BlockType::BLK, BlockType::BLK},
+                     {BlockType::BLK, BlockType::BLK},
+                     },
+                    {
+                     {BlockType::BLK, BlockType::BLK},
+                     {BlockType::BLK, BlockType::BLK},
+                     },
+                    {
+                     {BlockType::BLK, BlockType::BLK},
+                     {BlockType::BLK, BlockType::BLK},
+                     },
+                    {
+                     {BlockType::BLK, BlockType::BLK},
+                     {BlockType::BLK, BlockType::BLK},
+                     }
             },
                 OWallKick,
                 ftxui::Color::Yellow1,

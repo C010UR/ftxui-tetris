@@ -39,7 +39,8 @@ class Tetromino
 
   public:
     Tetromino()
-        : position({}), wallKickData({}), currentRotation(0), x(0), y(0), color(ftxui::Color::Default), _isEven(false){};
+        : position({}), wallKickData({}), currentRotation(0), x(0), y(0), color(ftxui::Color::Default),
+          _isEven(false){};
 
     Tetromino(
         std::vector<std::vector<std::vector<Tetris::BlockType>>> position,
@@ -52,7 +53,7 @@ class Tetromino
         this->position        = position;
         this->currentRotation = 0;
         this->color           = color;
-        this->_isEven = isEven;
+        this->_isEven         = isEven;
 
         this->x = 0;
         this->y = 0;
@@ -99,16 +100,32 @@ class Tetromino
 
     std::vector<std::pair<int, int>> getRotationData(Tetris::RotationType rotation)
     {
-        int rotationIndex = this->getRotationIndex(rotation);
+        int nextRotation = 0;
 
-        if (rotationIndex == -1)
+        switch (rotation)
         {
+        case NO_ROTATE:
             return {
                 {0, 0}
             };
+        case LEFT:
+            nextRotation = this->rotateLeft(this->currentRotation);
+            break;
+        case RIGHT:
+            nextRotation = this->rotateRight(this->currentRotation);
+            break;
         }
 
-        return this->wallKickData[rotationIndex];
+        auto first  = this->wallKickData[this->currentRotation];
+        auto second = this->wallKickData[nextRotation];
+
+        for (int i = 0; i < (int)first.size(); i++)
+        {
+            first[i].first -= second[i].first;
+            first[i].second -= second[i].second;
+        }
+
+        return first;
     }
 
     int rotateLeft(int current)
