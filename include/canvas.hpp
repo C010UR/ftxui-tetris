@@ -12,7 +12,6 @@ namespace Tetris
 class Canvas
 {
   public:
-
     inline static const int         stepX             = 4;
     inline static const int         stepY             = 4;
     inline static const std::string blockSymbol       = "██";
@@ -44,7 +43,8 @@ class Canvas
                     (!isDefault ? tetromino.getY() : 1) + i,
                     tetromino.getColor(),
                     isShadow,
-                    isDefault && tetromino.isEven()
+                    isDefault,
+                    tetromino.getTetrominoType()
                 );
             }
         }
@@ -67,11 +67,42 @@ class Canvas
     }
 
     static void drawBlock(
-        ftxui::Canvas &canvas, int x, int y, ftxui::Color color, bool isShadow = false, bool isDrawEven = false
+        ftxui::Canvas        &canvas,
+        int                   x,
+        int                   y,
+        ftxui::Color          color,
+        bool                  isShadow      = false,
+        bool                  isDefault     = false,
+        Tetris::TetrominoType tetrominoType = Tetris::TetrominoType::T
     )
     {
+        int offsetX = 0;
+
+        if (isDefault)
+        {
+            // random offsets to make tetrominoes appear aligned
+            switch (tetrominoType)
+            {
+            case O:
+                x++;
+                offsetX = stepX / 2;
+                break;
+            case I:
+                y--;
+                x--;
+                offsetX = stepX / 2;
+                break;
+            case T:
+            case J:
+            case L:
+            case S:
+            case Z:
+                break;
+            }
+        }
+
         canvas.DrawText(
-            x * stepX - (isDrawEven ? stepX / 2 : 0),
+            x * stepX - offsetX,
             y * stepY,
             isShadow ? shadowBlockSymbol : blockSymbol,
             [&](ftxui::Pixel &p) {

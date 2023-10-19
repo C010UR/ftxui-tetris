@@ -7,6 +7,17 @@
 
 namespace Tetris
 {
+enum TetrominoType
+{
+    I,
+    O,
+    T,
+    J,
+    L,
+    S,
+    Z
+};
+
 enum BlockType
 {
     NIL,
@@ -35,67 +46,28 @@ class Tetromino
 
     ftxui::Color color;
 
-    bool _isEven;
+    Tetris::TetrominoType tetrominoType;
 
   public:
     Tetromino()
         : position({}), wallKickData({}), currentRotation(0), x(0), y(0), color(ftxui::Color::Default),
-          _isEven(false){};
+          tetrominoType(Tetris::TetrominoType::O){};
 
     Tetromino(
         std::vector<std::vector<std::vector<Tetris::BlockType>>> position,
         std::vector<std::vector<std::pair<int, int>>>            wallKickData,
         ftxui::Color                                             color,
-        bool                                                     isEven
+        Tetris::TetrominoType                                    tetrominoType
     )
     {
         this->wallKickData    = wallKickData;
         this->position        = position;
         this->currentRotation = 0;
         this->color           = color;
-        this->_isEven         = isEven;
+        this->tetrominoType   = tetrominoType;
 
         this->x = 0;
         this->y = 0;
-    }
-
-    int getRotationIndex(Tetris::RotationType rotation)
-    {
-        if (rotation == Tetris::RotationType::NO_ROTATE)
-        {
-            return -1;
-        }
-
-        if (rotation == Tetris::RotationType::LEFT)
-        {
-            switch (this->currentRotation)
-            {
-            case 1:
-                return 1;
-            case 2:
-                return 3;
-            case 3:
-                return 5;
-            case 0:
-                return 7;
-            }
-        }
-        else
-        {
-            switch (this->currentRotation)
-            {
-            case 0:
-                return 0;
-            case 1:
-                return 2;
-            case 2:
-                return 4;
-            case 3:
-                return 6;
-            }
-        }
-
-        return -1;
     }
 
     std::vector<std::pair<int, int>> getRotationData(Tetris::RotationType rotation)
@@ -183,7 +155,8 @@ class Tetromino
             }
         }
 
-        this->x = (width / 2) - 1 - minX;
+        // could create a better algorithm but meh
+        this->x = (width / 2) - 1 - minX - (this->tetrominoType != Tetris::TetrominoType::O ? 1 : 0);
         this->y = -minY;
     }
 
@@ -235,9 +208,9 @@ class Tetromino
         this->y = y;
     }
 
-    bool isEven()
+    Tetris::TetrominoType getTetrominoType()
     {
-        return this->_isEven;
+        return this->tetrominoType;
     }
 };
 } // namespace Tetris

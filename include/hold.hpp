@@ -15,10 +15,13 @@ class Hold
 {
   private:
     std::optional<Tetris::Tetromino> hold;
+    
+    bool blocked;
 
   public:
     Hold() {
         this->hold.reset();
+        this->blocked = false;
     }
 
     void setHold(Tetris::Tetromino tetromino)
@@ -42,10 +45,25 @@ class Hold
 
         if (this->hasHold())
         {
-            Tetris::Canvas::drawTetromino(canvas, this->hold.value(), true);
+            Tetris::Canvas::drawTetromino(canvas, this->hold.value(), true, this->blocked);
         }
 
         return ftxui::window(ftxui::text("Hold"), ftxui::canvas(canvas));
+    }
+
+    void block()
+    {
+        this->blocked = true;
+    }
+
+    void unblock()
+    {
+        this->blocked = false;
+    }
+
+    bool isBlocked()
+    {
+        return this->blocked;
     }
 };
 } // namespace Tetris

@@ -11,7 +11,7 @@ class OutputHelper
   public:
     static ftxui::Element getKeyValueText(std::string key, std::string value)
     {
-        return ftxui::hbox({ftxui::text(key + ": "), ftxui::text(value) | color(ftxui::Color::Yellow1)});
+        return ftxui::hbox({ftxui::text(key + ": "), ftxui::text(value) | ftxui::color(ftxui::Color::Yellow1)});
     }
 
     static ftxui::Element getKeyValueText(std::string key, int value)

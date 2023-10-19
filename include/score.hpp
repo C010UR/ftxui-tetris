@@ -2,6 +2,7 @@
 
 #include "ftxui/dom/elements.hpp"
 #include "ftxui/dom/node.hpp"
+#include "output_helper.hpp"
 #include <cstdio>
 #include <stdio.h>
 #include <string>
@@ -102,17 +103,15 @@ class Score
         }
     }
 
-    ftxui::Element getElement()
+    ftxui::Element getElement(int level = 1)
     {
-        const int width = 11;
-
-        char * score = new char[width];
-
-        std::snprintf(score, width, " %08d ", this->score);
-
         return ftxui::window(
-            ftxui::text("Score"), 
-            ftxui::text(std::string(score)));
+            ftxui::text("Stats"),
+            ftxui::vbox({
+                Tetris::OutputHelper::getKeyValueText("Score", this->score),
+                Tetris::OutputHelper::getKeyValueText("Level", level),
+            })
+        );
     }
 };
 } // namespace Tetris

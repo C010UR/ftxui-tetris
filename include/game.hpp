@@ -5,11 +5,14 @@
 #include <ftxui/component/event.hpp>
 #include <ftxui/dom/elements.hpp>
 #include <ftxui/dom/node.hpp>
+#include <mutex>
 #include <vector>
 
 #include "board.hpp"
 #include "canvas.hpp"
+#include "ftxui/component/screen_interactive.hpp"
 #include "ftxui/screen/color.hpp"
+#include "ftxui/screen/screen.hpp"
 #include "hold.hpp"
 #include "next.hpp"
 #include "output_helper.hpp"
@@ -31,16 +34,39 @@ class Game
 
     std::string         lastInput;
     Tetris::TriggerType trigger;
+    int                 tickCount;
+
+    int level = 1;
 
   public:
     Game(bool isEasyMode = false)
     {
         this->isEasyMode = isEasyMode;
 
-        this->score = Tetris::Score();
-        this->next  = Tetris::Next();
-        this->hold  = Tetris::Hold();
-        this->board = Tetris::Board(this->next.pop());
+        this->score     = Tetris::Score();
+        this->next      = Tetris::Next();
+        this->hold      = Tetris::Hold();
+        this->board     = Tetris::Board(this->next.pop());
+        this->tickCount = 0;
+    }
+
+    void tick(ftxui::ScreenInteractive &screen)
+    {
+        if (this->tickCount == 20 && this->board.canMove(0, 1))
+        {
+            this->board.getCurrent()->move(0, 1);
+            this->tickCount = 0;
+        }
+
+        if (this->tickCount == 50)
+        {
+            this->board.store(this->score, this->next.pop(), this->trigger, this->level);
+            this->tickCount = 0;
+        }
+
+        this->tickCount++;
+
+        screen.PostEvent(ftxui::Event::Special("tick"));
     }
 
     bool handleEvent(ftxui::Event event)
@@ -114,12 +140,13 @@ class Game
             y = this->board.getHardDropY();
 
             this->board.getCurrent()->move(0, y);
-            this->board.store(this->score, this->next.pop(), this->trigger);
+            this->board.store(this->score, this->next.pop(), this->trigger, this->level);
+            this->hold.unblock();
 
             this->trigger = Tetris::TriggerType::HARD_DROP;
         }
 
-        if (event == ftxui::Event::Character('z') || event == ftxui::Event::Character('Z'))
+        if ((event == ftxui::Event::Character('z') || event == ftxui::Event::Character('Z')) && !this->hold.isBlocked())
         {
             Tetris::Tetromino tetromino;
 
@@ -133,14 +160,18 @@ class Game
             }
 
             this->hold.setHold(*this->board.getCurrent());
-
             this->board.setCurrent(tetromino);
+            this->hold.block();
 
             this->trigger = Tetris::TriggerType::SWAP_HOLD;
+
             return true;
         };
 
-        this->trigger = Tetris::TriggerType::NO_TRIGGER;
+        if (event != ftxui::Event::Special("tick"))
+        {
+            this->trigger = Tetris::TriggerType::NO_TRIGGER;
+        }
 
         return false;
     }
@@ -183,6 +214,9 @@ class Game
                 Tetris::OutputHelper::getKeyValueText("Easy Mode", this->isEasyMode),
                 Tetris::OutputHelper::getKeyValueText("Last Input", this->lastInput),
                 Tetris::OutputHelper::getKeyValueText("Event Trigger", trigger),
+                Tetris::OutputHelper::getKeyValueText("Tick", this->tickCount),
+                Tetris::OutputHelper::getKeyValueText("Game Over", this->board.isGameOver()),
+                Tetris::OutputHelper::getKeyValueText("Hold Blocked", this->hold.isBlocked()),
             })
         );
     }
@@ -192,22 +226,34 @@ class Game
         return ftxui::Renderer([debug, this] {
             std::vector<ftxui::Element> elements;
 
+            elements.push_back(
+                ftxui::vbox({this->score.getElement(this->level)}) | ftxui::size(ftxui::WIDTH, ftxui::EQUAL, 15)
+            );
+
             elements.push_back(this->board.getBoardElement(this->isEasyMode));
 
             elements.push_back(ftxui::vbox(
                 {this->next.getElement(),
-                 this->score.getElement(),
-                 ftxui::canvas(Tetris::Canvas::createCanvas(5, 7)),
+                 ftxui::filler() | ftxui::size(ftxui::HEIGHT, ftxui::EQUAL, 10),
                  this->hold.getElement()}
             ));
 
             if (debug)
             {
-                elements.push_back(ftxui::vbox({this->board.getDebugElement(), this->getDebugElement()}));
+                elements.push_back(ftxui::filler() | ftxui::size(ftxui::WIDTH, ftxui::EQUAL, 3));
+                elements.push_back(
+                    ftxui::vbox({this->board.getDebugElement(), this->getDebugElement()})
+                    | ftxui::size(ftxui::WIDTH, ftxui::EQUAL, 30)
+                );
             }
 
             return ftxui::hbox(elements);
         });
+    }
+
+    bool isGameOver()
+    {
+        return this->board.isGameOver();
     }
 };
 } // namespace Tetris

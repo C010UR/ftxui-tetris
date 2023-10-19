@@ -9,16 +9,6 @@
 #include <vector>
 namespace Tetris
 {
-enum TetrominoType
-{
-    I,
-    O,
-    T,
-    J,
-    L,
-    S,
-    Z
-};
 
 class TetrominoFactory
 {
@@ -74,7 +64,7 @@ class TetrominoFactory
             },
                 IWallKick,
                 ftxui::Color::Cyan1,
-                true
+                Tetris::TetrominoType::I
             );
         case Tetris::TetrominoType::O:
             return Tetris::Tetromino(
@@ -98,7 +88,7 @@ class TetrominoFactory
             },
                 OWallKick,
                 ftxui::Color::Yellow1,
-                true
+                Tetris::TetrominoType::O
             );
         case Tetris::TetrominoType::T:
             return Tetris::Tetromino(
@@ -118,7 +108,7 @@ class TetrominoFactory
             },
                 JLTSZWallKick,
                 ftxui::Color::MediumPurple1,
-                false
+                Tetris::TetrominoType::T
             );
         case Tetris::TetrominoType::J:
             return Tetris::Tetromino(
@@ -138,7 +128,7 @@ class TetrominoFactory
             },
                 JLTSZWallKick,
                 ftxui::Color::Blue1,
-                false
+                Tetris::TetrominoType::J
             );
         case Tetris::TetrominoType::L:
             return Tetris::Tetromino(
@@ -158,7 +148,7 @@ class TetrominoFactory
             },
                 JLTSZWallKick,
                 ftxui::Color::Orange1,
-                false
+                Tetris::TetrominoType::L
             );
         case Tetris::TetrominoType::S:
             return Tetris::Tetromino(
@@ -178,7 +168,7 @@ class TetrominoFactory
             },
                 JLTSZWallKick,
                 ftxui::Color::Green1,
-                false
+                Tetris::TetrominoType::S
             );
         case Tetris::TetrominoType::Z:
             return Tetris::Tetromino(
@@ -198,7 +188,7 @@ class TetrominoFactory
             },
                 JLTSZWallKick,
                 ftxui::Color::Red1,
-                false
+                Tetris::TetrominoType::Z
             );
         default:
             throw std::invalid_argument("Tetromino type is not supported.");
