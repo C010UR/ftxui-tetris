@@ -64,29 +64,6 @@ class Board
             this->boardColor.push_back(std::vector<ftxui::Color>(width, ftxui::Color::Default));
         }
 
-        this->board = {
-            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-            {0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-            {0, 0, 1, 1, 1, 1, 0, 0, 0, 0},
-            {0, 0, 0, 0, 1, 0, 0, 0, 0, 0},
-            {1, 1, 1, 0, 1, 0, 1, 1, 1, 0},
-            {1, 1, 0, 0, 1, 0, 0, 1, 1, 0},
-            {1, 1, 1, 0, 1, 0, 1, 1, 1, 0},
-        };
-
         this->setCurrent(tetromino);
     }
 
@@ -100,7 +77,7 @@ class Board
         this->current = tetromino;
         this->current.reset(this->width);
 
-        if (!this->canMove(0, 0))
+        if (!this->canMove(0, 1))
         {
             this->gameOver = true;
         }
@@ -150,8 +127,8 @@ class Board
                         continue;
                     }
 
-                    int nextX = tetromino.getX() + x + wallKickEntry.first + j;
-                    int nextY = tetromino.getY() + y + wallKickEntry.second + i;
+                    int nextX = (int)(tetromino.getX() + x) + wallKickEntry.first + j;
+                    int nextY = (int)(tetromino.getY() + y) + wallKickEntry.second + i;
 
                     if (nextX < 0 || nextX + 1 > (int)this->board[0].size())
                     {
@@ -193,7 +170,7 @@ class Board
         return false;
     }
 
-    bool canMove(int x, int y)
+    bool canMove(double x, double y)
     {
         if (!this->board.size() || !this->board[0].size())
         {
@@ -217,8 +194,8 @@ class Board
                     continue;
                 }
 
-                int currentX = tetromino.getX() + x + j;
-                int currentY = tetromino.getY() + y + i;
+                int currentX = (int)(tetromino.getX() + x) + j;
+                int currentY = (int)(tetromino.getY() + y) + i;
 
                 if (currentX < 0 || currentX + 1 > (int)this->board[0].size())
                 {
@@ -242,7 +219,7 @@ class Board
 
     int getHardDropY()
     {
-        int y = 0;
+        double y = 0;
 
         while (this->canMove(0, ++y))
             ;
@@ -258,7 +235,7 @@ class Board
     }
 
   private:
-    void store(Tetris::Tetromino newTetromino)
+    void _store(Tetris::Tetromino newTetromino)
     {
         auto data = this->current.getMatrix();
 
@@ -319,7 +296,7 @@ class Board
         }
     }
 
-    int updateLines()
+    int _updateLines()
     {
         int fullLineCount = 0;
 
@@ -336,25 +313,26 @@ class Board
     }
 
   public:
-    void store(Tetris::Score &score, Tetris::Tetromino newTetromino, Tetris::TriggerType trigger, int level)
+    int store(Tetris::Tetromino newTetromino)
     {
-        this->store(newTetromino);
-        this->updateLines();
+        this->_store(newTetromino);
+        return this->_updateLines();
     }
 
-    ftxui::Element getDebugElement()
+    ftxui::Element getDebugElement(double x, double y)
     {
-        bool canMoveLeft  = this->canMove(-1, 0);
-        bool canMoveRight = this->canMove(1, 0);
-        bool canMoveDown  = this->canMove(0, 1);
+        bool canMoveLeft  = this->canMove(-x, 0);
+        bool canMoveRight = this->canMove(x, 0);
+        bool canMoveDown  = this->canMove(0, y);
 
-        int x = 0, y = 0;
+        int rX = 0, rY = 0;
 
-        bool canRotateLeft = this->canRotate(x, y, Tetris::RotationType::LEFT);
-        x                  = 0;
-        y                  = 0;
+        bool canRotateLeft = this->canRotate(rX, rY, Tetris::RotationType::LEFT);
 
-        bool canRotateRight = this->canRotate(x, y, Tetris::RotationType::RIGHT);
+        rX = 0;
+        rY = 0;
+
+        bool canRotateRight = this->canRotate(rX, rY, Tetris::RotationType::RIGHT);
 
         std::string tetrominoType = "";
 
@@ -431,7 +409,7 @@ class Board
             }
         }
 
-        return ftxui::canvas(canvas) | ftxui::border;
+        return ftxui::canvas(canvas) | ftxui::border| ftxui::size(ftxui::HEIGHT, ftxui::EQUAL, this->height);
     }
 
     bool isGameOver()

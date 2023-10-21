@@ -39,8 +39,8 @@ class Canvas
 
                 Tetris::Canvas::drawBlock(
                     canvas,
-                    (!isDefault ? tetromino.getX() : 1) + j,
-                    (!isDefault ? tetromino.getY() : 1) + i,
+                    (!isDefault ? (int)tetromino.getX() : 1) + j,
+                    (!isDefault ? (int)tetromino.getY() : 1) + i,
                     tetromino.getColor(),
                     isShadow,
                     isDefault,

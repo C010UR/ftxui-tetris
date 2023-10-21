@@ -41,8 +41,8 @@ class Tetromino
 
     int currentRotation;
 
-    int x;
-    int y;
+    double x;
+    double y;
 
     ftxui::Color color;
 
@@ -156,11 +156,11 @@ class Tetromino
         }
 
         // could create a better algorithm but meh
-        this->x = (width / 2) - 1 - minX - (this->tetrominoType != Tetris::TetrominoType::O ? 1 : 0);
+        this->x = (int)((width / 2) - 1 - minX - (this->tetrominoType != Tetris::TetrominoType::O ? 1 : 0));
         this->y = -minY;
     }
 
-    void move(int x, int y, Tetris::RotationType rotation = Tetris::RotationType::NO_ROTATE)
+    void move(double x, double y, Tetris::RotationType rotation = Tetris::RotationType::NO_ROTATE)
     {
         this->x += x;
         this->y += y;
@@ -188,22 +188,22 @@ class Tetromino
         return this->currentRotation;
     }
 
-    int getX()
+    double getX()
     {
         return this->x;
     }
 
-    int getY()
+    double getY()
     {
         return this->y;
     }
 
-    void setX(int x)
+    void setX(double x)
     {
         this->x = x;
     }
 
-    void setY(int y)
+    void setY(double y)
     {
         this->y = y;
     }

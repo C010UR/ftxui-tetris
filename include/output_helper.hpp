@@ -3,6 +3,9 @@
 #include "ftxui/dom/elements.hpp"
 #include "ftxui/dom/node.hpp"
 #include "ftxui/screen/color.hpp"
+#include <iomanip>
+#include <ios>
+#include <sstream>
 #include <string>
 namespace Tetris
 {
@@ -17,6 +20,14 @@ class OutputHelper
     static ftxui::Element getKeyValueText(std::string key, int value)
     {
         return Tetris::OutputHelper::getKeyValueText(key, std::to_string(value));
+    }
+
+    static ftxui::Element getKeyValueText(std::string key, double value)
+    {
+        std::stringstream stream;
+        stream << std::fixed << std::setprecision(3) << value;
+
+        return Tetris::OutputHelper::getKeyValueText(key, stream.str());
     }
 
     static ftxui::Element getKeyValueText(std::string key, ftxui::Color color)

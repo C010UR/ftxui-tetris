@@ -6,6 +6,8 @@
 #include <cstdio>
 #include <stdio.h>
 #include <string>
+#include <utility>
+#include <vector>
 namespace Tetris
 {
 enum ScoreType
@@ -33,16 +35,22 @@ class Score
 {
   private:
     int score;
+    int level;
+    int linesCleared;
 
-  public:
-    Score()
+    void calculateLevel()
     {
-        this->score = 0;
-    }
+        int level = 1;
 
-    int getScore()
-    {
-        return this->score;
+        int j = 3;
+
+        for (int i = j; i <= this->linesCleared; i += j)
+        {
+            level++;
+            j += 2;
+        }
+
+        this->level = this->level > level ? this->level : level;
     }
 
     void add(Tetris::ScoreType scoreType, int level = 1)
@@ -103,13 +111,66 @@ class Score
         }
     }
 
-    ftxui::Element getElement(int level = 1)
+  public:
+    Score(int level = 1)
+    {
+        this->score        = 0;
+        this->level        = level;
+        this->linesCleared = 0;
+    }
+
+    int getScore()
+    {
+        return this->score;
+    }
+
+    int getLevel()
+    {
+        return this->level;
+    }
+
+    int getLinesCleared()
+    {
+        return this->linesCleared;
+    }
+
+    void update(int linesCleared)
+    {
+
+        this->linesCleared += linesCleared;
+        this->calculateLevel();
+    }
+
+    double getGravity()
+    {
+        const std::vector<double> gravity
+            = {1000, 643, 404, 249, 150, 88, 50.5, 28.3, 15.5, 8.27, 4.31, 2.19, 1.08, 0.52, 0.00024};
+
+        if (this->level > (int)gravity.size())
+        {
+            return gravity[gravity.size() - 1];
+        }
+
+        return gravity[level - 1];
+    }
+
+    ftxui::Element getDebugElement()
+    {
+        return ftxui::vbox({ftxui::window(
+            ftxui::text("Level"),
+            ftxui::vbox({
+                OutputHelper::getKeyValueText("Lines cleared", this->getLinesCleared()),
+            })
+        )});
+    }
+
+    ftxui::Element getElement()
     {
         return ftxui::window(
             ftxui::text("Stats"),
             ftxui::vbox({
                 Tetris::OutputHelper::getKeyValueText("Score", this->score),
-                Tetris::OutputHelper::getKeyValueText("Level", level),
+                Tetris::OutputHelper::getKeyValueText("Level", this->level),
             })
         );
     }

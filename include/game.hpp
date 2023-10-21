@@ -1,11 +1,13 @@
 #pragma once
 
+#include <algorithm>
 #include <ftxui/component/component.hpp>
 #include <ftxui/component/component_base.hpp>
 #include <ftxui/component/event.hpp>
 #include <ftxui/dom/elements.hpp>
 #include <ftxui/dom/node.hpp>
 #include <mutex>
+#include <utility>
 #include <vector>
 
 #include "board.hpp"
@@ -32,145 +34,202 @@ class Game
     Tetris::Next  next;
     Tetris::Hold  hold;
 
-    std::string         lastInput;
-    Tetris::TriggerType trigger;
-    int                 tickCount;
+    double updatesPerSecond;
 
-    int level = 1;
+    int  storeDelay;
+    int  softDropDelay;
+    bool isSoftDrop;
+
+    std::vector<Tetris::TriggerType> triggers;
+
+    int getTicksInMs(double ms)
+    {
+        return ms / 1000 * updatesPerSecond;
+    }
+
+    double getGravityPerUpdate()
+    {
+        return std::min(
+            (1000 / (isSoftDrop ? std::min(50., this->score.getGravity()) : this->score.getGravity()))
+                / this->updatesPerSecond,
+            (double)std::max(this->board.getHardDropY(), 1)
+        );
+    }
+
+    void handleGravity()
+    {
+        this->storeDelay++;
+        double offset = this->getGravityPerUpdate();
+
+        if (!this->board.canMove(0, offset))
+        {
+            return;
+        }
+
+        this->board.getCurrent()->move(0, offset);
+        this->storeDelay = 0;
+    }
+
+    void handleDropDelay()
+    {
+        if (this->storeDelay != this->getTicksInMs(500))
+        {
+            return;
+        }
+
+        this->handleStore();
+        this->storeDelay = 0;
+    }
+
+    void handleStore()
+    {
+        if (this->board.canMove(0, 1))
+        {
+            return;
+        }
+
+        int linesCleared = this->board.store(this->next.pop());
+        this->score.update(linesCleared);
+        this->hold.unblock();
+    }
+
+    void handleSoftDrop()
+    {
+        if (!this->isSoftDrop)
+        {
+            return;
+        }
+
+        this->softDropDelay++;
+
+        if (this->softDropDelay == this->getTicksInMs(50))
+        {
+            this->isSoftDrop    = false;
+            this->softDropDelay = 0;
+        }
+    }
+
+    void handleSwapHold()
+    {
+        Tetris::Tetromino tetromino = this->hold.hasHold() ? this->hold.getHold() : this->next.pop();
+
+        this->hold.setHold(*this->board.getCurrent());
+        this->board.setCurrent(tetromino);
+        this->hold.block();
+    }
 
   public:
-    Game(bool isEasyMode = false)
+    Game(double updatesPerSecond, bool isEasyMode = false)
     {
         this->isEasyMode = isEasyMode;
 
-        this->score     = Tetris::Score();
-        this->next      = Tetris::Next();
-        this->hold      = Tetris::Hold();
-        this->board     = Tetris::Board(this->next.pop());
-        this->tickCount = 0;
+        this->score            = Tetris::Score();
+        this->next             = Tetris::Next();
+        this->hold             = Tetris::Hold();
+        this->board            = Tetris::Board(this->next.pop());
+        this->updatesPerSecond = updatesPerSecond;
+        this->softDropDelay    = 0;
+        this->storeDelay       = 0;
+        this->isSoftDrop       = false;
     }
 
-    void tick(ftxui::ScreenInteractive &screen)
+    void update()
     {
-        if (this->tickCount == 20 && this->board.canMove(0, 1))
+        this->handleSoftDrop();
+        this->handleGravity();
+        this->handleDropDelay();
+    }
+
+    void handleTriggers()
+    {
+        for (int i = 0; i < (int)this->triggers.size(); i++)
         {
-            this->board.getCurrent()->move(0, 1);
-            this->tickCount = 0;
+            int x = 0, y = 0; // used by rotate
+
+            switch (triggers[i])
+            {
+            case MOVE_LEFT:
+                if (this->board.canMove(-1, 0))
+                {
+                    this->board.getCurrent()->move(-1, 0);
+                }
+
+                break;
+            case MOVE_RIGHT:
+                if (this->board.canMove(1, 0))
+                {
+                    this->board.getCurrent()->move(1, 0);
+                }
+
+                break;
+            case SOFT_DROP:
+                this->isSoftDrop    = true;
+                this->softDropDelay = 0;
+                break;
+            case HARD_DROP:
+                this->board.getCurrent()->move(0, this->board.getHardDropY());
+                this->handleStore();
+                break;
+            case ROTATE_LEFT:
+                if (this->board.canRotate(x, y, Tetris::RotationType::LEFT))
+                {
+                    this->board.getCurrent()->move(x, y, Tetris::RotationType::LEFT);
+                }
+
+                break;
+            case ROTATE_RIGHT:
+                if (this->board.canRotate(x, y, Tetris::RotationType::RIGHT))
+                {
+                    this->board.getCurrent()->move(x, y, Tetris::RotationType::RIGHT);
+                }
+
+                break;
+            case SWAP_HOLD:
+                this->handleSwapHold();
+                break;
+            case NO_TRIGGER:
+                break;
+            }
         }
 
-        if (this->tickCount == 50)
-        {
-            this->board.store(this->score, this->next.pop(), this->trigger, this->level);
-            this->tickCount = 0;
-        }
-
-        this->tickCount++;
-
-        screen.PostEvent(ftxui::Event::Special("tick"));
+        this->triggers.clear();
     }
 
     bool handleEvent(ftxui::Event event)
     {
-        this->lastInput = event.character();
-
-        bool isMoveEvent   = false;
-        bool isRotateEvent = false;
-
-        int x = 0;
-        int y = 0;
-
         if (event == ftxui::Event::Character('d') || event == ftxui::Event::Character('D'))
         {
-            x = 1;
-
-            this->trigger = Tetris::TriggerType::MOVE_RIGHT;
-            isMoveEvent   = true;
+            this->triggers.push_back(Tetris::TriggerType::MOVE_RIGHT);
         }
 
         if (event == ftxui::Event::Character('a') || event == ftxui::Event::Character('A'))
         {
-            x = -1;
-
-            this->trigger = Tetris::TriggerType::MOVE_LEFT;
-            isMoveEvent   = true;
+            this->triggers.push_back(Tetris::TriggerType::MOVE_LEFT);
         }
 
         if (event == ftxui::Event::Character('s') || event == ftxui::Event::Character('S'))
         {
-            y = 1;
-
-            this->trigger = Tetris::TriggerType::SOFT_DROP;
-            isMoveEvent   = true;
+            this->triggers.push_back(Tetris::TriggerType::SOFT_DROP);
         }
-
-        if (isMoveEvent && this->board.canMove(x, y))
-        {
-            this->board.getCurrent()->move(x, y);
-
-            return true;
-        }
-
-        Tetris::RotationType rotation = Tetris::RotationType::NO_ROTATE;
 
         if (event == ftxui::Event::Character('.') || event == ftxui::Event::Character('>'))
         {
-            rotation = Tetris::RotationType::RIGHT;
-
-            this->trigger = Tetris::TriggerType::ROTATE_RIGHT;
-            isRotateEvent = true;
-        };
+            this->triggers.push_back(Tetris::TriggerType::ROTATE_RIGHT);
+        }
 
         if (event == ftxui::Event::Character(',') || event == ftxui::Event::Character('<'))
         {
-            rotation = Tetris::RotationType::LEFT;
-
-            this->trigger = Tetris::TriggerType::ROTATE_LEFT;
-            isRotateEvent = true;
+            this->triggers.push_back(Tetris::TriggerType::ROTATE_LEFT);
         };
-
-        if (isRotateEvent && this->board.canRotate(x, y, rotation))
-        {
-            this->board.getCurrent()->move(x, y, rotation);
-
-            return true;
-        }
 
         if (event == ftxui::Event::Character(' '))
         {
-            y = this->board.getHardDropY();
-
-            this->board.getCurrent()->move(0, y);
-            this->board.store(this->score, this->next.pop(), this->trigger, this->level);
-            this->hold.unblock();
-
-            this->trigger = Tetris::TriggerType::HARD_DROP;
+            this->triggers.push_back(Tetris::TriggerType::HARD_DROP);
         }
 
-        if ((event == ftxui::Event::Character('z') || event == ftxui::Event::Character('Z')) && !this->hold.isBlocked())
+        if (event == ftxui::Event::Character('z') || event == ftxui::Event::Character('Z'))
         {
-            Tetris::Tetromino tetromino;
-
-            if (this->hold.hasHold())
-            {
-                tetromino = this->hold.getHold();
-            }
-            else
-            {
-                tetromino = this->next.pop();
-            }
-
-            this->hold.setHold(*this->board.getCurrent());
-            this->board.setCurrent(tetromino);
-            this->hold.block();
-
-            this->trigger = Tetris::TriggerType::SWAP_HOLD;
-
-            return true;
-        };
-
-        if (event != ftxui::Event::Special("tick"))
-        {
-            this->trigger = Tetris::TriggerType::NO_TRIGGER;
+            this->triggers.push_back(Tetris::TriggerType::SWAP_HOLD);
         }
 
         return false;
@@ -178,45 +237,18 @@ class Game
 
     ftxui::Element getDebugElement()
     {
-        std::string trigger;
-
-        switch (this->trigger)
-        {
-        case MOVE_LEFT:
-            trigger = "Move Left";
-            break;
-        case MOVE_RIGHT:
-            trigger = "Move Right";
-            break;
-        case SOFT_DROP:
-            trigger = "Soft Drop";
-            break;
-        case HARD_DROP:
-            trigger = "Hard Drop";
-            break;
-        case ROTATE_LEFT:
-            trigger = "Rotate Left";
-            break;
-        case ROTATE_RIGHT:
-            trigger = "Rotate Right";
-            break;
-        case SWAP_HOLD:
-            trigger = "Swap Hold";
-            break;
-        case NO_TRIGGER:
-            trigger = "<NULL>";
-            break;
-        }
-
         return ftxui::window(
             ftxui::text("Debug"),
             ftxui::vbox({
                 Tetris::OutputHelper::getKeyValueText("Easy Mode", this->isEasyMode),
-                Tetris::OutputHelper::getKeyValueText("Last Input", this->lastInput),
-                Tetris::OutputHelper::getKeyValueText("Event Trigger", trigger),
-                Tetris::OutputHelper::getKeyValueText("Tick", this->tickCount),
+                Tetris::OutputHelper::getKeyValueText("Store delay", this->storeDelay * this->updatesPerSecond),
                 Tetris::OutputHelper::getKeyValueText("Game Over", this->board.isGameOver()),
                 Tetris::OutputHelper::getKeyValueText("Hold Blocked", this->hold.isBlocked()),
+                Tetris::OutputHelper::getKeyValueText("Updates per second", updatesPerSecond),
+                Tetris::OutputHelper::getKeyValueText("Gravity", this->score.getGravity()),
+                Tetris::OutputHelper::getKeyValueText("Gravity per Update", this->getGravityPerUpdate()),
+                Tetris::OutputHelper::getKeyValueText("Soft drop delay", this->softDropDelay * this->updatesPerSecond),
+                Tetris::OutputHelper::getKeyValueText("Soft drop", this->isSoftDrop),
             })
         );
     }
@@ -226,9 +258,7 @@ class Game
         return ftxui::Renderer([debug, this] {
             std::vector<ftxui::Element> elements;
 
-            elements.push_back(
-                ftxui::vbox({this->score.getElement(this->level)}) | ftxui::size(ftxui::WIDTH, ftxui::EQUAL, 15)
-            );
+            elements.push_back(ftxui::vbox({this->score.getElement()}) | ftxui::size(ftxui::WIDTH, ftxui::EQUAL, 15));
 
             elements.push_back(this->board.getBoardElement(this->isEasyMode));
 
@@ -241,8 +271,14 @@ class Game
             if (debug)
             {
                 elements.push_back(ftxui::filler() | ftxui::size(ftxui::WIDTH, ftxui::EQUAL, 3));
+
                 elements.push_back(
-                    ftxui::vbox({this->board.getDebugElement(), this->getDebugElement()})
+                    ftxui::vbox({this->board.getDebugElement(this->getGravityPerUpdate(), 1)})
+                    | ftxui::size(ftxui::WIDTH, ftxui::EQUAL, 30)
+                );
+
+                elements.push_back(
+                    ftxui::vbox({this->score.getDebugElement(), this->getDebugElement()})
                     | ftxui::size(ftxui::WIDTH, ftxui::EQUAL, 30)
                 );
             }
