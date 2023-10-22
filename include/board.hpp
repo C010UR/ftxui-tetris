@@ -14,24 +14,14 @@
 #include <vector>
 
 #include "canvas.hpp"
+#include "enums.hpp"
 #include "output_helper.hpp"
-#include "score.hpp"
 #include "tetromino.hpp"
 #include "tetromino_factory.hpp"
 
 namespace Tetris
 {
-enum TriggerType
-{
-    MOVE_LEFT,
-    MOVE_RIGHT,
-    SOFT_DROP,
-    HARD_DROP,
-    ROTATE_LEFT,
-    ROTATE_RIGHT,
-    SWAP_HOLD,
-    NO_TRIGGER
-};
+
 class Board
 {
   private:
@@ -234,6 +224,22 @@ class Board
         return !this->canMove(0, 1);
     }
 
+    bool isBoardClear()
+    {
+        for (int i = 0; i < (int)this->board.size(); i++)
+        {
+            for (int j = 0; j < (int)this->board[i].size(); j++)
+            {
+                if (this->board[i][j])
+                {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
   private:
     void _store(Tetris::Tetromino newTetromino)
     {
@@ -333,36 +339,6 @@ class Board
         rY = 0;
 
         bool canRotateRight = this->canRotate(rX, rY, Tetris::RotationType::RIGHT);
-
-        std::string tetrominoType = "";
-
-        switch (this->current.getTetrominoType())
-        {
-        case Tetris::TetrominoType::I:
-            tetrominoType = "I";
-            break;
-        case Tetris::TetrominoType::O:
-            tetrominoType = "O";
-            break;
-        case Tetris::TetrominoType::J:
-            tetrominoType = "J";
-            break;
-        case Tetris::TetrominoType::L:
-            tetrominoType = "L";
-            break;
-        case Tetris::TetrominoType::S:
-            tetrominoType = "S";
-            break;
-        case Tetris::TetrominoType::T:
-            tetrominoType = "T";
-            break;
-        case Tetris::TetrominoType::Z:
-            tetrominoType = "Z";
-            break;
-        default:
-            tetrominoType = "<NULL>";
-        }
-
         return ftxui::vbox(
             {ftxui::window(
                  ftxui::text("Tetromino Movement"),
@@ -373,7 +349,9 @@ class Board
                      Tetris::OutputHelper::getKeyValueText("Can move left", canMoveLeft),
                      Tetris::OutputHelper::getKeyValueText("Can move right", canMoveRight),
                      Tetris::OutputHelper::getKeyValueText("Can move down", canMoveDown),
-                     Tetris::OutputHelper::getKeyValueText("TetrominoType", tetrominoType),
+                     Tetris::OutputHelper::getKeyValueText(
+                         "TetrominoType", Tetris::OutputHelper::enumToString(this->current.getTetrominoType())
+                     ),
                  })
              ),
              ftxui::window(
@@ -409,7 +387,12 @@ class Board
             }
         }
 
-        return ftxui::canvas(canvas) | ftxui::border| ftxui::size(ftxui::HEIGHT, ftxui::EQUAL, this->height);
+        return ftxui::canvas(canvas) | ftxui::border | ftxui::size(ftxui::HEIGHT, ftxui::EQUAL, this->height);
+    }
+
+    void setGameOver(bool gameOver)
+    {
+        this->gameOver = gameOver;
     }
 
     bool isGameOver()

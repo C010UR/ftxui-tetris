@@ -1,0 +1,11 @@
+[wrap-file]
+directory = FTXUI-5.0.0
+source_url = https://github.com/ArthurSonzogni/FTXUI/archive/refs/tags/v5.0.0.tar.gz
+source_filename = FTXUI-5.0.0.tar.gz
+source_hash = a2991cb222c944aee14397965d9f6b050245da849d8c5da7c72d112de2786b5b
+patch_directory = FTXUI-5.0.0
+
+[provide]
+ftxui-5.0.0-screen = screen_dep
+ftxui-5.0.0-dom = dom_dep
+ftxui-5.0.0-component = component_dep

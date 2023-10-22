@@ -1,12 +1,14 @@
 #pragma once
 
-#include "ftxui/screen/color.hpp"
-#include "tetromino.hpp"
 #include <algorithm>
+#include <ftxui/screen/color.hpp>
 #include <random>
 #include <stdexcept>
 #include <utility>
 #include <vector>
+
+#include "enums.hpp"
+#include "tetromino.hpp"
 namespace Tetris
 {
 
@@ -63,7 +65,7 @@ class TetrominoFactory
                      {BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL, BlockType::NIL}}
             },
                 IWallKick,
-                ftxui::Color::Cyan1,
+                ftxui::Color::RGB(0, 168, 255),
                 Tetris::TetrominoType::I
             );
         case Tetris::TetrominoType::O:
@@ -87,27 +89,27 @@ class TetrominoFactory
                      }
             },
                 OWallKick,
-                ftxui::Color::Yellow1,
+                ftxui::Color::RGB(251, 197, 49),
                 Tetris::TetrominoType::O
             );
         case Tetris::TetrominoType::T:
             return Tetris::Tetromino(
                 {
                     {{BlockType::NIL, BlockType::BLK, BlockType::NIL},
-                     {BlockType::BLK, BlockType::BLK, BlockType::BLK},
+                     {BlockType::BLK, BlockType::PVT, BlockType::BLK},
                      {BlockType::NIL, BlockType::NIL, BlockType::NIL}},
                     {{BlockType::NIL, BlockType::BLK, BlockType::NIL},
-                     {BlockType::NIL, BlockType::BLK, BlockType::BLK},
+                     {BlockType::NIL, BlockType::PVT, BlockType::BLK},
                      {BlockType::NIL, BlockType::BLK, BlockType::NIL}},
                     {{BlockType::NIL, BlockType::NIL, BlockType::NIL},
-                     {BlockType::BLK, BlockType::BLK, BlockType::BLK},
+                     {BlockType::BLK, BlockType::PVT, BlockType::BLK},
                      {BlockType::NIL, BlockType::BLK, BlockType::NIL}},
                     {{BlockType::NIL, BlockType::BLK, BlockType::NIL},
-                     {BlockType::BLK, BlockType::BLK, BlockType::NIL},
+                     {BlockType::BLK, BlockType::PVT, BlockType::NIL},
                      {BlockType::NIL, BlockType::BLK, BlockType::NIL}}
             },
                 JLTSZWallKick,
-                ftxui::Color::MediumPurple1,
+                ftxui::Color::RGB(156, 136, 255),
                 Tetris::TetrominoType::T
             );
         case Tetris::TetrominoType::J:
@@ -127,7 +129,7 @@ class TetrominoFactory
                      {BlockType::BLK, BlockType::BLK, BlockType::NIL}}
             },
                 JLTSZWallKick,
-                ftxui::Color::Blue1,
+                ftxui::Color::RGB(43, 44, 213),
                 Tetris::TetrominoType::J
             );
         case Tetris::TetrominoType::L:
@@ -147,7 +149,7 @@ class TetrominoFactory
                      {BlockType::NIL, BlockType::BLK, BlockType::NIL}}
             },
                 JLTSZWallKick,
-                ftxui::Color::Orange1,
+                ftxui::Color::RGB(242, 131, 37),
                 Tetris::TetrominoType::L
             );
         case Tetris::TetrominoType::S:
@@ -167,7 +169,7 @@ class TetrominoFactory
                      {BlockType::NIL, BlockType::BLK, BlockType::NIL}}
             },
                 JLTSZWallKick,
-                ftxui::Color::Green1,
+                ftxui::Color::RGB(76, 209, 55),
                 Tetris::TetrominoType::S
             );
         case Tetris::TetrominoType::Z:
@@ -187,7 +189,7 @@ class TetrominoFactory
                      {BlockType::BLK, BlockType::NIL, BlockType::NIL}}
             },
                 JLTSZWallKick,
-                ftxui::Color::Red1,
+                ftxui::Color::RGB(232, 65, 24),
                 Tetris::TetrominoType::Z
             );
         default:

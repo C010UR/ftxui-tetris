@@ -11,9 +11,9 @@ add_global_arguments('-Wno-unused', language : 'cpp')
 
 incdir = include_directories('include')
 
-ftxui_screen_dep = dependency('ftxui-screen')
-ftxui_dom_dep = dependency('ftxui-dom')
-ftxui_component_dep = dependency('ftxui-component')
+ftxui_screen_dep = dependency('ftxui-5.0.0-screen')
+ftxui_dom_dep = dependency('ftxui-5.0.0-dom')
+ftxui_component_dep = dependency('ftxui-5.0.0-component')
 
 executable('tetris',
   sources : ['src/main.cpp'],

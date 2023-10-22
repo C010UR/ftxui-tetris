@@ -1,36 +1,15 @@
 #pragma once
 
-#include "ftxui/dom/canvas.hpp"
+#include <ftxui/dom/canvas.hpp>
 #include <ftxui/screen/color.hpp>
 #include <utility>
 #include <vector>
 
+#include "enums.hpp"
+
 namespace Tetris
 {
-enum TetrominoType
-{
-    I,
-    O,
-    T,
-    J,
-    L,
-    S,
-    Z
-};
 
-enum BlockType
-{
-    NIL,
-    PVT,
-    BLK
-};
-
-enum RotationType
-{
-    NO_ROTATE,
-    LEFT,
-    RIGHT
-};
 
 class Tetromino
 {
@@ -76,14 +55,14 @@ class Tetromino
 
         switch (rotation)
         {
-        case NO_ROTATE:
+        case Tetris::RotationType::NO_ROTATE:
             return {
                 {0, 0}
             };
-        case LEFT:
+        case Tetris::RotationType::LEFT:
             nextRotation = this->rotateLeft(this->currentRotation);
             break;
-        case RIGHT:
+        case Tetris::RotationType::RIGHT:
             nextRotation = this->rotateRight(this->currentRotation);
             break;
         }

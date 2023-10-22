@@ -1,10 +1,10 @@
 #pragma once
 
+#include <ftxui/screen/color.hpp>
 #include <ftxui/dom/canvas.hpp>
 #include <string>
 #include <vector>
 
-#include "ftxui/screen/color.hpp"
 #include "tetromino.hpp"
 
 namespace Tetris
@@ -83,20 +83,20 @@ class Canvas
             // random offsets to make tetrominoes appear aligned
             switch (tetrominoType)
             {
-            case O:
+            case Tetris::TetrominoType::O:
                 x++;
                 offsetX = stepX / 2;
                 break;
-            case I:
+            case Tetris::TetrominoType::I:
                 y--;
                 x--;
                 offsetX = stepX / 2;
                 break;
-            case T:
-            case J:
-            case L:
-            case S:
-            case Z:
+            case Tetris::TetrominoType::T:
+            case Tetris::TetrominoType::J:
+            case Tetris::TetrominoType::L:
+            case Tetris::TetrominoType::S:
+            case Tetris::TetrominoType::Z:
                 break;
             }
         }
