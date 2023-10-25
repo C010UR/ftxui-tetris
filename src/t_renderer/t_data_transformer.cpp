@@ -1,5 +1,7 @@
 #include "t_renderer/t_data_transformer.hpp"
 
+#include "t_game/t_enums.hpp"
+
 namespace Tetris::Renderer
 {
 std::string DataTransformer::transformKey(std::string key)
@@ -128,5 +130,87 @@ std::string DataTransformer::transformKey(std::string key)
     }
 
     return key;
+}
+
+std::string DataTransformer::toString(Tetris::Game::ScoreType type)
+{
+    switch (type)
+    {
+    case Tetris::Game::ScoreType::SINGLE:
+        return "Single";
+    case Tetris::Game::ScoreType::DOUBLE:
+        return "Double";
+    case Tetris::Game::ScoreType::TRIPLE:
+        return "Triple";
+    case Tetris::Game::ScoreType::TETRIS:
+        return "TETRIS";
+    case Tetris::Game::ScoreType::MINI_T_SPIN_NO_LINES:
+        return "Mini T-Spin";
+    case Tetris::Game::ScoreType::T_SPIN_NO_LINES:
+        return "T-Spin";
+    case Tetris::Game::ScoreType::MINI_T_SPIN_SINGLE:
+        return "Mini T-Spin Single";
+    case Tetris::Game::ScoreType::T_SPIN_SINGLE:
+        return "T-Spin Single";
+    case Tetris::Game::ScoreType::MINI_T_SPIN_DOUBLE:
+        return "Mini T-Spin Double";
+    case Tetris::Game::ScoreType::T_SPIN_DOUBLE:
+        return "T-Spin Double";
+    case Tetris::Game::ScoreType::T_SPIN_TRIPLE:
+        return "T-Spin Triple";
+    case Tetris::Game::ScoreType::SOFT_DROP:
+        return "Soft Drop";
+    case Tetris::Game::ScoreType::HARD_DROP:
+        return "Hard Drop";
+    case Tetris::Game::ScoreType::SINGLE_LINE_PERFECT_CLEAR:
+        return "Perfect Clear";
+    case Tetris::Game::ScoreType::DOUBLE_LINE_PERFECT_CLEAR:
+        return "Perfect Clear Double";
+    case Tetris::Game::ScoreType::TRIPLE_LINE_PERFECT_CLEAR:
+        return "Perfect Clear Triple";
+    case Tetris::Game::ScoreType::TETRIS_LINE_PERFECT_CLEAR:
+        return "Perfect Clear TETRIS";
+    default:
+        return "None";
+    }
+}
+
+std::string toString(Tetris::Game::TetrominoType type)
+{
+    switch (type)
+    {
+
+    case Tetris::Game::TetrominoType::I:
+        return "I";
+    case Tetris::Game::TetrominoType::O:
+        return "O";
+    case Tetris::Game::TetrominoType::T:
+        return "T";
+    case Tetris::Game::TetrominoType::J:
+        return "J";
+    case Tetris::Game::TetrominoType::L:
+        return "L";
+    case Tetris::Game::TetrominoType::S:
+        return "S";
+    case Tetris::Game::TetrominoType::Z:
+        return "Z";
+    default:
+        return "None";
+    }
+}
+
+int DataTransformer::transformRotation(int rotation)
+{
+    switch (rotation)
+    {
+    case 1:
+        return 90;
+    case 2:
+        return 180;
+    case 3:
+        return 270;
+    default:
+        return 0;
+    }
 }
 } // namespace Tetris::Renderer
