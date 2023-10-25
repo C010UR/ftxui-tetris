@@ -20,3 +20,8 @@ BinPackParameters: false
 
 BreakBeforeBinaryOperators: true
 BreakBeforeTernaryOperators: true
+AlwaysBreakTemplateDeclarations: Yes
+BreakAfterAttributes: Always
+
+EmptyLineAfterAccessModifier: Always
+IncludeBlocks: Regroup
