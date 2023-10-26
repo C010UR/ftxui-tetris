@@ -1,5 +1,15 @@
 #include "t_game/t_board.hpp"
 
+#include "ftxui/dom/elements.hpp"
+#include "ftxui/dom/node.hpp"
+#include "ftxui/screen/color.hpp"
+#include "t_game/t_enums.hpp"
+#include "t_game/t_point.hpp"
+#include "t_game/t_tetromino_factory.hpp"
+#include "t_renderer/t_data_transformer.hpp"
+
+#include <vector>
+
 namespace Tetris::Game
 {
 
@@ -38,12 +48,14 @@ int Board::removeFullLines()
     this->board.clear();
     this->boardColor.clear();
 
-    for (int row = 0; row < fullLineCount; row++) {
+    for (int row = 0; row < fullLineCount; row++)
+    {
         this->board.push_back(std::vector<Tetris::Game::BoardBlockType>(width, Tetris::Game::BoardBlockType::NONE));
         this->boardColor.push_back(std::vector<ftxui::Color>(width, ftxui::Color::Default));
     }
 
-    for (int row = 0; row < (int)board.size(); row++) {
+    for (int row = 0; row < (int)board.size(); row++)
+    {
         this->board.push_back(board[row]);
         this->boardColor.push_back(boardColor[row]);
     }
@@ -174,10 +186,10 @@ ftxui::Element Board::getDebugElement(double stepY)
     bool canMoveDown  = this->current.canMove(this->board, {0, stepY});
 
     Tetris::Game::Point offsetLeft;
-    bool canRotateLeft = this->current.canRotate(this->board, offsetLeft, Tetris::Game::RotationType::LEFT);
+    bool canRotateLeft = this->current.canRotate(this->board, offsetLeft, Tetris::Game::RotationType::LEFT, true);
 
     Tetris::Game::Point offsetRight;
-    bool canRotateRight = this->current.canRotate(this->board, offsetRight, Tetris::Game::RotationType::RIGHT);
+    bool canRotateRight = this->current.canRotate(this->board, offsetRight, Tetris::Game::RotationType::RIGHT, true);
 
     return ftxui::vbox(
         {ftxui::window(
@@ -218,7 +230,7 @@ ftxui::Element Board::getDebugElement(double stepY)
                  Tetris::Renderer::KeyValue::create("Height", Board::height),
                  Tetris::Renderer::KeyValue::create("Game over", this->isGameOver),
                  Tetris::Renderer::KeyValue::create("Is board clear", this->isBoardClear()),
-                 Tetris::Renderer::KeyValue::create("Can store", this->canStore()),
+                 Tetris::Renderer::KeyValue::create("Can store", !this->canStore()),
              })
          )}
     );

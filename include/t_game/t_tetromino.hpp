@@ -16,7 +16,7 @@ class Tetromino
 
     std::vector<std::vector<std::vector<Tetris::Game::BlockType>>> tetromino;
     std::vector<std::vector<Tetris::Game::Point>>                  wallKickOffsets;
-    int  rotate(Tetris::Game::RotationType rotation);
+    int                                                            rotate(Tetris::Game::RotationType rotation);
 
     bool testIsLastMoveResultedInSpin;
     bool testIsMiniSpin;
@@ -27,7 +27,7 @@ class Tetromino
 
     Tetris::Game::TetrominoType type;
     ftxui::Color                color;
-
+    
     int  currentRotation;
     bool isLastMoveResultedInSpin;
     bool isMiniSpin;
@@ -51,7 +51,8 @@ class Tetromino
     bool canRotate(
         const std::vector<std::vector<Tetris::Game::BoardBlockType>> &board,
         Tetris::Game::Point                                          &offset,
-        Tetris::Game::RotationType
+        Tetris::Game::RotationType                                    rotation,
+        bool                                                          isDebug = false
     );
     double getRowsToObstacle(const std::vector<std::vector<Tetris::Game::BoardBlockType>> &board);
 
@@ -59,7 +60,7 @@ class Tetromino
     void reset();
     void reset(int width);
 
-    void resetSpinData();
+    void                   resetSpinData();
     Tetris::Game::SpinType getSpinType();
     Tetris::Game::SpinType getTestSpinType();
 

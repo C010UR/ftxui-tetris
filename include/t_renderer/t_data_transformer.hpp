@@ -16,6 +16,8 @@ class DataTransformer
     static std::string toString(Tetris::Game::ScoreType type);
     static std::string toString(Tetris::Game::TetrominoType type);
     static std::string toString(Tetris::Game::SpinType type);
+    static std::string toString(Tetris::Game::RotationType type);
+    static char toString(Tetris::Game::BlockType type);
 
     static int transformRotation(int rotation);
 };

@@ -2,6 +2,8 @@
 
 #include "t_game/t_enums.hpp"
 
+#include <charconv>
+
 namespace Tetris::Game
 {
 Tetromino::Tetromino(
@@ -118,10 +120,8 @@ std::vector<Tetris::Game::Point> Tetromino::getWallKickTestData(Tetris::Game::Ro
         };
     }
 
-    int nextRotation = this->rotate(rotation);
-
     auto first  = this->wallKickOffsets[this->currentRotation];
-    auto second = this->wallKickOffsets[nextRotation];
+    auto second = this->wallKickOffsets[this->rotate(rotation)];
 
     for (int i = 0; i < (int)first.size(); i++)
     {
@@ -169,7 +169,8 @@ void Tetromino::reset(int width)
         }
     }
 
-    this->currentPosition = {(double)((int)(width / 2) - minX - 1), (double)-minY};
+    this->currentPosition
+        = {(double)((int)(width / 2) - minX - (this->type == Tetris::Game::TetrominoType::O ? 0 : 1)), (double)-minY};
 }
 
 bool Tetromino::canMove(const std::vector<std::vector<Tetris::Game::BoardBlockType>> &board, Tetris::Game::Point offset)
@@ -205,19 +206,18 @@ bool Tetromino::canMove(const std::vector<std::vector<Tetris::Game::BoardBlockTy
 bool Tetromino::canRotate(
     const std::vector<std::vector<Tetris::Game::BoardBlockType>> &board,
     Tetris::Game::Point                                          &offset,
-    Tetris::Game::RotationType                                    rotation
+    Tetris::Game::RotationType                                    rotation,
+    bool isDebug
 )
 {
-    int newRotation = this->rotate(rotation);
-
     int height = board.size() - 1;
     int width  = board[0].size() - 1;
 
     int frontCorners = 0;
     int backCorners  = 0;
 
-    auto data         = this->getData(newRotation);
-    auto wallKickTest = this->getWallKickTestData(rotation);
+    auto data                         = this->getData(this->rotate(rotation));
+    auto wallKickTest                 = this->getWallKickTestData(rotation);
 
     for (int testEntry = 0; testEntry < (int)wallKickTest.size(); testEntry++)
     {
@@ -240,13 +240,13 @@ bool Tetromino::canRotate(
                 {
                     switch (data[row][col])
                     {
-                    case BlockType::BLOCK:
+                    case Tetris::Game::BlockType::BLOCK:
                         canMove = false;
                         break;
-                    case BlockType::SPIN_LOOKUP_FRONT:
+                    case Tetris::Game::BlockType::SPIN_LOOKUP_FRONT:
                         frontCorners++;
                         break;
-                    case BlockType::SPIN_LOOKUP_BACK:
+                    case Tetris::Game::BlockType::SPIN_LOOKUP_BACK:
                         backCorners++;
                         break;
                     default:
@@ -266,8 +266,7 @@ bool Tetromino::canRotate(
             }
         }
 
-        if (canMove)
-        {
+        if (canMove && !isDebug) {
             if (wallKickTest[testEntry] == Tetris::Game::Point{1, -2}
                 || wallKickTest[testEntry] == Tetris::Game::Point{-1, -2})
             {
@@ -284,7 +283,10 @@ bool Tetromino::canRotate(
                 this->testIsLastMoveResultedInSpin = false;
                 this->testIsMiniSpin               = false;
             }
+        }
 
+        if (canMove)
+        {
             offset += wallKickTest[testEntry];
             return true;
         }

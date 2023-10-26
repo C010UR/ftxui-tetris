@@ -176,7 +176,7 @@ std::vector<std::vector<std::vector<Tetris::Game::BlockType>>> TetrominoFactory:
         {
             {"   "},
             {"LLL"},
-            {"  L"}
+            {"L  "}
         },
         {
             {"LL "},

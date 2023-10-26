@@ -226,4 +226,32 @@ std::string DataTransformer::toString(Tetris::Game::SpinType type)
         return "None";
     }
 }
+
+std::string DataTransformer::toString(Tetris::Game::RotationType type)
+{
+    switch (type)
+    {
+    case Game::RotationType::LEFT:
+        return "Left";
+    case Game::RotationType::RIGHT:
+        return "Right";
+    default:
+        return "None";
+    }
+}
+char DataTransformer::toString(Tetris::Game::BlockType type)
+{
+    switch (type)
+    {
+    case Game::BlockType::BLOCK:
+        return 'O';
+    case Game::BlockType::SPIN_LOOKUP_FRONT:
+        return '+';
+    case Game::BlockType::SPIN_LOOKUP_BACK:
+        return '-';
+    default:
+        return ' ';
+        break;
+    }
+}
 } // namespace Tetris::Renderer
