@@ -1,9 +1,0 @@
-[wrap-file]
-directory = mINI-0.9.14
-source_url = https://github.com/pulzed/mINI/archive/refs/tags/0.9.14.tar.gz
-source_filename = mINI-0.9.14.tar.gz
-source_hash = e9cdba30e2c9f43d72dc3e3460507be439b5bcb35933e06f0969c775d4ff12ab
-patch_directory = mINI-0.9.14
-
-[provide]
-mINI = mINI
