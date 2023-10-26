@@ -13,7 +13,11 @@ Config::Config()
     this->softDropGravity  = 50.;
     this->level            = 1;
 
-    this->themes       = {};
+    Tetris::Config::Theme defaultTheme;
+
+    defaultTheme.setDefault();
+
+    this->themes       = {defaultTheme};
     this->currentTheme = 0;
 }
 

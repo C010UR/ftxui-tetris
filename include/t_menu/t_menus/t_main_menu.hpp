@@ -5,7 +5,7 @@
 #include "ftxui/component/component_options.hpp"
 #include "ftxui/dom/elements.hpp"
 #include "ftxui/screen/color.hpp"
-#include "t_renderer/t_color.hpp"
+#include "t_renderer/t_current_theme.hpp"
 #include "t_renderer/t_header.hpp"
 
 #include <functional>

@@ -13,7 +13,7 @@ namespace Tetris::Menu
             "Start Game",
             startButtonHandler,
             ftxui::ButtonOption::Animated(
-                ftxui::Color::Default, ftxui::Color::GrayDark, ftxui::Color::Default, Tetris::Renderer::Color::mainColor
+                ftxui::Color::Default, ftxui::Color::GrayDark, ftxui::Color::Default, Tetris::Renderer::CurrentTheme::mainColor
             )
         );
 
@@ -21,7 +21,7 @@ namespace Tetris::Menu
             "Options",
             optionsButtonHandler,
             ftxui::ButtonOption::Animated(
-                ftxui::Color::Default, ftxui::Color::GrayDark, ftxui::Color::Default, Tetris::Renderer::Color::mainColor
+                ftxui::Color::Default, ftxui::Color::GrayDark, ftxui::Color::Default, Tetris::Renderer::CurrentTheme::mainColor
             )
         );
 
@@ -29,7 +29,7 @@ namespace Tetris::Menu
             "Controls",
             controlsButtonHandler,
             ftxui::ButtonOption::Animated(
-                ftxui::Color::Default, ftxui::Color::GrayDark, ftxui::Color::Default, Tetris::Renderer::Color::mainColor
+                ftxui::Color::Default, ftxui::Color::GrayDark, ftxui::Color::Default, Tetris::Renderer::CurrentTheme::mainColor
             )
         );
 
@@ -37,7 +37,7 @@ namespace Tetris::Menu
             "Exit",
             exitButtonHandler,
             ftxui::ButtonOption::Animated(
-                ftxui::Color::Default, ftxui::Color::GrayDark, ftxui::Color::Default, Tetris::Renderer::Color::mainColor
+                ftxui::Color::Default, ftxui::Color::GrayDark, ftxui::Color::Default, Tetris::Renderer::CurrentTheme::mainColor
             )
         );
 

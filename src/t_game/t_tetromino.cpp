@@ -1,9 +1,5 @@
 #include "t_game/t_tetromino.hpp"
 
-#include "t_game/t_enums.hpp"
-
-#include <charconv>
-
 namespace Tetris::Game
 {
 Tetromino::Tetromino(

@@ -1,7 +1,5 @@
 #include "t_renderer/t_canvas.hpp"
 
-#include "t_game/t_enums.hpp"
-
 namespace Tetris::Renderer
 {
 void Canvas::drawTetromino(ftxui::Canvas &canvas, Tetris::Game::Tetromino tetromino, bool isCentered, bool isShadow)

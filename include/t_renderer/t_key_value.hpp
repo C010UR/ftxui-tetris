@@ -1,7 +1,7 @@
 #pragma once
 
 #include "ftxui/dom/elements.hpp"
-#include "t_color.hpp"
+#include "t_current_theme.hpp"
 #include "t_game/t_point.hpp"
 
 #include <iomanip>

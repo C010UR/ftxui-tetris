@@ -1,34 +1,26 @@
 #include "t_config/t_theme.hpp"
 
-#include "ftxui/component/component.hpp"
-#include "ftxui/dom/elements.hpp"
-#include "ftxui/dom/node.hpp"
-#include "t_renderer/t_key_value.hpp"
-
-#include <string>
-#include <vector>
-
 namespace Tetris::Config
 {
 void Theme::apply()
 {
-    Tetris::Renderer::Color::mainColors     = mainColors;
-    Tetris::Renderer::Color::gameOverColors = gameOverColors;
+    Tetris::Renderer::CurrentTheme::mainColors     = mainColors;
+    Tetris::Renderer::CurrentTheme::gameOverColors = gameOverColors;
 
-    Tetris::Renderer::Color::mainColor     = mainColor;
-    Tetris::Renderer::Color::gameOverColor = gameOverColor;
+    Tetris::Renderer::CurrentTheme::mainColor     = mainColor;
+    Tetris::Renderer::CurrentTheme::gameOverColor = gameOverColor;
 
-    Tetris::Renderer::Color::valueColor = valueColor;
-    Tetris::Renderer::Color::trueColor  = trueColor;
-    Tetris::Renderer::Color::falseColor = falseColor;
+    Tetris::Renderer::CurrentTheme::valueColor = valueColor;
+    Tetris::Renderer::CurrentTheme::trueColor  = trueColor;
+    Tetris::Renderer::CurrentTheme::falseColor = falseColor;
 
-    Tetris::Renderer::Color::IColor = IColor;
-    Tetris::Renderer::Color::OColor = OColor;
-    Tetris::Renderer::Color::TColor = TColor;
-    Tetris::Renderer::Color::JColor = JColor;
-    Tetris::Renderer::Color::LColor = LColor;
-    Tetris::Renderer::Color::SColor = SColor;
-    Tetris::Renderer::Color::ZColor = ZColor;
+    Tetris::Renderer::CurrentTheme::IColor = IColor;
+    Tetris::Renderer::CurrentTheme::OColor = OColor;
+    Tetris::Renderer::CurrentTheme::TColor = TColor;
+    Tetris::Renderer::CurrentTheme::JColor = JColor;
+    Tetris::Renderer::CurrentTheme::LColor = LColor;
+    Tetris::Renderer::CurrentTheme::SColor = SColor;
+    Tetris::Renderer::CurrentTheme::ZColor = ZColor;
 }
 
 void Theme::setDefault()

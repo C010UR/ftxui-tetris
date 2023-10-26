@@ -3,7 +3,7 @@
 #include "t_game/t_enums.hpp"
 #include "t_game/t_point.hpp"
 #include "t_game/t_tetromino.hpp"
-#include "t_renderer/t_color.hpp"
+#include "t_renderer/t_current_theme.hpp"
 
 #include <algorithm>
 #include <random>

@@ -12,7 +12,7 @@ std::string KeyValue::roundDouble(double value)
 
 ftxui::Element KeyValue::create(std::string key, std::string value)
 {
-    return ftxui::hbox({ftxui::text(key + ": "), ftxui::text(value) | ftxui::color(Tetris::Renderer::Color::valueColor)}
+    return ftxui::hbox({ftxui::text(key + ": "), ftxui::text(value) | ftxui::color(Tetris::Renderer::CurrentTheme::valueColor)}
     );
 }
 
@@ -39,7 +39,7 @@ ftxui::Element KeyValue::create(std::string key, bool value)
     return ftxui::hbox({
         ftxui::text(key + ": "),
         ftxui::text(value ? "true" : "false")
-            | ftxui::color(value ? Tetris::Renderer::Color::trueColor : Tetris::Renderer::Color::falseColor),
+            | ftxui::color(value ? Tetris::Renderer::CurrentTheme::trueColor : Tetris::Renderer::CurrentTheme::falseColor),
     });
 }
 
@@ -47,9 +47,9 @@ ftxui::Element KeyValue::create(std::string key, Tetris::Game::Point value)
 {
     return ftxui::hbox({
         ftxui::text(key + ": ("),
-        ftxui::text(KeyValue::roundDouble(value.x)) | ftxui::color(Tetris::Renderer::Color::valueColor),
+        ftxui::text(KeyValue::roundDouble(value.x)) | ftxui::color(Tetris::Renderer::CurrentTheme::valueColor),
         ftxui::text(", "),
-        ftxui::text(KeyValue::roundDouble(value.y)) | ftxui::color(Tetris::Renderer::Color::valueColor),
+        ftxui::text(KeyValue::roundDouble(value.y)) | ftxui::color(Tetris::Renderer::CurrentTheme::valueColor),
         ftxui::text(")"),
     });
 }

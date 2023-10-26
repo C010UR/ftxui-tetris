@@ -1,0 +1,45 @@
+config:
+  easyMode: true
+  level: 1
+  updatesPerSecond: 240
+  currentTheme: Default
+  storeDelayMs: 500
+  softDropDelayMs: 50
+  softDropGravityMsPerRow: 50
+  comboDelayMs: 6000
+  debug: false
+  themes:
+    - mainColors:
+        - "#4cd137"
+        - "#4ccc3f"
+        - "#4cc747"
+        - "#4bb365"
+        - "#4a9e83"
+      gameOverColors:
+        - "#e84118"
+        - "#d63c1f"
+        - "#c43725"
+        - "#a02d32"
+        - "#57194b"
+      name: Default
+      mainColor: "#4a9e83"
+      gameOverColor: "#57194b"
+      valueColor: "#4bb365"
+      trueColor: "#4cd137"
+      falseColor: "#e84118"
+      IColor: "#00a8ff"
+      OColor: "#fbc531"
+      TColor: "#9c88ff"
+      JColor: "#2b2cd5"
+      LColor: "#f28325"
+      SColor: "#4cd137"
+      ZColor: "#e84118"
+controls:
+  moveLeft: a
+  moveRight: d
+  rotateLeft: ","
+  rotateRight: .
+  swapHold: z
+  softDrop: s
+  hardDrop: " "
+  forfeit: t

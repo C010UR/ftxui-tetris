@@ -15,14 +15,15 @@ ftxui_screen_dep = dependency('ftxui-5.0.0-screen')
 ftxui_dom_dep = dependency('ftxui-5.0.0-dom')
 ftxui_component_dep = dependency('ftxui-5.0.0-component')
 mini_dep = dependency('mINI')
+yaml_cpp_dep = dependency('yaml-cpp')
 
 executable('tetris',
   sources : [
     'src/main.cpp',
     'src/t_config/t_config.cpp',
     'src/t_config/t_controls.cpp',
-    'src/t_config/t_serializer.cpp',
     'src/t_config/t_theme.cpp',
+    'src/t_config/t_yaml_parser.cpp',
     'src/t_engine/t_renderer.cpp',
     'src/t_game/t_board.cpp',
     'src/t_game/t_game.cpp',
@@ -38,7 +39,7 @@ executable('tetris',
     'src/t_menu/t_menus/t_options.cpp',
     'src/t_menu/t_menu.cpp',
     'src/t_renderer/t_canvas.cpp',
-    'src/t_renderer/t_color.cpp',
+    'src/t_renderer/t_current_theme.cpp',
     'src/t_renderer/t_data_transformer.cpp',
     'src/t_renderer/t_header.cpp',
     'src/t_renderer/t_key_value.cpp',
@@ -48,6 +49,7 @@ executable('tetris',
     ftxui_screen_dep,
     ftxui_dom_dep,
     ftxui_component_dep,
-    mini_dep
+    mini_dep,
+    yaml_cpp_dep
   ]
 )

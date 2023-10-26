@@ -8,7 +8,7 @@
 #include "ftxui/screen/color.hpp"
 #include "t_config/t_controls.hpp"
 #include "t_engine/t_enums.hpp"
-#include "t_renderer/t_color.hpp"
+#include "t_renderer/t_current_theme.hpp"
 #include "t_renderer/t_header.hpp"
 
 #include <functional>

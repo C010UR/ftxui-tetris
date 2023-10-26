@@ -1,11 +1,5 @@
 #include "t_game/t_game.hpp"
 
-#include "t_engine/t_enums.hpp"
-#include "t_game/t_enums.hpp"
-
-#include <unordered_map>
-#include <vector>
-
 namespace Tetris::Game
 {
 unsigned Game::calculateTicks(double ms)

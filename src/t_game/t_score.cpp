@@ -1,12 +1,5 @@
 #include "t_game/t_score.hpp"
 
-#include "t_game/t_enums.hpp"
-#include "t_renderer/t_color.hpp"
-#include "t_renderer/t_data_transformer.hpp"
-#include "t_renderer/t_key_value.hpp"
-
-#include <algorithm>
-
 namespace Tetris::Game
 {
 
@@ -222,7 +215,7 @@ ftxui::Element Score::getComboElement()
 
 ftxui::Element Score::getComboGaugeElement(double progress)
 {
-    return ftxui::gaugeUp(progress) | ftxui::color(Tetris::Renderer::Color::mainGradient(90)) | ftxui::border;
+    return ftxui::gaugeUp(progress) | ftxui::color(Tetris::Renderer::CurrentTheme::mainGradient(90)) | ftxui::border;
 }
 
 } // namespace Tetris::Game

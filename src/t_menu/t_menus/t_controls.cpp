@@ -7,9 +7,9 @@ ftxui::Element Controls::getRow(const std::string label, const std::string curre
     return ftxui::hbox(
         {ftxui::text(label),
          ftxui::text("\"" + Tetris::Renderer::DataTransformer::transformKey(current) + "\"")
-             | ftxui::color(Tetris::Renderer::Color::valueColor),
+             | ftxui::color(Tetris::Renderer::CurrentTheme::valueColor),
          ftxui::filler() | ftxui::size(ftxui::WIDTH, ftxui::EQUAL, 3),
-         button->Render() | ftxui::color(Tetris::Renderer::Color::mainColor)}
+         button->Render() | ftxui::color(Tetris::Renderer::CurrentTheme::mainColor)}
     );
 }
 
@@ -68,7 +68,7 @@ void Controls::init(
         "Back",
         backButtonHandler,
         ftxui::ButtonOption::Animated(
-            ftxui::Color::Default, ftxui::Color::GrayDark, ftxui::Color::Default, Tetris::Renderer::Color::mainColor
+            ftxui::Color::Default, ftxui::Color::GrayDark, ftxui::Color::Default, Tetris::Renderer::CurrentTheme::mainColor
         )
     );
 

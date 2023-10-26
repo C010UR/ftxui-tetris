@@ -4,6 +4,7 @@
 #include "t_game/t_enums.hpp"
 #include "t_game/t_point.hpp"
 
+#include <charconv>
 #include <stdexcept>
 #include <string>
 #include <vector>
@@ -27,7 +28,7 @@ class Tetromino
 
     Tetris::Game::TetrominoType type;
     ftxui::Color                color;
-    
+
     int  currentRotation;
     bool isLastMoveResultedInSpin;
     bool isMiniSpin;

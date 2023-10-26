@@ -7,7 +7,7 @@
 
 namespace Tetris::Renderer
 {
-class Color
+class CurrentTheme
 {
   public:
 

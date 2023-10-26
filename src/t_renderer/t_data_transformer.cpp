@@ -1,7 +1,5 @@
 #include "t_renderer/t_data_transformer.hpp"
 
-#include "t_game/t_enums.hpp"
-
 namespace Tetris::Renderer
 {
 std::string DataTransformer::transformKey(std::string key)
@@ -253,5 +251,20 @@ char DataTransformer::toString(Tetris::Game::BlockType type)
         return ' ';
         break;
     }
+}
+
+std::string DataTransformer::toString(ftxui::Color color)
+{
+    uint8_t red, green, blue;
+
+    ftxui::Color::getColor(color, &red, &green, &blue);
+
+    std::stringstream ss;
+
+    ss << std::hex << std::setfill('0');
+    ss << '#' << std::setw(2) << static_cast<int>(red) << std::setw(2) << static_cast<int>(green) << std::setw(2)
+       << static_cast<int>(blue);
+
+    return ss.str();
 }
 } // namespace Tetris::Renderer

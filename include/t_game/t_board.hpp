@@ -7,6 +7,7 @@
 #include "t_game/t_enums.hpp"
 #include "t_game/t_point.hpp"
 #include "t_game/t_tetromino.hpp"
+#include "t_game/t_tetromino_factory.hpp"
 #include "t_renderer/t_canvas.hpp"
 #include "t_renderer/t_data_transformer.hpp"
 #include "t_renderer/t_key_value.hpp"
@@ -42,10 +43,10 @@ class Board
 
     void setCurrent(Tetris::Game::Tetromino tetromino);
 
-    bool tryRotateCurrent(Tetris::Game::RotationType rotation);
-    bool canRotateCurrent(Tetris::Game::RotationType rotation);
-    bool tryMoveCurrent(Tetris::Game::Point offset);
-    bool canMoveCurrent(Tetris::Game::Point offset);
+    bool   tryRotateCurrent(Tetris::Game::RotationType rotation);
+    bool   canRotateCurrent(Tetris::Game::RotationType rotation);
+    bool   tryMoveCurrent(Tetris::Game::Point offset);
+    bool   canMoveCurrent(Tetris::Game::Point offset);
     double getRowsToObstacle();
 
     bool canStore();

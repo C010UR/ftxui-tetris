@@ -2,7 +2,7 @@
 
 #include "ftxui/dom/elements.hpp"
 #include "ftxui/dom/linear_gradient.hpp"
-#include "t_color.hpp"
+#include "t_current_theme.hpp"
 
 namespace Tetris::Renderer
 {

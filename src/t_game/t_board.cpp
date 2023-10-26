@@ -1,15 +1,5 @@
 #include "t_game/t_board.hpp"
 
-#include "ftxui/dom/elements.hpp"
-#include "ftxui/dom/node.hpp"
-#include "ftxui/screen/color.hpp"
-#include "t_game/t_enums.hpp"
-#include "t_game/t_point.hpp"
-#include "t_game/t_tetromino_factory.hpp"
-#include "t_renderer/t_data_transformer.hpp"
-
-#include <vector>
-
 namespace Tetris::Game
 {
 

@@ -11,49 +11,49 @@ Tetris::Game::Tetromino TetrominoFactory::get(Tetris::Game::TetrominoType type)
         return Tetris::Game::Tetromino(
             TetrominoFactory::I,
             TetrominoFactory::IWallKickData,
-            Tetris::Renderer::Color::IColor,
+            Tetris::Renderer::CurrentTheme::IColor,
             type
         );
     case TetrominoType::O:
         return Tetris::Game::Tetromino(
             TetrominoFactory::O,
             TetrominoFactory::OWallKickData,
-            Tetris::Renderer::Color::OColor,
+            Tetris::Renderer::CurrentTheme::OColor,
             type
         );
     case TetrominoType::T:
         return Tetris::Game::Tetromino(
             TetrominoFactory::T,
             TetrominoFactory::JLTSZWallKickData,
-            Tetris::Renderer::Color::TColor,
+            Tetris::Renderer::CurrentTheme::TColor,
             type
         );
     case TetrominoType::J:
         return Tetris::Game::Tetromino(
             TetrominoFactory::J,
             TetrominoFactory::JLTSZWallKickData,
-            Tetris::Renderer::Color::JColor,
+            Tetris::Renderer::CurrentTheme::JColor,
             type
         );
     case TetrominoType::L:
         return Tetris::Game::Tetromino(
             TetrominoFactory::L,
             TetrominoFactory::JLTSZWallKickData,
-            Tetris::Renderer::Color::LColor,
+            Tetris::Renderer::CurrentTheme::LColor,
             type
         );
     case TetrominoType::S:
         return Tetris::Game::Tetromino(
             TetrominoFactory::S,
             TetrominoFactory::JLTSZWallKickData,
-            Tetris::Renderer::Color::SColor,
+            Tetris::Renderer::CurrentTheme::SColor,
             type
         );
     case TetrominoType::Z:
         return Tetris::Game::Tetromino(
             TetrominoFactory::Z,
             TetrominoFactory::JLTSZWallKickData,
-            Tetris::Renderer::Color::ZColor,
+            Tetris::Renderer::CurrentTheme::ZColor,
             type
         );
         break;
