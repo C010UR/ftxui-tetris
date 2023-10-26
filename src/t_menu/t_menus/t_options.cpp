@@ -51,6 +51,17 @@ void Options::init(Tetris::Config::Config &config, std::function<void()> backBut
         ftxui::ButtonOption::Ascii()
     );
 
+    this->addSoftDropGravity = ftxui::Button(
+        "+", [this] { this->config->softDropGravity += this->softDropGravityStep; }, ftxui::ButtonOption::Ascii()
+    );
+    this->subSoftDropGravity = ftxui::Button(
+        "-",
+        [this] {
+            this->config->softDropGravity = std::max(1., this->config->softDropGravity - this->softDropGravityStep);
+        },
+        ftxui::ButtonOption::Ascii()
+    );
+
     this->addLevel = ftxui::Button(
         "+",
         [this] { this->config->level = std::min(this->maxLevel, this->config->level + this->levelStep); },
@@ -101,6 +112,10 @@ void Options::init(Tetris::Config::Config &config, std::function<void()> backBut
              this->addSoftDropDelay,
          }),
          ftxui::Container::Horizontal({
+             this->subSoftDropGravity,
+             this->addSoftDropGravity,
+         }),
+         ftxui::Container::Horizontal({
              this->prevTheme,
              this->nextTheme,
          }),
@@ -113,12 +128,12 @@ void Options::init(Tetris::Config::Config &config, std::function<void()> backBut
                   {Tetris::Renderer::Header::options() | ftxui::center,
                    ftxui::filler() | ftxui::size(ftxui::HEIGHT, ftxui::EQUAL, 3),
                    ftxui::vbox({
-                       ftxui::hbox(ftxui::text("Debug Mode:          "), this->debugModeToggle->Render()),
+                       ftxui::hbox(ftxui::text("Debug Mode:        "), this->debugModeToggle->Render()),
                        ftxui::filler() | ftxui::size(ftxui::HEIGHT, ftxui::EQUAL, 1),
-                       ftxui::hbox(ftxui::text("Easy Mode:           "), this->easyModeToggle->Render()),
+                       ftxui::hbox(ftxui::text("Easy Mode:         "), this->easyModeToggle->Render()),
                        ftxui::filler() | ftxui::size(ftxui::HEIGHT, ftxui::EQUAL, 1),
                        ftxui::hbox({
-                           ftxui::text("Starting Level:      "),
+                           ftxui::text("Starting Level:            "),
                            this->subLevel->Render()
                                | ftxui::color(
                                    this->config->level == this->minLevel ? ftxui::Color::Default
@@ -134,7 +149,7 @@ void Options::init(Tetris::Config::Config &config, std::function<void()> backBut
                        }),
                        ftxui::filler() | ftxui::size(ftxui::HEIGHT, ftxui::EQUAL, 1),
                        ftxui::hbox({
-                           ftxui::text("Updates per Second:  "),
+                           ftxui::text("Updates per Second:        "),
                            this->subUpdatesPerSecond->Render()
                                | ftxui::color(
                                    this->config->updatesPerSecond == 1 ? ftxui::Color::Default
@@ -146,7 +161,7 @@ void Options::init(Tetris::Config::Config &config, std::function<void()> backBut
                        }),
                        ftxui::filler() | ftxui::size(ftxui::HEIGHT, ftxui::EQUAL, 1),
                        ftxui::hbox({
-                           ftxui::text("Store Delay, ms:     "),
+                           ftxui::text("Store Delay, ms:           "),
                            this->subStoreDelay->Render()
                                | ftxui::color(
                                    this->config->storeDelay == 0 ? ftxui::Color::Default
@@ -158,7 +173,7 @@ void Options::init(Tetris::Config::Config &config, std::function<void()> backBut
                        }),
                        ftxui::filler() | ftxui::size(ftxui::HEIGHT, ftxui::EQUAL, 1),
                        ftxui::hbox({
-                           ftxui::text("Combo Delay, ms:     "),
+                           ftxui::text("Combo Delay, ms:           "),
                            this->subComboDelay->Render()
                                | ftxui::color(
                                    this->config->comboDelay == 0 ? ftxui::Color::Default
@@ -170,7 +185,7 @@ void Options::init(Tetris::Config::Config &config, std::function<void()> backBut
                        }),
                        ftxui::filler() | ftxui::size(ftxui::HEIGHT, ftxui::EQUAL, 1),
                        ftxui::hbox({
-                           ftxui::text("Soft drop delay, ms: "),
+                           ftxui::text("Soft drop delay, ms:       "),
                            this->subSoftDropDelay->Render()
                                | ftxui::color(
                                    this->config->softDropDelay == 0 ? ftxui::Color::Default
@@ -182,7 +197,19 @@ void Options::init(Tetris::Config::Config &config, std::function<void()> backBut
                        }),
                        ftxui::filler() | ftxui::size(ftxui::HEIGHT, ftxui::EQUAL, 1),
                        ftxui::hbox({
-                           ftxui::text("Theme:               "),
+                           ftxui::text("Soft drop gravity, ms/row: "),
+                           this->subSoftDropGravity->Render()
+                               | ftxui::color(
+                                   this->config->softDropGravity == 0 ? ftxui::Color::Default
+                                                                    : Tetris::Renderer::Color::falseColor
+                               ),
+                           ftxui::text(" " + std::to_string((int)this->config->softDropGravity) + " ")
+                               | ftxui::color(Tetris::Renderer::Color::valueColor),
+                           this->addSoftDropGravity->Render() | ftxui::color(Tetris::Renderer::Color::trueColor),
+                       }),
+                       ftxui::filler() | ftxui::size(ftxui::HEIGHT, ftxui::EQUAL, 1),
+                       ftxui::hbox({
+                           ftxui::text("Theme: "),
                            this->prevTheme->Render() | ftxui::color(Tetris::Renderer::Color::falseColor),
                            ftxui::text(" " + this->config->themes[this->config->currentTheme].name + " ")
                                | ftxui::color(Tetris::Renderer::Color::valueColor),

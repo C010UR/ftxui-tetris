@@ -4,9 +4,6 @@
 #include "t_config/t_serializer.hpp"
 #include "t_engine/t_renderer.hpp"
 
-#include <cstdlib>
-#include <stdlib.h>
-
 int main(void)
 {
     mINI::INIFile      file("config.ini");
@@ -20,22 +17,12 @@ int main(void)
     Tetris::Config::Serializer::Unserialize(ini, config);
     Tetris::Config::Serializer::Unserialize(ini, controls);
 
-    bool isStartGame = false;
-
-    while (true)
-    {
-        isStartGame = Tetris::Engine::Renderer::menuLoop(config, controls, isStartGame);
-
-        if (!isStartGame)
-        {
-            break;
-        }
-    }
+    int exitCode = Tetris::Engine::Renderer::mainLoop(config, controls);
 
     Tetris::Config::Serializer::Serialize(ini, config);
     Tetris::Config::Serializer::Serialize(ini, controls);
 
     file.write(ini);
 
-    return EXIT_SUCCESS;
+    return exitCode;
 }

@@ -1,5 +1,7 @@
 #include "t_game/t_tetromino.hpp"
 
+#include "t_game/t_enums.hpp"
+
 namespace Tetris::Game
 {
 Tetromino::Tetromino(
@@ -131,12 +133,9 @@ std::vector<Tetris::Game::Point> Tetromino::getWallKickTestData(Tetris::Game::Ro
 
 void Tetromino::reset()
 {
-    this->currentPosition              = {0, 0};
-    this->currentRotation              = 0;
-    this->isLastMoveResultedInSpin     = false;
-    this->isMiniSpin                   = false;
-    this->testIsLastMoveResultedInSpin = false;
-    this->testIsLastMoveResultedInSpin = false;
+    this->currentPosition = {0, 0};
+    this->currentRotation = 0;
+    this->resetSpinData();
 }
 
 void Tetromino::reset(int width)
@@ -175,9 +174,6 @@ void Tetromino::reset(int width)
 
 bool Tetromino::canMove(const std::vector<std::vector<Tetris::Game::BoardBlockType>> &board, Tetris::Game::Point offset)
 {
-    this->testIsLastMoveResultedInSpin = false;
-    this->testIsMiniSpin               = false;
-
     auto data = this->getData();
 
     int height = board.size() - 1;
@@ -212,9 +208,6 @@ bool Tetromino::canRotate(
     Tetris::Game::RotationType                                    rotation
 )
 {
-    this->testIsLastMoveResultedInSpin = false;
-    this->testIsMiniSpin               = false;
-
     int newRotation = this->rotate(rotation);
 
     int height = board.size() - 1;
@@ -286,6 +279,11 @@ bool Tetromino::canRotate(
                 this->testIsLastMoveResultedInSpin = true;
                 this->testIsMiniSpin               = frontCorners == 1;
             }
+            else
+            {
+                this->testIsLastMoveResultedInSpin = false;
+                this->testIsMiniSpin               = false;
+            }
 
             offset += wallKickTest[testEntry];
             return true;
@@ -293,6 +291,60 @@ bool Tetromino::canRotate(
     }
 
     return false;
+}
+
+void Tetromino::resetSpinData()
+{
+    this->isLastMoveResultedInSpin     = false;
+    this->isMiniSpin                   = false;
+    this->testIsLastMoveResultedInSpin = false;
+    this->testIsMiniSpin               = false;
+}
+
+Tetris::Game::SpinType Tetromino::getSpinType()
+{
+    switch (this->type)
+    {
+    case TetrominoType::T:
+        if (this->isLastMoveResultedInSpin)
+        {
+            return this->isMiniSpin ? Tetris::Game::SpinType::T_SPIN_MINI : Tetris::Game::SpinType::T_SPIN_FULL;
+        }
+
+        break;
+    case TetrominoType::I:
+    case TetrominoType::O:
+    case TetrominoType::J:
+    case TetrominoType::L:
+    case TetrominoType::S:
+    case TetrominoType::Z:
+        break;
+    }
+
+    return Tetris::Game::SpinType::NONE;
+}
+
+Tetris::Game::SpinType Tetromino::getTestSpinType()
+{
+    switch (this->type)
+    {
+    case TetrominoType::T:
+        if (this->testIsLastMoveResultedInSpin)
+        {
+            return this->testIsMiniSpin ? Tetris::Game::SpinType::T_SPIN_MINI : Tetris::Game::SpinType::T_SPIN_FULL;
+        }
+
+        break;
+    case TetrominoType::I:
+    case TetrominoType::O:
+    case TetrominoType::J:
+    case TetrominoType::L:
+    case TetrominoType::S:
+    case TetrominoType::Z:
+        break;
+    }
+
+    return Tetris::Game::SpinType::NONE;
 }
 
 double Tetromino::getRowsToObstacle(const std::vector<std::vector<Tetris::Game::BoardBlockType>> &board)

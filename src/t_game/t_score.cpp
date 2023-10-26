@@ -220,11 +220,9 @@ ftxui::Element Score::getComboElement()
     );
 }
 
-ftxui::Element Score::getComboGaugeElement(int height, double progress)
+ftxui::Element Score::getComboGaugeElement(double progress)
 {
-    return ftxui::gaugeUp(progress) | ftxui::size(ftxui::HEIGHT, ftxui::EQUAL, height)
-           | ftxui::color(Tetris::Renderer::Color::mainGradient(90)) | ftxui::border;
+    return ftxui::gaugeUp(progress) | ftxui::color(Tetris::Renderer::Color::mainGradient(90)) | ftxui::border;
 }
-
 
 } // namespace Tetris::Game

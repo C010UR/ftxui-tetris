@@ -16,6 +16,7 @@ class Config
     int    softDropDelay;
     int    comboDelay;
     double updatesPerSecond;
+    double softDropGravity;
     int    level;
 
     std::vector<Tetris::Config::Theme> themes;

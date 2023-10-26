@@ -43,7 +43,10 @@ class Board
     void setCurrent(Tetris::Game::Tetromino tetromino);
 
     bool tryRotateCurrent(Tetris::Game::RotationType rotation);
+    bool canRotateCurrent(Tetris::Game::RotationType rotation);
     bool tryMoveCurrent(Tetris::Game::Point offset);
+    bool canMoveCurrent(Tetris::Game::Point offset);
+    double getRowsToObstacle();
 
     bool canStore();
     bool isBoardClear();

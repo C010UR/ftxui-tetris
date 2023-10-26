@@ -29,6 +29,7 @@ class Options
     const int comboDelayStep       = 500;
     const int updatesPerSecondStep = 1;
     const int levelStep            = 1;
+    const int softDropGravityStep  = 10;
     const int minLevel             = 1;
     const int maxLevel             = 15;
 
@@ -42,6 +43,8 @@ class Options
     ftxui::Component subComboDelay;
     ftxui::Component addUpdatesPerSecond;
     ftxui::Component subUpdatesPerSecond;
+    ftxui::Component addSoftDropGravity;
+    ftxui::Component subSoftDropGravity;
     ftxui::Component addLevel;
     ftxui::Component subLevel;
     ftxui::Component prevTheme;

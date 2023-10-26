@@ -175,7 +175,7 @@ std::string DataTransformer::toString(Tetris::Game::ScoreType type)
     }
 }
 
-std::string toString(Tetris::Game::TetrominoType type)
+std::string DataTransformer::toString(Tetris::Game::TetrominoType type)
 {
     switch (type)
     {
@@ -211,6 +211,19 @@ int DataTransformer::transformRotation(int rotation)
         return 270;
     default:
         return 0;
+    }
+}
+
+std::string DataTransformer::toString(Tetris::Game::SpinType type)
+{
+    switch (type)
+    {
+    case Game::SpinType::T_SPIN_FULL:
+        return "T-Spin";
+    case Game::SpinType::T_SPIN_MINI:
+        return "Mini T-Spin";
+    default:
+        return "None";
     }
 }
 } // namespace Tetris::Renderer

@@ -12,6 +12,7 @@ enum class Trigger
     KEY_SWAP_HOLD,
     KEY_SOFT_DROP,
     KEY_HARD_DROP,
-    KEY_FORFEIT
+    KEY_FORFEIT,
+    NEXT_ROW
 };
 } // namespace Tetris::Engine

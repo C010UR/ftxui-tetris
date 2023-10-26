@@ -182,6 +182,7 @@ void Serializer::Serialize(mINI::INIStructure &ini, Tetris::Config::Config &conf
     ini[configSection]["softDropDelay"]    = convertToString(config.softDropDelay);
     ini[configSection]["comboDelay"]       = convertToString(config.comboDelay);
     ini[configSection]["updatesPerSecond"] = convertToString(config.updatesPerSecond);
+    ini[configSection]["softDropGravity"]  = convertToString(config.softDropGravity);
     ini[configSection]["level"]            = convertToString(config.level);
     ini[configSection]["currentTheme"]     = escapeString(config.themes[config.currentTheme].name);
 }
@@ -237,6 +238,10 @@ void Serializer::Unserialize(mINI::INIStructure &ini, Tetris::Config::Config &co
                                   ? convert<int>(ini[configSection]["updatesPerSecond"], 1, -1, config.updatesPerSecond)
                                   : config.updatesPerSecond;
 
+    config.softDropGravity = isConvertible<double>(ini[configSection]["softDropGravity"])
+                                 ? convert<int>(ini[configSection]["softDropGravity"], 0, -1, config.softDropGravity)
+                                 : config.softDropGravity;
+
     config.level = isConvertible<int>(ini[configSection]["level"])
                        ? convert<int>(ini[configSection]["level"], 0, -1, config.level)
                        : config.level;
@@ -254,7 +259,8 @@ void Serializer::Unserialize(mINI::INIStructure &ini, Tetris::Config::Config &co
     {
         config.themes.push_back(unserializeTheme(ini, themes[i]));
 
-        if (themes[i] == currentTheme) {
+        if (themes[i] == currentTheme)
+        {
             config.currentTheme = config.themes.size() - 1;
         }
     }

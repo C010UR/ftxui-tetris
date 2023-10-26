@@ -35,6 +35,6 @@ class Score
 
     ftxui::Element getStatsElement();
     ftxui::Element getComboElement();
-    ftxui::Element getComboGaugeElement(int height, double progress);
+    ftxui::Element getComboGaugeElement(double progress);
 };
 } // namespace Tetris::Game

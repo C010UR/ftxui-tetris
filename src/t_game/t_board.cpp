@@ -35,8 +35,18 @@ int Board::removeFullLines()
         board.push_back(this->board[row]);
     }
 
-    this->boardColor = boardColor;
-    this->board      = board;
+    this->board.clear();
+    this->boardColor.clear();
+
+    for (int row = 0; row < fullLineCount; row++) {
+        this->board.push_back(std::vector<Tetris::Game::BoardBlockType>(width, Tetris::Game::BoardBlockType::NONE));
+        this->boardColor.push_back(std::vector<ftxui::Color>(width, ftxui::Color::Default));
+    }
+
+    for (int row = 0; row < (int)board.size(); row++) {
+        this->board.push_back(board[row]);
+        this->boardColor.push_back(boardColor[row]);
+    }
 
     return fullLineCount;
 }
@@ -67,7 +77,7 @@ void Board::setCurrent(Tetris::Game::Tetromino tetromino)
     this->current = tetromino;
     this->current.reset(this->width);
 
-    this->isGameOver = this->canStore();
+    this->isGameOver = !this->canStore();
 }
 
 bool Board::tryRotateCurrent(Tetris::Game::RotationType rotation)
@@ -84,6 +94,13 @@ bool Board::tryRotateCurrent(Tetris::Game::RotationType rotation)
     return canRotate;
 }
 
+bool Board::canRotateCurrent(Tetris::Game::RotationType rotation)
+{
+    Tetris::Game::Point offset;
+
+    return this->current.canRotate(this->board, offset, rotation);
+}
+
 bool Board::tryMoveCurrent(Tetris::Game::Point offset)
 {
     bool canRotate = this->current.canMove(this->board, offset);
@@ -94,6 +111,11 @@ bool Board::tryMoveCurrent(Tetris::Game::Point offset)
     }
 
     return canRotate;
+}
+
+bool Board::canMoveCurrent(Tetris::Game::Point offset)
+{
+    return this->current.canMove(this->board, offset);
 }
 
 bool Board::canStore()
@@ -140,6 +162,11 @@ int Board::store(Tetris::Game::Tetromino newTetromino)
     return this->removeFullLines();
 }
 
+double Board::getRowsToObstacle()
+{
+    return this->current.getRowsToObstacle(this->board);
+}
+
 ftxui::Element Board::getDebugElement(double stepY)
 {
     bool canMoveLeft  = this->current.canMove(this->board, {-1, 0});
@@ -164,8 +191,6 @@ ftxui::Element Board::getDebugElement(double stepY)
                  Tetris::Renderer::KeyValue::create("Can move left", canMoveLeft),
                  Tetris::Renderer::KeyValue::create("Can move right", canMoveRight),
                  Tetris::Renderer::KeyValue::create("Can move down", canMoveDown),
-                 Tetris::Renderer::KeyValue::create("Last move a spin", this->current.isLastMoveResultedInSpin),
-                 Tetris::Renderer::KeyValue::create("Spin is mini-spin", this->current.isMiniSpin),
              })
          ),
          ftxui::window(
@@ -178,6 +203,12 @@ ftxui::Element Board::getDebugElement(double stepY)
                  Tetris::Renderer::KeyValue::create("Left rotation offset", offsetLeft),
                  Tetris::Renderer::KeyValue::create("Can rotate right", canRotateRight),
                  Tetris::Renderer::KeyValue::create("Right rotation offset", offsetRight),
+                 Tetris::Renderer::KeyValue::create(
+                     "Spin type", Tetris::Renderer::DataTransformer::toString(this->current.getSpinType())
+                 ),
+                 Tetris::Renderer::KeyValue::create(
+                     "Test Spin type", Tetris::Renderer::DataTransformer::toString(this->current.getTestSpinType())
+                 ),
              })
          ),
          ftxui::window(

@@ -1,4 +1,5 @@
 #include "t_renderer/t_canvas.hpp"
+
 #include "t_game/t_enums.hpp"
 
 namespace Tetris::Renderer
@@ -11,26 +12,26 @@ void Canvas::drawTetromino(ftxui::Canvas &canvas, Tetris::Game::Tetromino tetrom
     {
         for (int col = 0; col < (int)data[row].size(); col++)
         {
-            if (data[row][col] == Tetris::Game::BlockType::NONE)
+            if (data[row][col] == Tetris::Game::BlockType::BLOCK)
             {
-                continue;
+                Canvas::drawBlock(
+                    canvas,
+                    (!isCentered ? (int)tetromino.currentPosition.x : 1) + col,
+                    (!isCentered ? (int)tetromino.currentPosition.y : 1) + row,
+                    tetromino.color,
+                    isCentered,
+                    isShadow,
+                    tetromino.type
+                );
             }
-
-            Canvas::drawBlock(
-                canvas,
-                (!isCentered ? (int)tetromino.currentPosition.x : 1) + col,
-                (!isCentered ? (int)tetromino.currentPosition.y : 1) + row,
-                tetromino.color,
-                isCentered,
-                isShadow,
-                tetromino.type
-            );
         }
     }
 }
 
 void Canvas::drawBoard(
-    ftxui::Canvas &canvas, std::vector<std::vector<Tetris::Game::BoardBlockType>> board, std::vector<std::vector<ftxui::Color>> boardColor
+    ftxui::Canvas                                         &canvas,
+    std::vector<std::vector<Tetris::Game::BoardBlockType>> board,
+    std::vector<std::vector<ftxui::Color>>                 boardColor
 )
 {
     for (int row = 0; row < (int)board.size(); row++)

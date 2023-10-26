@@ -105,173 +105,180 @@ std::vector<std::vector<Tetris::Game::Point>> TetrominoFactory::JLTSZWallKickDat
 };
 
 // clang-format off
-std::vector<std::vector<std::vector<Tetris::Game::BlockType>>> I = Tetris::Game::Tetromino::parseInputTetromino({
-    {
-        {"     "},
-        {"     "},
-        {" IIII"},
-        {"     "},
-        {"     "}
-    },
-    {
-        {"     "},
-        {"  I  "},
-        {"  I  "},
-        {"  I  "},
-        {"  I  "}
-    },
-    {
-        {"     "},
-        {"     "},
-        {"IIII "},
-        {"     "},
-        {"     "}
-    },
-    {
-        {"  I  "},
-        {"  I  "},
-        {"  I  "},
-        {"  I  "},
-        {"     "}
-    }
-}, 5);
+std::vector<std::vector<std::vector<Tetris::Game::BlockType>>> TetrominoFactory::I
+    = Tetris::Game::Tetromino::parseInputTetromino({
+        {
+            {"     "},
+            {"     "},
+            {" IIII"},
+            {"     "},
+            {"     "}
+        },
+        {
+            {"     "},
+            {"  I  "},
+            {"  I  "},
+            {"  I  "},
+            {"  I  "}
+        },
+        {
+            {"     "},
+            {"     "},
+            {"IIII "},
+            {"     "},
+            {"     "}
+        },
+        {
+            {"  I  "},
+            {"  I  "},
+            {"  I  "},
+            {"  I  "},
+            {"     "}
+        }
+    }, 5);
 
-std::vector<std::vector<std::vector<Tetris::Game::BlockType>>> J = Tetris::Game::Tetromino::parseInputTetromino({
-    {
-        {"J  "},
-        {"JJJ"},
-        {"   "}
-    },
-    {
-        {" JJ"},
-        {" J "},
-        {" J "}
-    },
-    {
-        {"   "},
-        {"JJJ"},
-        {"  J"}
-    },
-    {
-        {" J "},
-        {" J "},
-        {"JJ "}
-    }
-}, 3);
+std::vector<std::vector<std::vector<Tetris::Game::BlockType>>> TetrominoFactory::J
+    = Tetris::Game::Tetromino::parseInputTetromino({
+        {
+            {"J  "},
+            {"JJJ"},
+            {"   "}
+        },
+        {
+            {" JJ"},
+            {" J "},
+            {" J "}
+        },
+        {
+            {"   "},
+            {"JJJ"},
+            {"  J"}
+        },
+        {
+            {" J "},
+            {" J "},
+            {"JJ "}
+        }
+    }, 3);
 
-std::vector<std::vector<std::vector<Tetris::Game::BlockType>>> L = Tetris::Game::Tetromino::parseInputTetromino({
-      {
-        {"  L"},
-        {"LLL"},
-        {"   "}
-    },
-    {
-        {" L "},
-        {" L "},
-        {" LL"}
-    },
-    {
-        {"   "},
-        {"LLL"},
-        {"  L"}
-    },
-    {
-        {"LL "},
-        {" L "},
-        {" L "}
-    }
-}, 3);
+std::vector<std::vector<std::vector<Tetris::Game::BlockType>>> TetrominoFactory::L
+    = Tetris::Game::Tetromino::parseInputTetromino({
+        {
+            {"  L"},
+            {"LLL"},
+            {"   "}
+        },
+        {
+            {" L "},
+            {" L "},
+            {" LL"}
+        },
+        {
+            {"   "},
+            {"LLL"},
+            {"  L"}
+        },
+        {
+            {"LL "},
+            {" L "},
+            {" L "}
+        }
+    }, 3);
 
-std::vector<std::vector<std::vector<Tetris::Game::BlockType>>> O = Tetris::Game::Tetromino::parseInputTetromino({
-      {
-        {" OO"},
-        {" OO"},
-        {"   "}
-    },
-    {
-        {"   "},
-        {" OO"},
-        {" OO"}
-    },
-    {
-        {"   "},
-        {"OO "},
-        {"OO "}
-    },
-    {
-        {"OO "},
-        {"OO "},
-        {"   "}
-    }
-}, 3);
+std::vector<std::vector<std::vector<Tetris::Game::BlockType>>> TetrominoFactory::O
+    = Tetris::Game::Tetromino::parseInputTetromino({
+        {
+            {" OO"},
+            {" OO"},
+            {"   "}
+        },
+        {
+            {"   "},
+            {" OO"},
+            {" OO"}
+        },
+        {
+            {"   "},
+            {"OO "},
+            {"OO "}
+        },
+        {
+            {"OO "},
+            {"OO "},
+            {"   "}
+        }
+    }, 3);
 
-std::vector<std::vector<std::vector<Tetris::Game::BlockType>>> S = Tetris::Game::Tetromino::parseInputTetromino({
-      {
-        {" SS"},
-        {"SS "},
-        {"   "}
-    },
-    {
-        {" S "},
-        {" SS"},
-        {"  S"}
-    },
-    {
-        {"   "},
-        {" SS"},
-        {"SS "}
-    },
-    {
-        {"S  "},
-        {"SS "},
-        {" S "}
-    }
-}, 3);
+std::vector<std::vector<std::vector<Tetris::Game::BlockType>>> TetrominoFactory::S
+    = Tetris::Game::Tetromino::parseInputTetromino({
+        {
+            {" SS"},
+            {"SS "},
+            {"   "}
+        },
+        {
+            {" S "},
+            {" SS"},
+            {"  S"}
+        },
+        {
+            {"   "},
+            {" SS"},
+            {"SS "}
+        },
+        {
+            {"S  "},
+            {"SS "},
+            {" S "}
+        }
+    }, 3);
 
-std::vector<std::vector<std::vector<Tetris::Game::BlockType>>> T = Tetris::Game::Tetromino::parseInputTetromino({
-      {
-        {"+T+"},
-        {"TTT"},
-        {"- -"}
-    },
-    {
-        {"-T+"},
-        {" TT"},
-        {"-T+"}
-    },
-    {
-        {"- -"},
-        {"TTT"},
-        {"+T+"}
-    },
-    {
-        {"+T-"},
-        {"TT "},
-        {"+T-"}
-    }
-}, 3);
+std::vector<std::vector<std::vector<Tetris::Game::BlockType>>> TetrominoFactory::T
+    = Tetris::Game::Tetromino::parseInputTetromino({
+        {
+            {"+T+"},
+            {"TTT"},
+            {"- -"}
+        },
+        {
+            {"-T+"},
+            {" TT"},
+            {"-T+"}
+        },
+        {
+            {"- -"},
+            {"TTT"},
+            {"+T+"}
+        },
+        {
+            {"+T-"},
+            {"TT "},
+            {"+T-"}
+        }
+    }, 3);
 
-std::vector<std::vector<std::vector<Tetris::Game::BlockType>>> Z = Tetris::Game::Tetromino::parseInputTetromino({
-      {
-        {"ZZ "},
-        {" ZZ"},
-        {"   "}
-    },
-    {
-        {"  Z"},
-        {" ZZ"},
-        {" Z "}
-    },
-    {
-        {"   "},
-        {"ZZ "},
-        {" ZZ"}
-    },
-    {
-        {" Z "},
-        {"ZZ "},
-        {"Z  "}
-    }
-}, 3);
+std::vector<std::vector<std::vector<Tetris::Game::BlockType>>> TetrominoFactory::Z 
+    = Tetris::Game::Tetromino::parseInputTetromino({
+        {
+            {"ZZ "},
+            {" ZZ"},
+            {"   "}
+        },
+        {
+            {"  Z"},
+            {" ZZ"},
+            {" Z "}
+        },
+        {
+            {"   "},
+            {"ZZ "},
+            {" ZZ"}
+        },
+        {
+            {" Z "},
+            {"ZZ "},
+            {"Z  "}
+        }
+    }, 3);
 // clang-format on
 } // namespace Tetris::Game

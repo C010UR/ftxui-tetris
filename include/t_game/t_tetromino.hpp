@@ -59,6 +59,10 @@ class Tetromino
     void reset();
     void reset(int width);
 
+    void resetSpinData();
+    Tetris::Game::SpinType getSpinType();
+    Tetris::Game::SpinType getTestSpinType();
+
     std::vector<std::vector<Tetris::Game::BlockType>> getData();
     std::vector<std::vector<Tetris::Game::BlockType>> getData(int rotation);
 };
