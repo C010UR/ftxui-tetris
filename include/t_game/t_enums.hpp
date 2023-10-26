@@ -1,7 +1,6 @@
 #pragma once
 
-namespace Tetris
-{
+namespace Tetris::Game {
 enum class TetrominoType
 {
     I,
@@ -13,38 +12,32 @@ enum class TetrominoType
     Z
 };
 
+enum class BoardBlockType
+{
+    NONE = 0,
+    BLOCK = 1
+};
+
 enum class BlockType
 {
-    NIL,
-    PVT,
-    BLK
+    NONE = 0,
+    BLOCK = 1,
+    SPIN_LOOKUP_FRONT = 2,
+    SPIN_LOOKUP_BACK = 3
 };
 
 enum class RotationType
 {
-    NO_ROTATE,
+    NONE,
     LEFT,
     RIGHT
 };
 
-enum class TriggerType
+enum class SpinType
 {
-    MOVE_LEFT,
-    MOVE_RIGHT,
-    SOFT_DROP,
-    HARD_DROP,
-    ROTATE_LEFT,
-    ROTATE_RIGHT,
-    SWAP_HOLD,
-    FORFEIT,
-    NO_TRIGGER
-};
-
-enum class TSpinType
-{
+    NONE,
     T_SPIN_FULL,
     T_SPIN_MINI,
-    T_SPIN_NONE
 };
 
 enum class ScoreType
@@ -68,18 +61,4 @@ enum class ScoreType
     TETRIS_LINE_PERFECT_CLEAR,
     NONE
 };
-
-enum class Menus
-{
-    MAIN_MENU,
-    GAME_OVER,
-    OPTIONS,
-    CONTROLS
-};
-
-enum class MenuExitCodes
-{
-    START_GAME  = 2,
-    EXIT_GAME   = 3
-};
-} // namespace Tetris
+}
