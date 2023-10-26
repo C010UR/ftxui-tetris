@@ -207,21 +207,21 @@ bool Tetromino::canRotate(
     const std::vector<std::vector<Tetris::Game::BoardBlockType>> &board,
     Tetris::Game::Point                                          &offset,
     Tetris::Game::RotationType                                    rotation,
-    bool isDebug
+    bool                                                          isDebug
 )
 {
     int height = board.size() - 1;
     int width  = board[0].size() - 1;
 
-    int frontCorners = 0;
-    int backCorners  = 0;
-
-    auto data                         = this->getData(this->rotate(rotation));
-    auto wallKickTest                 = this->getWallKickTestData(rotation);
+    auto data         = this->getData(this->rotate(rotation));
+    auto wallKickTest = this->getWallKickTestData(rotation);
 
     for (int testEntry = 0; testEntry < (int)wallKickTest.size(); testEntry++)
     {
         bool canMove = true;
+
+        int frontCorners = 0;
+        int backCorners  = 0;
 
         for (int row = 0; row < (int)data.size(); row++)
         {
@@ -266,7 +266,8 @@ bool Tetromino::canRotate(
             }
         }
 
-        if (canMove && !isDebug) {
+        if (canMove && !isDebug)
+        {
             if (wallKickTest[testEntry] == Tetris::Game::Point{1, -2}
                 || wallKickTest[testEntry] == Tetris::Game::Point{-1, -2})
             {
