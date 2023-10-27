@@ -5,6 +5,7 @@
 #include "t_game/t_point.hpp"
 
 #include <charconv>
+#include <climits>
 #include <stdexcept>
 #include <string>
 #include <vector>
