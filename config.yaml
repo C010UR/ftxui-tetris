@@ -3,11 +3,11 @@ config:
   level: 1
   updatesPerSecond: 240
   currentTheme: Default
-  storeDelayMs: 500
+  storeDelayMs: 2000000
   softDropDelayMs: 50
   softDropGravityMsPerRow: 50
   comboDelayMs: 6000
-  debug: false
+  debug: true
   themes:
     - mainColors:
         - "#4cd137"

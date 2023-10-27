@@ -1,4 +1,8 @@
 #include "t_game/t_board.hpp"
+#include "ftxui/dom/elements.hpp"
+#include "ftxui/dom/node.hpp"
+#include "ftxui/screen/screen.hpp"
+#include "t_renderer/t_key_value.hpp"
 
 namespace Tetris::Game
 {
@@ -18,8 +22,8 @@ bool Board::isLineFull(int line)
 
 int Board::removeFullLines()
 {
-    std::vector<std::vector<ftxui::Color>>                 boardColor;
-    std::vector<std::vector<Tetris::Game::BoardBlockType>> board;
+    std::vector<std::vector<ftxui::Color>> boardColor;
+    board_t                                board;
 
     int fullLineCount = 0;
 
@@ -79,7 +83,7 @@ void Board::setCurrent(Tetris::Game::Tetromino tetromino)
     this->current = tetromino;
     this->current.reset(this->width);
 
-    this->isGameOver = !this->canStore();
+    this->isGameOver = this->current.isColliding(this->board);
 }
 
 bool Board::tryRotateCurrent(Tetris::Game::RotationType rotation)
@@ -90,7 +94,7 @@ bool Board::tryRotateCurrent(Tetris::Game::RotationType rotation)
 
     if (canRotate)
     {
-        this->current.move(offset, rotation);
+        this->current.move(this->board, offset, rotation);
     }
 
     return canRotate;
@@ -109,7 +113,7 @@ bool Board::tryMoveCurrent(Tetris::Game::Point offset)
 
     if (canRotate)
     {
-        this->current.move(offset);
+        this->current.move(this->board, offset);
     }
 
     return canRotate;
@@ -176,12 +180,20 @@ ftxui::Element Board::getDebugElement(double stepY)
     bool canMoveDown  = this->current.canMove(this->board, {0, stepY});
 
     Tetris::Game::Point offsetLeft;
-    bool canRotateLeft = this->current.canRotate(this->board, offsetLeft, Tetris::Game::RotationType::LEFT, true);
+    bool canRotateLeft = this->current.canRotate(this->board, offsetLeft, Tetris::Game::RotationType::LEFT);
 
     Tetris::Game::Point offsetRight;
-    bool canRotateRight = this->current.canRotate(this->board, offsetRight, Tetris::Game::RotationType::RIGHT, true);
+    bool canRotateRight = this->current.canRotate(this->board, offsetRight, Tetris::Game::RotationType::RIGHT);
 
-    return ftxui::vbox(
+    ftxui::Elements testPoints;
+
+    for (int i = 0; i < (int)this->current.testPoints.size(); i++) {
+        testPoints.push_back(
+            Tetris::Renderer::KeyValue::create("Point " + std::to_string(i + 1), this->current.testPoints[i])
+        );
+    }
+
+    return ftxui::hbox({ftxui::vbox(
         {ftxui::window(
              ftxui::text("Tetromino Movement"),
              ftxui::vbox({
@@ -208,9 +220,6 @@ ftxui::Element Board::getDebugElement(double stepY)
                  Tetris::Renderer::KeyValue::create(
                      "Spin type", Tetris::Renderer::DataTransformer::toString(this->current.getSpinType())
                  ),
-                 Tetris::Renderer::KeyValue::create(
-                     "Test Spin type", Tetris::Renderer::DataTransformer::toString(this->current.getTestSpinType())
-                 ),
              })
          ),
          ftxui::window(
@@ -223,7 +232,14 @@ ftxui::Element Board::getDebugElement(double stepY)
                  Tetris::Renderer::KeyValue::create("Can store", !this->canStore()),
              })
          )}
-    );
+    ) | ftxui::size(ftxui::WIDTH, ftxui::EQUAL, 40),
+    ftxui::vbox({
+        ftxui::window(
+            ftxui::text("Test points"),
+            ftxui::vbox(testPoints)
+        )
+    }) | ftxui::size(ftxui::WIDTH, ftxui::EQUAL, 20)
+    });
 }
 
 ftxui::Element Board::getElement(bool isEasyMode)
@@ -236,11 +252,11 @@ ftxui::Element Board::getElement(bool isEasyMode)
     if (isEasyMode)
     {
         double y = this->current.getRowsToObstacle(this->board);
-        this->current.move({0, y});
+        this->current.move(this->board, {0, y});
 
         Tetris::Renderer::Canvas::drawTetromino(canvas, this->current, false, true);
 
-        this->current.move({0, -y});
+        this->current.move(this->board, {0, -y});
     }
 
     return ftxui::canvas(canvas) | ftxui::border | ftxui::size(ftxui::HEIGHT, ftxui::EQUAL, this->height);

@@ -14,7 +14,6 @@ incdir = include_directories('include')
 ftxui_screen_dep = dependency('ftxui-5.0.0-screen')
 ftxui_dom_dep = dependency('ftxui-5.0.0-dom')
 ftxui_component_dep = dependency('ftxui-5.0.0-component')
-mini_dep = dependency('mINI')
 yaml_cpp_dep = dependency('yaml-cpp')
 
 executable('tetris',
@@ -49,7 +48,6 @@ executable('tetris',
     ftxui_screen_dep,
     ftxui_dom_dep,
     ftxui_component_dep,
-    mini_dep,
     yaml_cpp_dep
   ]
 )

@@ -3,10 +3,10 @@
 namespace Tetris::Game
 {
 Tetromino::Tetromino(
-    std::vector<std::vector<std::vector<Tetris::Game::BlockType>>> tetromino,
-    std::vector<std::vector<Tetris::Game::Point>>                  wallKickOffsets,
-    ftxui::Color                                                   color,
-    Tetris::Game::TetrominoType                                    type
+    tetromino_rotations_t                         tetromino,
+    std::vector<std::vector<Tetris::Game::Point>> wallKickOffsets,
+    ftxui::Color                                  color,
+    Tetris::Game::TetrominoType                   type
 )
 {
     this->tetromino       = tetromino;
@@ -17,11 +17,9 @@ Tetromino::Tetromino(
     this->reset();
 }
 
-std::vector<std::vector<std::vector<Tetris::Game::BlockType>>> Tetromino::parseInputTetromino(
-    std::vector<std::vector<std::string>> data, int size
-)
+tetromino_rotations_t Tetromino::parseInputTetromino(std::vector<std::vector<std::string>> data, int size)
 {
-    std::vector<std::vector<std::vector<Tetris::Game::BlockType>>> result;
+    tetromino_rotations_t result;
 
     if (data.size() != 4)
     {
@@ -35,7 +33,7 @@ std::vector<std::vector<std::vector<Tetris::Game::BlockType>>> Tetromino::parseI
             throw std::invalid_argument("Height of the actual tetromino is not valid");
         }
 
-        std::vector<std::vector<Tetris::Game::BlockType>> tetromino;
+        tetromino_t tetromino;
 
         for (int y = 0; y < size; y++)
         {
@@ -73,12 +71,12 @@ std::vector<std::vector<std::vector<Tetris::Game::BlockType>>> Tetromino::parseI
     return result;
 }
 
-std::vector<std::vector<Tetris::Game::BlockType>> Tetromino::getData(int rotation)
+tetromino_t Tetromino::getData(int rotation)
 {
     return this->tetromino[rotation];
 }
 
-std::vector<std::vector<Tetris::Game::BlockType>> Tetromino::getData()
+tetromino_t Tetromino::getData()
 {
     return this->getData(this->currentRotation);
 }
@@ -98,13 +96,97 @@ int Tetromino::rotate(Tetris::Game::RotationType rotation)
     return this->currentRotation;
 }
 
-void Tetromino::move(Tetris::Game::Point offset, Tetris::Game::RotationType rotation)
+void Tetromino::move(const board_t &board, Tetris::Game::Point offset, Tetris::Game::RotationType rotation)
 {
-    this->isLastMoveResultedInSpin = this->testIsLastMoveResultedInSpin;
-    this->isMiniSpin               = this->testIsMiniSpin;
+    auto wallKickTest = this->getWallKickTestData(rotation);
 
     this->currentPosition += offset;
     this->currentRotation = this->rotate(rotation);
+
+    if (rotation == Tetris::Game::RotationType::NONE)
+    {
+        return;
+    }
+
+    auto data = this->getData();
+
+    int height       = board.size() - 1;
+    int width        = board[0].size() - 1;
+    int frontCorners = 0, backCorners = 0;
+
+    this->testPoints.clear();
+
+    for (int row = 0; row < (int)data.size(); row++)
+    {
+        for (int col = 0; col < (int)data[row].size(); col++)
+        {
+            if (data[row][col] == Tetris::Game::BlockType::SPIN_LOOKUP_BACK
+                || data[row][col] == Tetris::Game::BlockType::SPIN_LOOKUP_FRONT)
+            {
+
+                int newX = this->currentPosition.x + col;
+                int newY = this->currentPosition.y + row;
+
+                if (newX < 0 || newX > width || newY < 0 || newY > height
+                    || board[newY][newX] == Tetris::Game::BoardBlockType::BLOCK)
+                {
+                    this->testPoints.push_back({(double)newX, (double)newY});
+
+                    data[row][col] == Tetris::Game::BlockType::SPIN_LOOKUP_BACK ? backCorners++ : frontCorners++;
+                }
+            }
+        }
+    }
+
+    this->testPoints.push_back({(double)backCorners, (double)frontCorners});
+
+    bool wasLastWallKickTest = offset == wallKickTest[wallKickTest.size() - 1];
+
+    if (wasLastWallKickTest && this->type == Tetris::Game::TetrominoType::T)
+    {
+        this->isLastMoveResultedInSpin = true;
+        this->isMiniSpin               = false;
+    }
+    if (frontCorners + backCorners > 2)
+    {
+        this->isLastMoveResultedInSpin = true;
+        this->isMiniSpin               = frontCorners == 1;
+    }
+    else
+    {
+        this->isLastMoveResultedInSpin = false;
+        this->isMiniSpin               = false;
+    }
+}
+
+bool Tetromino::isColliding(const board_t &board)
+{
+
+    auto data = this->getData();
+
+    int height = board.size() - 1;
+    int width  = board[0].size() - 1;
+
+    for (int row = 0; row < (int)data.size(); row++)
+    {
+        for (int col = 0; col < (int)data[row].size(); col++)
+        {
+            if (data[row][col] == Tetris::Game::BlockType::BLOCK)
+            {
+
+                int newX = this->currentPosition.x + col;
+                int newY = this->currentPosition.y + row;
+
+                if (newX < 0 || newX > width || newY < 0 || newY > height
+                    || board[newY][newX] == Tetris::Game::BoardBlockType::BLOCK)
+                {
+                    return true;
+                }
+            }
+        }
+    }
+
+    return false;
 }
 
 std::vector<Tetris::Game::Point> Tetromino::getWallKickTestData(Tetris::Game::RotationType rotation)
@@ -131,6 +213,7 @@ void Tetromino::reset()
 {
     this->currentPosition = {0, 0};
     this->currentRotation = 0;
+    this->testPoints.clear();
     this->resetSpinData();
 }
 
@@ -169,7 +252,7 @@ void Tetromino::reset(int width)
         = {(double)((int)(width / 2) - minX - (this->type == Tetris::Game::TetrominoType::O ? 0 : 1)), (double)-minY};
 }
 
-bool Tetromino::canMove(const std::vector<std::vector<Tetris::Game::BoardBlockType>> &board, Tetris::Game::Point offset)
+bool Tetromino::canMove(const board_t &board, Tetris::Game::Point offset)
 {
     auto data = this->getData();
 
@@ -180,18 +263,16 @@ bool Tetromino::canMove(const std::vector<std::vector<Tetris::Game::BoardBlockTy
     {
         for (int col = 0; col < (int)data[row].size(); col++)
         {
-            if (data[row][col] != Tetris::Game::BlockType::BLOCK)
+            if (data[row][col] == Tetris::Game::BlockType::BLOCK)
             {
-                continue;
-            }
+                int newX = this->currentPosition.x + offset.x + col;
+                int newY = this->currentPosition.y + offset.y + row;
 
-            int newX = this->currentPosition.x + offset.x + col;
-            int newY = this->currentPosition.y + offset.y + row;
-
-            if (newX < 0 || newX > width || newY < 0 || newY > height
-                || board[newY][newX] == Tetris::Game::BoardBlockType::BLOCK)
-            {
-                return false;
+                if (newX < 0 || newX > width || newY < 0 || newY > height
+                    || board[newY][newX] == Tetris::Game::BoardBlockType::BLOCK)
+                {
+                    return false;
+                }
             }
         }
     }
@@ -199,12 +280,7 @@ bool Tetromino::canMove(const std::vector<std::vector<Tetris::Game::BoardBlockTy
     return true;
 }
 
-bool Tetromino::canRotate(
-    const std::vector<std::vector<Tetris::Game::BoardBlockType>> &board,
-    Tetris::Game::Point                                          &offset,
-    Tetris::Game::RotationType                                    rotation,
-    bool                                                          isDebug
-)
+bool Tetromino::canRotate(const board_t &board, Tetris::Game::Point &offset, Tetris::Game::RotationType rotation)
 {
     int height = board.size() - 1;
     int width  = board[0].size() - 1;
@@ -215,9 +291,6 @@ bool Tetromino::canRotate(
     for (int testEntry = 0; testEntry < (int)wallKickTest.size(); testEntry++)
     {
         bool canMove = true;
-
-        int frontCorners = 0;
-        int backCorners  = 0;
 
         for (int row = 0; row < (int)data.size(); row++)
         {
@@ -231,28 +304,12 @@ bool Tetromino::canRotate(
                 int newX = this->currentPosition.x + offset.x + col + wallKickTest[testEntry].x;
                 int newY = this->currentPosition.y + offset.y + row + wallKickTest[testEntry].y;
 
-                if (newX < 0 || newX > width || newY < 0 || newY > height
-                    || board[newY][newX] == Tetris::Game::BoardBlockType::BLOCK)
+                if ((newX < 0 || newX > width || newY < 0 || newY > height
+                     || board[newY][newX] == Tetris::Game::BoardBlockType::BLOCK)
+                    && data[row][col] == Tetris::Game::BlockType::BLOCK)
                 {
-                    switch (data[row][col])
-                    {
-                    case Tetris::Game::BlockType::BLOCK:
-                        canMove = false;
-                        break;
-                    case Tetris::Game::BlockType::SPIN_LOOKUP_FRONT:
-                        frontCorners++;
-                        break;
-                    case Tetris::Game::BlockType::SPIN_LOOKUP_BACK:
-                        backCorners++;
-                        break;
-                    default:
-                        break;
-                    }
-
-                    if (!canMove)
-                    {
-                        break;
-                    }
+                    canMove = false;
+                    break;
                 }
             }
 
@@ -261,30 +318,9 @@ bool Tetromino::canRotate(
                 break;
             }
         }
-
-        if (canMove && !isDebug)
-        {
-            if (wallKickTest[testEntry] == Tetris::Game::Point{1, -2}
-                || wallKickTest[testEntry] == Tetris::Game::Point{-1, -2})
-            {
-                this->testIsLastMoveResultedInSpin = true;
-                this->testIsMiniSpin               = false;
-            }
-            else if (frontCorners + backCorners > 2)
-            {
-                this->testIsLastMoveResultedInSpin = true;
-                this->testIsMiniSpin               = frontCorners == 1;
-            }
-            else
-            {
-                this->testIsLastMoveResultedInSpin = false;
-                this->testIsMiniSpin               = false;
-            }
-        }
-
         if (canMove)
         {
-            offset += wallKickTest[testEntry];
+            offset = wallKickTest[testEntry];
             return true;
         }
     }
@@ -294,10 +330,8 @@ bool Tetromino::canRotate(
 
 void Tetromino::resetSpinData()
 {
-    this->isLastMoveResultedInSpin     = false;
-    this->isMiniSpin                   = false;
-    this->testIsLastMoveResultedInSpin = false;
-    this->testIsMiniSpin               = false;
+    this->isLastMoveResultedInSpin = false;
+    this->isMiniSpin               = false;
 }
 
 Tetris::Game::SpinType Tetromino::getSpinType()
@@ -323,30 +357,7 @@ Tetris::Game::SpinType Tetromino::getSpinType()
     return Tetris::Game::SpinType::NONE;
 }
 
-Tetris::Game::SpinType Tetromino::getTestSpinType()
-{
-    switch (this->type)
-    {
-    case TetrominoType::T:
-        if (this->testIsLastMoveResultedInSpin)
-        {
-            return this->testIsMiniSpin ? Tetris::Game::SpinType::T_SPIN_MINI : Tetris::Game::SpinType::T_SPIN_FULL;
-        }
-
-        break;
-    case TetrominoType::I:
-    case TetrominoType::O:
-    case TetrominoType::J:
-    case TetrominoType::L:
-    case TetrominoType::S:
-    case TetrominoType::Z:
-        break;
-    }
-
-    return Tetris::Game::SpinType::NONE;
-}
-
-double Tetromino::getRowsToObstacle(const std::vector<std::vector<Tetris::Game::BoardBlockType>> &board)
+double Tetromino::getRowsToObstacle(const board_t &board)
 {
     double y = 0;
 

@@ -1,6 +1,8 @@
 #pragma once
 
-namespace Tetris::Game {
+#include <vector>
+namespace Tetris::Game
+{
 enum class TetrominoType
 {
     I,
@@ -14,16 +16,16 @@ enum class TetrominoType
 
 enum class BoardBlockType
 {
-    NONE = 0,
+    NONE  = 0,
     BLOCK = 1
 };
 
 enum class BlockType
 {
-    NONE = 0,
-    BLOCK = 1,
+    NONE              = 0,
+    BLOCK             = 1,
     SPIN_LOOKUP_FRONT = 2,
-    SPIN_LOOKUP_BACK = 3
+    SPIN_LOOKUP_BACK  = 3
 };
 
 enum class RotationType
@@ -61,4 +63,8 @@ enum class ScoreType
     TETRIS_LINE_PERFECT_CLEAR,
     NONE
 };
-}
+
+typedef std::vector<std::vector<Tetris::Game::BoardBlockType>> board_t;
+typedef std::vector<std::vector<Tetris::Game::BlockType>> tetromino_t;
+typedef std::vector<tetromino_t> tetromino_rotations_t;
+} // namespace Tetris::Game

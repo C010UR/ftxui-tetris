@@ -20,8 +20,8 @@ class Board
 {
   private:
 
-    std::vector<std::vector<ftxui::Color>>                 boardColor;
-    std::vector<std::vector<Tetris::Game::BoardBlockType>> board;
+    std::vector<std::vector<ftxui::Color>> boardColor;
+    board_t                                board;
 
     Tetris::Game::Tetromino current;
 

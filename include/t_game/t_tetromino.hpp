@@ -15,12 +15,9 @@ class Tetromino
 {
   private:
 
-    std::vector<std::vector<std::vector<Tetris::Game::BlockType>>> tetromino;
-    std::vector<std::vector<Tetris::Game::Point>>                  wallKickOffsets;
-    int                                                            rotate(Tetris::Game::RotationType rotation);
-
-    bool testIsLastMoveResultedInSpin;
-    bool testIsMiniSpin;
+    tetromino_rotations_t                         tetromino;
+    std::vector<std::vector<Tetris::Game::Point>> wallKickOffsets;
+    int                                           rotate(Tetris::Game::RotationType rotation);
 
   public:
 
@@ -29,6 +26,8 @@ class Tetromino
     Tetris::Game::TetrominoType type;
     ftxui::Color                color;
 
+    std::vector<Tetris::Game::Point> testPoints;
+
     int  currentRotation;
     bool isLastMoveResultedInSpin;
     bool isMiniSpin;
@@ -36,36 +35,31 @@ class Tetromino
     Tetromino(){};
 
     Tetromino(
-        std::vector<std::vector<std::vector<Tetris::Game::BlockType>>> tetromino,
-        std::vector<std::vector<Tetris::Game::Point>>                  wallKickOffsets,
-        ftxui::Color                                                   color,
-        Tetris::Game::TetrominoType                                    type
+        tetromino_rotations_t                         tetromino,
+        std::vector<std::vector<Tetris::Game::Point>> wallKickOffsets,
+        ftxui::Color                                  color,
+        Tetris::Game::TetrominoType                   type
     );
 
-    static std::vector<std::vector<std::vector<Tetris::Game::BlockType>>> parseInputTetromino(
-        std::vector<std::vector<std::string>> data, int size
-    );
+    static tetromino_rotations_t parseInputTetromino(std::vector<std::vector<std::string>> data, int size);
 
     std::vector<Tetris::Game::Point> getWallKickTestData(Tetris::Game::RotationType rotation);
 
-    bool canMove(const std::vector<std::vector<Tetris::Game::BoardBlockType>> &board, Tetris::Game::Point offset);
-    bool canRotate(
-        const std::vector<std::vector<Tetris::Game::BoardBlockType>> &board,
-        Tetris::Game::Point                                          &offset,
-        Tetris::Game::RotationType                                    rotation,
-        bool                                                          isDebug = false
-    );
-    double getRowsToObstacle(const std::vector<std::vector<Tetris::Game::BoardBlockType>> &board);
+    bool   canMove(const board_t &board, Tetris::Game::Point offset);
+    bool   canRotate(const board_t &board, Tetris::Game::Point &offset, Tetris::Game::RotationType rotation);
+    bool   isColliding(const board_t &board);
+    double getRowsToObstacle(const board_t &board);
 
-    void move(Tetris::Game::Point offset, Tetris::Game::RotationType = Tetris::Game::RotationType::NONE);
+    void move(
+        const board_t &board, Tetris::Game::Point offset, Tetris::Game::RotationType = Tetris::Game::RotationType::NONE
+    );
     void reset();
     void reset(int width);
 
     void                   resetSpinData();
     Tetris::Game::SpinType getSpinType();
-    Tetris::Game::SpinType getTestSpinType();
 
-    std::vector<std::vector<Tetris::Game::BlockType>> getData();
-    std::vector<std::vector<Tetris::Game::BlockType>> getData(int rotation);
+    tetromino_t getData();
+    tetromino_t getData(int rotation);
 };
 } // namespace Tetris::Game
