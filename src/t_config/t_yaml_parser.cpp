@@ -1,5 +1,7 @@
 #include "t_config/t_yaml_parser.hpp"
 
+#include <string>
+
 namespace Tetris::Config
 {
 template <typename T>
@@ -46,6 +48,16 @@ void YAMLParser::decodeOptionalBool(const YAML::Node &node, const std::string &n
     }
 
     value = node[name].as<bool>();
+}
+
+void YAMLParser::decodeOptionalString(const YAML::Node &node, const std::string &name, std::string &value)
+{
+    if (!node[name].IsDefined() || node[name].IsNull() || node[name].as<std::string>().empty())
+    {
+        return;
+    }
+
+    value = node[name].as<std::string>();
 }
 
 void YAMLParser::loadData(Config &config, Controls &controls)
@@ -118,11 +130,17 @@ bool convert<Config>::decode(const YAML::Node &node, Config &config)
 
     std::string currentTheme;
 
-    YAMLParser::decodeOptionalScalar(node, "currentTheme", currentTheme, basicStringValidator);
+    YAMLParser::decodeOptionalString(node, "currentTheme", currentTheme);
+
+    std::transform(currentTheme.begin(), currentTheme.end(), currentTheme.begin(), ::tolower);
 
     for (int i = 0; i < (int)config.themes.size(); i++)
     {
-        if (currentTheme == config.themes[i].name)
+        std::string themeName = config.themes[i].name;
+
+        std::transform(themeName.begin(), themeName.end(), themeName.begin(), ::tolower);
+
+        if (currentTheme == themeName)
         {
             config.currentTheme = i;
 
@@ -216,14 +234,14 @@ bool convert<Controls>::decode(const YAML::Node &node, Controls &controls)
 
     std::function<bool(std::string)> basicStringValidator = [](std::string value) -> bool { return !value.empty(); };
 
-    YAMLParser::decodeOptionalScalar(node, "moveLeft", controls.moveLeft, basicStringValidator);
-    YAMLParser::decodeOptionalScalar(node, "moveRight", controls.moveRight, basicStringValidator);
-    YAMLParser::decodeOptionalScalar(node, "rotateLeft", controls.rotateLeft, basicStringValidator);
-    YAMLParser::decodeOptionalScalar(node, "rotateRight", controls.rotateRight, basicStringValidator);
-    YAMLParser::decodeOptionalScalar(node, "swapHold", controls.swapHold, basicStringValidator);
-    YAMLParser::decodeOptionalScalar(node, "softDrop", controls.softDrop, basicStringValidator);
-    YAMLParser::decodeOptionalScalar(node, "hardDrop", controls.hardDrop, basicStringValidator);
-    YAMLParser::decodeOptionalScalar(node, "forfeit", controls.forfeit, basicStringValidator);
+    YAMLParser::decodeOptionalString(node, "moveLeft", controls.moveLeft);
+    YAMLParser::decodeOptionalString(node, "moveRight", controls.moveRight);
+    YAMLParser::decodeOptionalString(node, "rotateLeft", controls.rotateLeft);
+    YAMLParser::decodeOptionalString(node, "rotateRight", controls.rotateRight);
+    YAMLParser::decodeOptionalString(node, "swapHold", controls.swapHold);
+    YAMLParser::decodeOptionalString(node, "softDrop", controls.softDrop);
+    YAMLParser::decodeOptionalString(node, "hardDrop", controls.hardDrop);
+    YAMLParser::decodeOptionalString(node, "forfeit", controls.forfeit);
 
     return true;
 }
@@ -232,17 +250,17 @@ YAML::Node convert<Theme>::encode(const Theme &theme)
 {
     YAML::Node node;
 
+    node["name"] = theme.name;
+
     for (int i = 0; i < (int)theme.mainColors.size(); i++)
     {
-        node["mainColors"].push_back(theme.mainColors[i]);
+        node["mainColorsGradient"].push_back(theme.mainColors[i]);
     }
 
     for (int i = 0; i < (int)theme.gameOverColors.size(); i++)
     {
-        node["gameOverColors"].push_back(theme.gameOverColors[i]);
+        node["gameOverColorsGradient"].push_back(theme.gameOverColors[i]);
     }
-
-    node["name"] = theme.name;
 
     node["mainColor"]     = theme.mainColor;
     node["gameOverColor"] = theme.gameOverColor;
@@ -269,26 +287,25 @@ bool convert<Theme>::decode(const YAML::Node &node, Theme &theme)
         return true;
     }
 
-    std::function<bool(ftxui::Color)> basicColorValidator  = [](ftxui::Color) -> bool { return true; };
-    std::function<bool(std::string)>  basicStringValidator = [](std::string value) -> bool { return !value.empty(); };
+    std::function<bool(std::string)> basicStringValidator = [](std::string value) -> bool { return !value.empty(); };
 
-    YAMLParser::decodeOptionalVector(node, "mainColors", theme.mainColors, basicColorValidator);
-    YAMLParser::decodeOptionalVector(node, "gameOverColors", theme.gameOverColors, basicColorValidator);
+    YAMLParser::decodeOptionalString(node, "name", theme.name);
 
-    YAMLParser::decodeOptionalScalar(node, "name", theme.name, basicStringValidator);
+    YAMLParser::decodeOptionalVector(node, "mainColorsGradient", theme.mainColors);
+    YAMLParser::decodeOptionalVector(node, "gameOverColorsGradient", theme.gameOverColors);
 
-    YAMLParser::decodeOptionalScalar(node, "mainColor", theme.mainColor, basicColorValidator);
-    YAMLParser::decodeOptionalScalar(node, "gameOverColor", theme.gameOverColor, basicColorValidator);
-    YAMLParser::decodeOptionalScalar(node, "valueColor", theme.valueColor, basicColorValidator);
-    YAMLParser::decodeOptionalScalar(node, "trueColor", theme.trueColor, basicColorValidator);
-    YAMLParser::decodeOptionalScalar(node, "falseColor", theme.falseColor, basicColorValidator);
-    YAMLParser::decodeOptionalScalar(node, "IColor", theme.IColor, basicColorValidator);
-    YAMLParser::decodeOptionalScalar(node, "OColor", theme.OColor, basicColorValidator);
-    YAMLParser::decodeOptionalScalar(node, "TColor", theme.TColor, basicColorValidator);
-    YAMLParser::decodeOptionalScalar(node, "JColor", theme.JColor, basicColorValidator);
-    YAMLParser::decodeOptionalScalar(node, "LColor", theme.LColor, basicColorValidator);
-    YAMLParser::decodeOptionalScalar(node, "SColor", theme.SColor, basicColorValidator);
-    YAMLParser::decodeOptionalScalar(node, "ZColor", theme.ZColor, basicColorValidator);
+    YAMLParser::decodeOptionalScalar(node, "mainColor", theme.mainColor);
+    YAMLParser::decodeOptionalScalar(node, "gameOverColor", theme.gameOverColor);
+    YAMLParser::decodeOptionalScalar(node, "valueColor", theme.valueColor);
+    YAMLParser::decodeOptionalScalar(node, "trueColor", theme.trueColor);
+    YAMLParser::decodeOptionalScalar(node, "falseColor", theme.falseColor);
+    YAMLParser::decodeOptionalScalar(node, "IColor", theme.IColor);
+    YAMLParser::decodeOptionalScalar(node, "OColor", theme.OColor);
+    YAMLParser::decodeOptionalScalar(node, "TColor", theme.TColor);
+    YAMLParser::decodeOptionalScalar(node, "JColor", theme.JColor);
+    YAMLParser::decodeOptionalScalar(node, "LColor", theme.LColor);
+    YAMLParser::decodeOptionalScalar(node, "SColor", theme.SColor);
+    YAMLParser::decodeOptionalScalar(node, "ZColor", theme.ZColor);
 
     return true;
 }

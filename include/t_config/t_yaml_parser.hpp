@@ -26,15 +26,16 @@ class YAMLParser
 
     template <typename T>
     static void decodeOptionalScalar(
-        const YAML::Node &node, const std::string &name, T &value, std::function<bool(T)> validate
+        const YAML::Node &node, const std::string &name, T &value, std::function<bool(T)> validate  = [] (T) -> bool { return true; }
     );
 
     template <typename T>
     static void decodeOptionalVector(
-        const YAML::Node &node, const std::string &name, std::vector<T> &value, std::function<bool(T)> validate
+        const YAML::Node &node, const std::string &name, std::vector<T> &value, std::function<bool(T)> validate = [] (T) -> bool { return true; }
     );
 
     static void decodeOptionalBool(const YAML::Node &node, const std::string &name, int &value);
+    static void decodeOptionalString(const YAML::Node &node, const std::string &name, std::string &value);
 
     static void loadData(Config &config, Controls &controls);
     static void saveData(const Config &config, const Controls &controls);

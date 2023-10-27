@@ -121,6 +121,8 @@ Game::Game(Tetris::Config::Config &config, Tetris::Config::Controls &controls)
     this->comboDelayTicks    = 0;
     this->storeDelayTicks    = 0;
 
+    this->score.level = config.level;
+
     this->isSoftDrop = false;
 }
 

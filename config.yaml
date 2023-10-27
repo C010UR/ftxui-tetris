@@ -1,27 +1,138 @@
 config:
   easyMode: true
-  level: 1
+  level: 16
   updatesPerSecond: 240
-  currentTheme: Default
+  currentTheme: Deep Dark
   storeDelayMs: 500
   softDropDelayMs: 50
   softDropGravityMsPerRow: 50
   comboDelayMs: 6000
   debug: true
   themes:
-    - mainColors:
+    - name: Default
+      mainColorsGradient:
         - "#4cd137"
-        - "#4ccc3f"
-        - "#4cc747"
-        - "#4bb365"
-        - "#4a9e83"
-      gameOverColors:
+        - "#4cce3c"
+        - "#4ccb41"
+        - "#4cc54a"
+        - "#4bb85d"
+        - "#4bab70"
+        - "#42916a"
+        - "#387763"
+        - "#254f42"
+      gameOverColorsGradient:
         - "#e84118"
         - "#d63c1f"
         - "#c43725"
         - "#a02d32"
         - "#57194b"
-      name: Default
+      mainColor: "#4a9e83"
+      gameOverColor: "#57194b"
+      valueColor: "#4bb365"
+      trueColor: "#4cd137"
+      falseColor: "#e84118"
+      IColor: "#00a8ff"
+      OColor: "#fbc531"
+      TColor: "#9c88ff"
+      JColor: "#2b2cd5"
+      LColor: "#f28325"
+      SColor: "#4cd137"
+      ZColor: "#e84118"
+    - name: Ocean Breeze
+      mainColorsGradient:
+        - "#2985b3"
+        - "#2c82b0"
+        - "#2f7fb1"
+        - "#3776a9"
+        - "#3e609a"
+        - "#3e4a8d"
+        - "#383a7a"
+        - "#372f65"
+        - "#241f42"
+      gameOverColorsGradient:
+        - "#e84118"
+        - "#d63c1f"
+        - "#c43725"
+        - "#a02d32"
+        - "#57194b"
+      mainColor: "#4a9e83"
+      gameOverColor: "#57194b"
+      valueColor: "#4bb365"
+      trueColor: "#4cd137"
+      falseColor: "#e84118"
+      IColor: "#00a8ff"
+      OColor: "#fbc531"
+      TColor: "#9c88ff"
+      JColor: "#2b2cd5"
+      LColor: "#f28325"
+      SColor: "#4cd137"
+      ZColor: "#e84118"
+    - name: Autumn Haze
+      mainColorsGradient:
+        - "#e07a5f"
+        - "#e9a377"
+        - "#f2cc8f"
+        - "#d6c692"
+        - "#babf95"
+        - "#9eb988"
+        - "#81b29a"
+      gameOverColorsGradient:
+        - "#e84118"
+        - "#d63c1f"
+        - "#c43725"
+        - "#a02d32"
+        - "#57194b"
+      mainColor: "#4a9e83"
+      gameOverColor: "#57194b"
+      valueColor: "#4bb365"
+      trueColor: "#4cd137"
+      falseColor: "#e84118"
+      IColor: "#00a8ff"
+      OColor: "#fbc531"
+      TColor: "#9c88ff"
+      JColor: "#2b2cd5"
+      LColor: "#f28325"
+      SColor: "#4cd137"
+      ZColor: "#e84118"
+    - name: Deep Dark
+      mainColorsGradient:
+        - "#000022"
+        - "#000932"
+        - "#001242"
+        - "#005384"
+        - "#0094c6"
+        - "#005e7c"
+      gameOverColorsGradient:
+        - "#e84118"
+        - "#d63c1f"
+        - "#c43725"
+        - "#a02d32"
+        - "#57194b"
+      mainColor: "#4a9e83"
+      gameOverColor: "#57194b"
+      valueColor: "#4bb365"
+      trueColor: "#4cd137"
+      falseColor: "#e84118"
+      IColor: "#00a8ff"
+      OColor: "#fbc531"
+      TColor: "#9c88ff"
+      JColor: "#2b2cd5"
+      LColor: "#f28325"
+      SColor: "#4cd137"
+      ZColor: "#e84118"
+    - name: Blood moon
+      mainColorsGradient:
+        - "#c52233"
+        - "#a51c30"
+        - "#a7333f"
+        - "#74121d"
+        - "#580c1f"
+      gameOverColorsGradient:
+        - "#e84118"
+        - "#d63c1f"
+        - "#c43725"
+        - "#a02d32"
+        - "#57194b"
       mainColor: "#4a9e83"
       gameOverColor: "#57194b"
       valueColor: "#4bb365"

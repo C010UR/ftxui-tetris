@@ -9,6 +9,8 @@ project('FTXUI Tetris', 'cpp',
 
 add_global_arguments('-Wno-unused', language : 'cpp')
 
+install_data('config.yaml')
+
 incdir = include_directories('include')
 
 ftxui_screen_dep = dependency('ftxui-5.0.0-screen')
