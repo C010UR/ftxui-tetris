@@ -48,7 +48,7 @@ void YAMLParser::decodeOptionalBool(const YAML::Node &node, const std::string &n
     value = node[name].as<bool>();
 }
 
-void YAMLParser::loadData(Tetris::Config::Config &config, Tetris::Config::Controls &controls)
+void YAMLParser::loadData(Config &config, Controls &controls)
 {
     std::fstream fs;
     fs.open(YAMLParser::fileName, std::ios::out | std::ios::app);
@@ -56,11 +56,11 @@ void YAMLParser::loadData(Tetris::Config::Config &config, Tetris::Config::Contro
 
     YAML::Node data = YAML::LoadFile(YAMLParser::fileName);
 
-    config   = data["config"].as<Tetris::Config::Config>();
-    controls = data["controls"].as<Tetris::Config::Controls>();
+    config   = data["config"].as<Config>();
+    controls = data["controls"].as<Controls>();
 }
 
-void YAMLParser::saveData(const Tetris::Config::Config &config, const Tetris::Config::Controls &controls)
+void YAMLParser::saveData(const Config &config, const Controls &controls)
 {
     YAML::Node data;
 
@@ -75,9 +75,7 @@ void YAMLParser::saveData(const Tetris::Config::Config &config, const Tetris::Co
 namespace YAML
 {
 
-using Tetris::Config::YAMLParser;
-
-YAML::Node convert<Tetris::Config::Config>::encode(const Tetris::Config::Config &config)
+YAML::Node convert<Config>::encode(const Config &config)
 {
     YAML::Node node;
 
@@ -95,7 +93,7 @@ YAML::Node convert<Tetris::Config::Config>::encode(const Tetris::Config::Config 
     return node;
 }
 
-bool convert<Tetris::Config::Config>::decode(const YAML::Node &node, Tetris::Config::Config &config)
+bool convert<Config>::decode(const YAML::Node &node, Config &config)
 {
     if (!node.IsMap())
     {
@@ -116,7 +114,7 @@ bool convert<Tetris::Config::Config>::decode(const YAML::Node &node, Tetris::Con
     YAMLParser::decodeOptionalScalar(node, "softDropGravityMsPerRow", config.softDropGravity, basicDoubleValidator);
     YAMLParser::decodeOptionalScalar(node, "level", config.level, levelValidator);
 
-    config.themes = node["themes"].as<std::vector<Tetris::Config::Theme>>();
+    config.themes = node["themes"].as<std::vector<Theme>>();
 
     std::string currentTheme;
 
@@ -137,7 +135,7 @@ bool convert<Tetris::Config::Config>::decode(const YAML::Node &node, Tetris::Con
     return true;
 }
 
-YAML::Node convert<Tetris::Config::Controls>::encode(const Tetris::Config::Controls &controls)
+YAML::Node convert<Controls>::encode(const Controls &controls)
 {
     YAML::Node node;
 
@@ -209,7 +207,7 @@ bool convert<ftxui::Color>::decode(const YAML::Node &node, ftxui::Color &color)
     return false;
 }
 
-bool convert<Tetris::Config::Controls>::decode(const YAML::Node &node, Tetris::Config::Controls &controls)
+bool convert<Controls>::decode(const YAML::Node &node, Controls &controls)
 {
     if (!node.IsMap())
     {
@@ -230,7 +228,7 @@ bool convert<Tetris::Config::Controls>::decode(const YAML::Node &node, Tetris::C
     return true;
 }
 
-YAML::Node convert<Tetris::Config::Theme>::encode(const Tetris::Config::Theme &theme)
+YAML::Node convert<Theme>::encode(const Theme &theme)
 {
     YAML::Node node;
 
@@ -264,7 +262,7 @@ YAML::Node convert<Tetris::Config::Theme>::encode(const Tetris::Config::Theme &t
     return node;
 }
 
-bool convert<Tetris::Config::Theme>::decode(const YAML::Node &node, Tetris::Config::Theme &theme)
+bool convert<Theme>::decode(const YAML::Node &node, Theme &theme)
 {
     if (!node.IsMap())
     {
@@ -295,7 +293,7 @@ bool convert<Tetris::Config::Theme>::decode(const YAML::Node &node, Tetris::Conf
     return true;
 }
 
-YAML::Node convert<std::vector<Tetris::Config::Theme>>::encode(const std::vector<Tetris::Config::Theme> &themes)
+YAML::Node convert<std::vector<Theme>>::encode(const std::vector<Theme> &themes)
 {
     YAML::Node node(YAML::NodeType::Sequence);
 
@@ -307,9 +305,7 @@ YAML::Node convert<std::vector<Tetris::Config::Theme>>::encode(const std::vector
     return node;
 }
 
-bool convert<std::vector<Tetris::Config::Theme>>::decode(
-    const YAML::Node &node, std::vector<Tetris::Config::Theme> &themes
-)
+bool convert<std::vector<Theme>>::decode(const YAML::Node &node, std::vector<Theme> &themes)
 {
     if (!node.IsSequence() || !node.size())
     {
@@ -320,12 +316,12 @@ bool convert<std::vector<Tetris::Config::Theme>>::decode(
 
     for (YAML::const_iterator it = node.begin(); it != node.end(); ++it)
     {
-        themes.push_back(it->as<Tetris::Config::Theme>());
+        themes.push_back(it->as<Theme>());
     }
 
     if (themes.empty())
     {
-        Tetris::Config::Theme theme;
+        Theme theme;
         theme.setDefault();
 
         themes.push_back(theme);

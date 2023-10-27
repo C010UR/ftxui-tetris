@@ -15,21 +15,21 @@ class TetrominoFactory
 {
   private:
 
-    static std::vector<std::vector<Tetris::Game::Point>> OWallKickData;
-    static std::vector<std::vector<Tetris::Game::Point>> IWallKickData;
-    static std::vector<std::vector<Tetris::Game::Point>> JLTSZWallKickData;
+    static std::vector<std::vector<Point>> OWallKickData;
+    static std::vector<std::vector<Point>> IWallKickData;
+    static std::vector<std::vector<Point>> JLTSZWallKickData;
 
-    static std::vector<std::vector<std::vector<Tetris::Game::BlockType>>> I;
-    static std::vector<std::vector<std::vector<Tetris::Game::BlockType>>> O;
-    static std::vector<std::vector<std::vector<Tetris::Game::BlockType>>> T;
-    static std::vector<std::vector<std::vector<Tetris::Game::BlockType>>> L;
-    static std::vector<std::vector<std::vector<Tetris::Game::BlockType>>> J;
-    static std::vector<std::vector<std::vector<Tetris::Game::BlockType>>> S;
-    static std::vector<std::vector<std::vector<Tetris::Game::BlockType>>> Z;
+    static std::vector<std::vector<std::vector<BlockType>>> I;
+    static std::vector<std::vector<std::vector<BlockType>>> O;
+    static std::vector<std::vector<std::vector<BlockType>>> T;
+    static std::vector<std::vector<std::vector<BlockType>>> L;
+    static std::vector<std::vector<std::vector<BlockType>>> J;
+    static std::vector<std::vector<std::vector<BlockType>>> S;
+    static std::vector<std::vector<std::vector<BlockType>>> Z;
 
   public:
 
-    static Tetris::Game::Tetromino              get(Tetris::Game::TetrominoType type);
-    static std::vector<Tetris::Game::Tetromino> getBag();
+    static Tetromino              get(TetrominoType type);
+    static std::vector<Tetromino> getBag();
 };
 } // namespace Tetris::Game

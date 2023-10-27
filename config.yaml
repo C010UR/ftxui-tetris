@@ -3,7 +3,7 @@ config:
   level: 1
   updatesPerSecond: 240
   currentTheme: Default
-  storeDelayMs: 2000000
+  storeDelayMs: 500
   softDropDelayMs: 50
   softDropGravityMsPerRow: 50
   comboDelayMs: 6000

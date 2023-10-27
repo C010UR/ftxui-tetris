@@ -12,7 +12,7 @@ ftxui::Element Header::tetris()
                ftxui::text("   ██║   ███████╗   ██║   ██║  ██║██║███████║"),
                ftxui::text("   ╚═╝   ╚══════╝   ╚═╝   ╚═╝  ╚═╝╚═╝╚══════╝"),
            })
-           | ftxui::color(Tetris::Renderer::CurrentTheme::mainGradient());
+           | ftxui::color(CurrentTheme::mainGradient());
 }
 
 ftxui::Element Header::gameOver()
@@ -25,7 +25,7 @@ ftxui::Element Header::gameOver()
                ftxui::text("╚██████╔╝██║  ██║██║ ╚═╝ ██║███████╗    ╚██████╔╝ ╚████╔╝ ███████╗██║  ██║"),
                ftxui::text(" ╚═════╝ ╚═╝  ╚═╝╚═╝     ╚═╝╚══════╝     ╚═════╝   ╚═══╝  ╚══════╝╚═╝  ╚═╝"),
            })
-           | ftxui::color(Tetris::Renderer::CurrentTheme::badGradient());
+           | ftxui::color(CurrentTheme::badGradient());
 }
 
 ftxui::Element Header::options()
@@ -38,7 +38,7 @@ ftxui::Element Header::options()
                ftxui::text("╚██████╔╝██║        ██║   ██║╚██████╔╝██║ ╚████║███████║"),
                ftxui::text(" ╚═════╝ ╚═╝        ╚═╝   ╚═╝ ╚═════╝ ╚═╝  ╚═══╝╚══════╝"),
            })
-           | ftxui::color(Tetris::Renderer::CurrentTheme::mainGradient());
+           | ftxui::color(CurrentTheme::mainGradient());
 }
 
 ftxui::Element Header::controls()
@@ -51,6 +51,6 @@ ftxui::Element Header::controls()
                ftxui::text("╚██████╗╚██████╔╝██║ ╚████║   ██║   ██║  ██║╚██████╔╝███████╗███████║"),
                ftxui::text(" ╚═════╝ ╚═════╝ ╚═╝  ╚═══╝   ╚═╝   ╚═╝  ╚═╝ ╚═════╝ ╚══════╝╚══════╝"),
            })
-           | ftxui::color(Tetris::Renderer::CurrentTheme::mainGradient());
+           | ftxui::color(CurrentTheme::mainGradient());
 }
 } // namespace Tetris::Renderer

@@ -25,10 +25,10 @@ class Game
 {
   private:
 
-    Tetris::Game::Board board;
-    Tetris::Game::Score score;
-    Tetris::Game::Hold  hold;
-    Tetris::Game::Next  next;
+    Board board;
+    Score score;
+    Hold  hold;
+    Next  next;
 
     Tetris::Config::Controls controls;
     Tetris::Config::Config   config;

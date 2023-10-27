@@ -49,5 +49,6 @@ executable('tetris',
     ftxui_dom_dep,
     ftxui_component_dep,
     yaml_cpp_dep
-  ]
+  ],
+  install: true
 )

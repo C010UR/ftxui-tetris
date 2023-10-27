@@ -8,12 +8,12 @@ Hold::Hold()
     this->isBlocked = false;
 }
 
-Tetris::Game::Tetromino Hold::get()
+Tetromino Hold::get()
 {
     return this->current.value();
 }
 
-void Hold::set(Tetris::Game::Tetromino tetromino)
+void Hold::set(Tetromino tetromino)
 {
     this->current = tetromino;
     this->current->reset();

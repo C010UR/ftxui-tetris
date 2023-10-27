@@ -71,7 +71,7 @@ void Game::handleStore()
         return;
     }
 
-    Tetris::Game::SpinType lastSpinType = this->board.getCurrent()->getSpinType();
+    SpinType lastSpinType = this->board.getCurrent()->getSpinType();
 
     int linesCleared = this->board.store(this->next.pop());
 
@@ -87,7 +87,7 @@ void Game::handleStore()
 
 void Game::handleSwapHold()
 {
-    Tetris::Game::Tetromino tetromino = this->hold.has() ? this->hold.get() : this->next.pop();
+    Tetromino tetromino = this->hold.has() ? this->hold.get() : this->next.pop();
 
     this->hold.set(*this->board.getCurrent());
     this->board.setCurrent(tetromino);
@@ -109,10 +109,10 @@ void Game::handleCombo()
 
 Game::Game(Tetris::Config::Config &config, Tetris::Config::Controls &controls)
 {
-    this->score = Tetris::Game::Score();
-    this->next  = Tetris::Game::Next();
-    this->hold  = Tetris::Game::Hold();
-    this->board = Tetris::Game::Board(this->next.pop());
+    this->score = Score();
+    this->next  = Next();
+    this->hold  = Hold();
+    this->board = Board(this->next.pop());
 
     this->config   = config;
     this->controls = controls;
@@ -148,11 +148,11 @@ void Game::handleInput()
 
             break;
         case Engine::Trigger::KEY_ROTATE_LEFT:
-            this->board.tryRotateCurrent(Tetris::Game::RotationType::LEFT);
+            this->board.tryRotateCurrent(RotationType::LEFT);
 
             break;
         case Engine::Trigger::KEY_ROTATE_RIGHT:
-            this->board.tryRotateCurrent(Tetris::Game::RotationType::RIGHT);
+            this->board.tryRotateCurrent(RotationType::RIGHT);
 
             break;
         case Engine::Trigger::KEY_SWAP_HOLD:
@@ -165,7 +165,7 @@ void Game::handleInput()
 
             break;
         case Engine::Trigger::KEY_HARD_DROP:
-            this->score.add(Tetris::Game::ScoreType::HARD_DROP, (int)this->board.getRowsToObstacle());
+            this->score.add(ScoreType::HARD_DROP, (int)this->board.getRowsToObstacle());
             this->board.tryMoveCurrent({0, this->board.getRowsToObstacle()});
             this->handleStore();
 
@@ -191,7 +191,7 @@ void Game::handleTriggers()
         case Tetris::Engine::Trigger::NEXT_ROW:
             if (this->isSoftDrop)
             {
-                this->score.add(Tetris::Game::ScoreType::SOFT_DROP, 1);
+                this->score.add(ScoreType::SOFT_DROP, 1);
             }
 
             break;

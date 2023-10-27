@@ -1,4 +1,5 @@
 #include "t_game/t_board.hpp"
+
 #include "ftxui/dom/elements.hpp"
 #include "ftxui/dom/node.hpp"
 #include "ftxui/screen/screen.hpp"
@@ -11,7 +12,7 @@ bool Board::isLineFull(int line)
 {
     for (int col = 0; col < (int)this->board[line].size(); col++)
     {
-        if (this->board[line][col] == Tetris::Game::BoardBlockType::NONE)
+        if (this->board[line][col] == BoardBlockType::NONE)
         {
             return false;
         }
@@ -44,7 +45,7 @@ int Board::removeFullLines()
 
     for (int row = 0; row < fullLineCount; row++)
     {
-        this->board.push_back(std::vector<Tetris::Game::BoardBlockType>(width, Tetris::Game::BoardBlockType::NONE));
+        this->board.push_back(std::vector<BoardBlockType>(width, BoardBlockType::NONE));
         this->boardColor.push_back(std::vector<ftxui::Color>(width, ftxui::Color::Default));
     }
 
@@ -57,7 +58,7 @@ int Board::removeFullLines()
     return fullLineCount;
 }
 
-Board::Board(Tetris::Game::Tetromino tetromino)
+Board::Board(Tetromino tetromino)
 {
     this->isGameOver = false;
 
@@ -66,19 +67,19 @@ Board::Board(Tetris::Game::Tetromino tetromino)
 
     for (int i = 0; i < height; i++)
     {
-        this->board.push_back(std::vector<Tetris::Game::BoardBlockType>(width, Tetris::Game::BoardBlockType::NONE));
+        this->board.push_back(std::vector<BoardBlockType>(width, BoardBlockType::NONE));
         this->boardColor.push_back(std::vector<ftxui::Color>(width, ftxui::Color::Default));
     }
 
     this->setCurrent(tetromino);
 }
 
-Tetris::Game::Tetromino *Board::getCurrent()
+Tetromino *Board::getCurrent()
 {
     return &this->current;
 }
 
-void Board::setCurrent(Tetris::Game::Tetromino tetromino)
+void Board::setCurrent(Tetromino tetromino)
 {
     this->current = tetromino;
     this->current.reset(this->width);
@@ -86,9 +87,9 @@ void Board::setCurrent(Tetris::Game::Tetromino tetromino)
     this->isGameOver = this->current.isColliding(this->board);
 }
 
-bool Board::tryRotateCurrent(Tetris::Game::RotationType rotation)
+bool Board::tryRotateCurrent(RotationType rotation)
 {
-    Tetris::Game::Point offset;
+    Point offset;
 
     bool canRotate = this->current.canRotate(this->board, offset, rotation);
 
@@ -100,14 +101,14 @@ bool Board::tryRotateCurrent(Tetris::Game::RotationType rotation)
     return canRotate;
 }
 
-bool Board::canRotateCurrent(Tetris::Game::RotationType rotation)
+bool Board::canRotateCurrent(RotationType rotation)
 {
-    Tetris::Game::Point offset;
+    Point offset;
 
     return this->current.canRotate(this->board, offset, rotation);
 }
 
-bool Board::tryMoveCurrent(Tetris::Game::Point offset)
+bool Board::tryMoveCurrent(Point offset)
 {
     bool canRotate = this->current.canMove(this->board, offset);
 
@@ -119,7 +120,7 @@ bool Board::tryMoveCurrent(Tetris::Game::Point offset)
     return canRotate;
 }
 
-bool Board::canMoveCurrent(Tetris::Game::Point offset)
+bool Board::canMoveCurrent(Point offset)
 {
     return this->current.canMove(this->board, offset);
 }
@@ -135,7 +136,7 @@ bool Board::isBoardClear()
     {
         for (int col = 0; col < (int)this->board[row].size(); col++)
         {
-            if (this->board[row][col] == Tetris::Game::BoardBlockType::BLOCK)
+            if (this->board[row][col] == BoardBlockType::BLOCK)
             {
                 return false;
             }
@@ -145,7 +146,7 @@ bool Board::isBoardClear()
     return true;
 }
 
-int Board::store(Tetris::Game::Tetromino newTetromino)
+int Board::store(Tetromino newTetromino)
 {
     auto data = this->current.getData();
 
@@ -156,9 +157,9 @@ int Board::store(Tetris::Game::Tetromino newTetromino)
     {
         for (int col = 0; col < (int)data[row].size(); col++)
         {
-            if (data[row][col] == Tetris::Game::BlockType::BLOCK)
+            if (data[row][col] == BlockType::BLOCK)
             {
-                this->board[row + y][col + x]      = Tetris::Game::BoardBlockType::BLOCK;
+                this->board[row + y][col + x]      = BoardBlockType::BLOCK;
                 this->boardColor[row + y][col + x] = this->current.color;
             }
         }
@@ -179,67 +180,66 @@ ftxui::Element Board::getDebugElement(double stepY)
     bool canMoveRight = this->current.canMove(this->board, {1, 0});
     bool canMoveDown  = this->current.canMove(this->board, {0, stepY});
 
-    Tetris::Game::Point offsetLeft;
-    bool canRotateLeft = this->current.canRotate(this->board, offsetLeft, Tetris::Game::RotationType::LEFT);
+    Point offsetLeft;
+    bool  canRotateLeft = this->current.canRotate(this->board, offsetLeft, RotationType::LEFT);
 
-    Tetris::Game::Point offsetRight;
-    bool canRotateRight = this->current.canRotate(this->board, offsetRight, Tetris::Game::RotationType::RIGHT);
+    Point offsetRight;
+    bool  canRotateRight = this->current.canRotate(this->board, offsetRight, RotationType::RIGHT);
 
     ftxui::Elements testPoints;
 
-    for (int i = 0; i < (int)this->current.testPoints.size(); i++) {
+    for (int i = 0; i < (int)this->current.testPoints.size(); i++)
+    {
         testPoints.push_back(
             Tetris::Renderer::KeyValue::create("Point " + std::to_string(i + 1), this->current.testPoints[i])
         );
     }
 
-    return ftxui::hbox({ftxui::vbox(
-        {ftxui::window(
-             ftxui::text("Tetromino Movement"),
-             ftxui::vbox({
-                 Tetris::Renderer::KeyValue::create("Position", this->current.currentPosition),
-                 Tetris::Renderer::KeyValue::create(
-                     "Type", Tetris::Renderer::DataTransformer::toString(this->current.type)
-                 ),
-                 Tetris::Renderer::KeyValue::create("Color", this->current.color),
-                 Tetris::Renderer::KeyValue::create("Can move left", canMoveLeft),
-                 Tetris::Renderer::KeyValue::create("Can move right", canMoveRight),
-                 Tetris::Renderer::KeyValue::create("Can move down", canMoveDown),
-             })
-         ),
-         ftxui::window(
-             ftxui::text("Tetromino Rotation"),
-             ftxui::vbox({
-                 Tetris::Renderer::KeyValue::create(
-                     "Rotation", Tetris::Renderer::DataTransformer::transformRotation(this->current.currentRotation)
-                 ),
-                 Tetris::Renderer::KeyValue::create("Can rotate left", canRotateLeft),
-                 Tetris::Renderer::KeyValue::create("Left rotation offset", offsetLeft),
-                 Tetris::Renderer::KeyValue::create("Can rotate right", canRotateRight),
-                 Tetris::Renderer::KeyValue::create("Right rotation offset", offsetRight),
-                 Tetris::Renderer::KeyValue::create(
-                     "Spin type", Tetris::Renderer::DataTransformer::toString(this->current.getSpinType())
-                 ),
-             })
-         ),
-         ftxui::window(
-             ftxui::text("Board"),
-             ftxui::vbox({
-                 Tetris::Renderer::KeyValue::create("Width", Board::width),
-                 Tetris::Renderer::KeyValue::create("Height", Board::height),
-                 Tetris::Renderer::KeyValue::create("Game over", this->isGameOver),
-                 Tetris::Renderer::KeyValue::create("Is board clear", this->isBoardClear()),
-                 Tetris::Renderer::KeyValue::create("Can store", !this->canStore()),
-             })
-         )}
-    ) | ftxui::size(ftxui::WIDTH, ftxui::EQUAL, 40),
-    ftxui::vbox({
-        ftxui::window(
-            ftxui::text("Test points"),
-            ftxui::vbox(testPoints)
-        )
-    }) | ftxui::size(ftxui::WIDTH, ftxui::EQUAL, 20)
-    });
+    return ftxui::hbox(
+        {ftxui::vbox(
+             {ftxui::window(
+                  ftxui::text("Tetromino Movement"),
+                  ftxui::vbox({
+                      Tetris::Renderer::KeyValue::create("Position", this->current.currentPosition),
+                      Tetris::Renderer::KeyValue::create(
+                          "Type", Tetris::Renderer::DataTransformer::toString(this->current.type)
+                      ),
+                      Tetris::Renderer::KeyValue::create("Color", this->current.color),
+                      Tetris::Renderer::KeyValue::create("Can move left", canMoveLeft),
+                      Tetris::Renderer::KeyValue::create("Can move right", canMoveRight),
+                      Tetris::Renderer::KeyValue::create("Can move down", canMoveDown),
+                  })
+              ),
+              ftxui::window(
+                  ftxui::text("Tetromino Rotation"),
+                  ftxui::vbox({
+                      Tetris::Renderer::KeyValue::create(
+                          "Rotation",
+                          Tetris::Renderer::DataTransformer::transformRotation(this->current.currentRotation)
+                      ),
+                      Tetris::Renderer::KeyValue::create("Can rotate left", canRotateLeft),
+                      Tetris::Renderer::KeyValue::create("Left rotation offset", offsetLeft),
+                      Tetris::Renderer::KeyValue::create("Can rotate right", canRotateRight),
+                      Tetris::Renderer::KeyValue::create("Right rotation offset", offsetRight),
+                      Tetris::Renderer::KeyValue::create(
+                          "Spin type", Tetris::Renderer::DataTransformer::toString(this->current.getSpinType())
+                      ),
+                  })
+              ),
+              ftxui::window(
+                  ftxui::text("Board"),
+                  ftxui::vbox({
+                      Tetris::Renderer::KeyValue::create("Width", Board::width),
+                      Tetris::Renderer::KeyValue::create("Height", Board::height),
+                      Tetris::Renderer::KeyValue::create("Game over", this->isGameOver),
+                      Tetris::Renderer::KeyValue::create("Is board clear", this->isBoardClear()),
+                      Tetris::Renderer::KeyValue::create("Can store", !this->canStore()),
+                  })
+              )}
+         ) | ftxui::size(ftxui::WIDTH, ftxui::EQUAL, 40),
+         ftxui::vbox({ftxui::window(ftxui::text("Test points"), ftxui::vbox(testPoints))})
+             | ftxui::size(ftxui::WIDTH, ftxui::EQUAL, 20)}
+    );
 }
 
 ftxui::Element Board::getElement(bool isEasyMode)

@@ -19,7 +19,7 @@ class Config
     double softDropGravity;
     int    level;
 
-    std::vector<Tetris::Config::Theme> themes;
+    std::vector<Theme> themes;
 
     int currentTheme;
 

@@ -18,12 +18,12 @@ void Score::calculateLevel()
     this->level = std::max(this->level, level);
 }
 
-Tetris::Game::ScoreType Score::calculateScore(int linesCleared, bool isBoardClear, Tetris::Game::SpinType spin)
+ScoreType Score::calculateScore(int linesCleared, bool isBoardClear, SpinType spin)
 {
     {
-        if (linesCleared == 0 && spin == Tetris::Game::SpinType::NONE)
+        if (linesCleared == 0 && spin == SpinType::NONE)
         {
-            return Tetris::Game::ScoreType::NONE;
+            return ScoreType::NONE;
         }
 
         if (isBoardClear)
@@ -31,54 +31,54 @@ Tetris::Game::ScoreType Score::calculateScore(int linesCleared, bool isBoardClea
             switch (linesCleared)
             {
             case 1:
-                return Tetris::Game::ScoreType::SINGLE_LINE_PERFECT_CLEAR;
+                return ScoreType::SINGLE_LINE_PERFECT_CLEAR;
             case 2:
-                return Tetris::Game::ScoreType::DOUBLE_LINE_PERFECT_CLEAR;
+                return ScoreType::DOUBLE_LINE_PERFECT_CLEAR;
             case 3:
-                return Tetris::Game::ScoreType::TRIPLE_LINE_PERFECT_CLEAR;
+                return ScoreType::TRIPLE_LINE_PERFECT_CLEAR;
             default:
-                return Tetris::Game::ScoreType::TETRIS_LINE_PERFECT_CLEAR;
+                return ScoreType::TETRIS_LINE_PERFECT_CLEAR;
             }
         }
 
-        if (spin == Tetris::Game::SpinType::T_SPIN_MINI)
+        if (spin == SpinType::T_SPIN_MINI)
         {
             switch (linesCleared)
             {
             case 1:
-                return Tetris::Game::ScoreType::MINI_T_SPIN_SINGLE;
+                return ScoreType::MINI_T_SPIN_SINGLE;
             case 2:
-                return Tetris::Game::ScoreType::MINI_T_SPIN_DOUBLE;
+                return ScoreType::MINI_T_SPIN_DOUBLE;
             default:
-                return Tetris::Game::ScoreType::MINI_T_SPIN_NO_LINES;
+                return ScoreType::MINI_T_SPIN_NO_LINES;
             }
         }
 
-        if (spin == Tetris::Game::SpinType::T_SPIN_FULL)
+        if (spin == SpinType::T_SPIN_FULL)
         {
             switch (linesCleared)
             {
             case 1:
-                return Tetris::Game::ScoreType::T_SPIN_SINGLE;
+                return ScoreType::T_SPIN_SINGLE;
             case 2:
-                return Tetris::Game::ScoreType::T_SPIN_DOUBLE;
+                return ScoreType::T_SPIN_DOUBLE;
             case 3:
-                return Tetris::Game::ScoreType::T_SPIN_TRIPLE;
+                return ScoreType::T_SPIN_TRIPLE;
             default:
-                return Tetris::Game::ScoreType::T_SPIN_NO_LINES;
+                return ScoreType::T_SPIN_NO_LINES;
             }
         }
 
         switch (linesCleared)
         {
         case 1:
-            return Tetris::Game::ScoreType::SINGLE;
+            return ScoreType::SINGLE;
         case 2:
-            return Tetris::Game::ScoreType::DOUBLE;
+            return ScoreType::DOUBLE;
         case 3:
-            return Tetris::Game::ScoreType::TRIPLE;
+            return ScoreType::TRIPLE;
         default:
-            return Tetris::Game::ScoreType::TETRIS;
+            return ScoreType::TETRIS;
         }
     }
 }
@@ -89,19 +89,19 @@ Score::Score(int level)
     this->level             = level;
     this->totalLinesCleared = 0;
     this->combo             = 0;
-    this->lastScoreType     = Tetris::Game::ScoreType::NONE;
+    this->lastScoreType     = ScoreType::NONE;
 }
 
-void Score::add(Tetris::Game::ScoreType type, int lines)
+void Score::add(ScoreType type, int lines)
 {
-    if (type == Tetris::Game::ScoreType::SOFT_DROP)
+    if (type == ScoreType::SOFT_DROP)
     {
         this->score += 1 * lines;
 
         return;
     }
 
-    if (type == Tetris::Game::ScoreType::HARD_DROP)
+    if (type == ScoreType::HARD_DROP)
     {
         this->score += 2 * lines;
 
@@ -112,41 +112,41 @@ void Score::add(Tetris::Game::ScoreType type, int lines)
 
     switch (type)
     {
-    case Tetris::Game::ScoreType::SINGLE:
-    case Tetris::Game::ScoreType::MINI_T_SPIN_NO_LINES:
+    case ScoreType::SINGLE:
+    case ScoreType::MINI_T_SPIN_NO_LINES:
         score = 100;
         break;
-    case Tetris::Game::ScoreType::MINI_T_SPIN_SINGLE:
+    case ScoreType::MINI_T_SPIN_SINGLE:
         score = 200;
         break;
-    case Tetris::Game::ScoreType::DOUBLE:
+    case ScoreType::DOUBLE:
         score = 300;
         break;
-    case Tetris::Game::ScoreType::T_SPIN_NO_LINES:
-    case Tetris::Game::ScoreType::MINI_T_SPIN_DOUBLE:
+    case ScoreType::T_SPIN_NO_LINES:
+    case ScoreType::MINI_T_SPIN_DOUBLE:
         score = 400;
         break;
-    case Tetris::Game::ScoreType::TRIPLE:
+    case ScoreType::TRIPLE:
         score = 500;
         break;
-    case Tetris::Game::ScoreType::TETRIS:
-    case Tetris::Game::ScoreType::SINGLE_LINE_PERFECT_CLEAR:
+    case ScoreType::TETRIS:
+    case ScoreType::SINGLE_LINE_PERFECT_CLEAR:
         score = 800;
         break;
-    case Tetris::Game::ScoreType::T_SPIN_SINGLE:
+    case ScoreType::T_SPIN_SINGLE:
         score = 800;
         break;
-    case Tetris::Game::ScoreType::T_SPIN_DOUBLE:
-    case Tetris::Game::ScoreType::DOUBLE_LINE_PERFECT_CLEAR:
+    case ScoreType::T_SPIN_DOUBLE:
+    case ScoreType::DOUBLE_LINE_PERFECT_CLEAR:
         score = 1200;
         break;
-    case Tetris::Game::ScoreType::T_SPIN_TRIPLE:
+    case ScoreType::T_SPIN_TRIPLE:
         score = 1600;
         break;
-    case Tetris::Game::ScoreType::TRIPLE_LINE_PERFECT_CLEAR:
+    case ScoreType::TRIPLE_LINE_PERFECT_CLEAR:
         score = 1800;
         break;
-    case Tetris::Game::ScoreType::TETRIS_LINE_PERFECT_CLEAR:
+    case ScoreType::TETRIS_LINE_PERFECT_CLEAR:
         score = 2000;
         break;
     default:
@@ -158,7 +158,7 @@ void Score::add(Tetris::Game::ScoreType type, int lines)
     this->lastScoreType = type;
 }
 
-void Score::update(int linesCleared, bool isBoardClear, Tetris::Game::SpinType spin)
+void Score::update(int linesCleared, bool isBoardClear, SpinType spin)
 {
     if (linesCleared > 0)
     {
@@ -187,7 +187,7 @@ double Score::getGravity()
 void Score::resetCombo()
 {
     this->combo         = 0;
-    this->lastScoreType = Tetris::Game::ScoreType::NONE;
+    this->lastScoreType = ScoreType::NONE;
 }
 
 ftxui::Element Score::getStatsElement()

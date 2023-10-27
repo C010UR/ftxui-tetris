@@ -7,20 +7,20 @@ void Next::checkBag()
 {
     if (!bag.size() || this->index == (int)this->bag.size())
     {
-        this->bag   = Tetris::Game::TetrominoFactory::getBag();
+        this->bag   = TetrominoFactory::getBag();
         this->index = 0;
     }
 }
 
 Next::Next()
 {
-    this->bag   = Tetris::Game::TetrominoFactory::getBag();
+    this->bag   = TetrominoFactory::getBag();
     this->index = 0;
 }
 
-Tetris::Game::Tetromino Next::pop()
+Tetromino Next::pop()
 {
-    Tetris::Game::Tetromino next = this->bag[this->index];
+    Tetromino next = this->bag[this->index];
 
     this->index++;
     this->checkBag();

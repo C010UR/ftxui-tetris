@@ -12,8 +12,8 @@ class Next
 {
   private:
 
-    std::vector<Tetris::Game::Tetromino> bag;
-    int                                  index;
+    std::vector<Tetromino> bag;
+    int                    index;
 
     void checkBag();
 
@@ -21,7 +21,7 @@ class Next
 
     Next();
 
-    Tetris::Game::Tetromino pop();
+    Tetromino pop();
 
     ftxui::Element getElement();
 };

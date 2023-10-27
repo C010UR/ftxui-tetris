@@ -15,18 +15,18 @@ class Tetromino
 {
   private:
 
-    tetromino_rotations_t                         tetromino;
-    std::vector<std::vector<Tetris::Game::Point>> wallKickOffsets;
-    int                                           rotate(Tetris::Game::RotationType rotation);
+    tetromino_rotations_t           tetromino;
+    std::vector<std::vector<Point>> wallKickOffsets;
+    int                             rotate(RotationType rotation);
 
   public:
 
-    Tetris::Game::Point currentPosition;
+    Point currentPosition;
 
-    Tetris::Game::TetrominoType type;
-    ftxui::Color                color;
+    TetrominoType type;
+    ftxui::Color  color;
 
-    std::vector<Tetris::Game::Point> testPoints;
+    std::vector<Point> testPoints;
 
     int  currentRotation;
     bool isLastMoveResultedInSpin;
@@ -35,29 +35,27 @@ class Tetromino
     Tetromino(){};
 
     Tetromino(
-        tetromino_rotations_t                         tetromino,
-        std::vector<std::vector<Tetris::Game::Point>> wallKickOffsets,
-        ftxui::Color                                  color,
-        Tetris::Game::TetrominoType                   type
+        tetromino_rotations_t           tetromino,
+        std::vector<std::vector<Point>> wallKickOffsets,
+        ftxui::Color                    color,
+        TetrominoType                   type
     );
 
     static tetromino_rotations_t parseInputTetromino(std::vector<std::vector<std::string>> data, int size);
 
-    std::vector<Tetris::Game::Point> getWallKickTestData(Tetris::Game::RotationType rotation);
+    std::vector<Point> getWallKickTestData(RotationType rotation);
 
-    bool   canMove(const board_t &board, Tetris::Game::Point offset);
-    bool   canRotate(const board_t &board, Tetris::Game::Point &offset, Tetris::Game::RotationType rotation);
+    bool   canMove(const board_t &board, Point offset);
+    bool   canRotate(const board_t &board, Point &offset, RotationType rotation);
     bool   isColliding(const board_t &board);
     double getRowsToObstacle(const board_t &board);
 
-    void move(
-        const board_t &board, Tetris::Game::Point offset, Tetris::Game::RotationType = Tetris::Game::RotationType::NONE
-    );
+    void move(const board_t &board, Point offset, RotationType = RotationType::NONE);
     void reset();
     void reset(int width);
 
-    void                   resetSpinData();
-    Tetris::Game::SpinType getSpinType();
+    void     resetSpinData();
+    SpinType getSpinType();
 
     tetromino_t getData();
     tetromino_t getData(int rotation);

@@ -12,7 +12,7 @@ class Hold
 {
   private:
 
-    std::optional<Tetris::Game::Tetromino> current;
+    std::optional<Tetromino> current;
 
   public:
 
@@ -20,9 +20,9 @@ class Hold
 
     Hold();
 
-    Tetris::Game::Tetromino get();
-    void                    set(Tetris::Game::Tetromino tetromino);
-    bool                    has();
+    Tetromino get();
+    void      set(Tetromino tetromino);
+    bool      has();
 
     void block();
     void unblock();

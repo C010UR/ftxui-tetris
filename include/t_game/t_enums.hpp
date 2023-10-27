@@ -64,7 +64,7 @@ enum class ScoreType
     NONE
 };
 
-typedef std::vector<std::vector<Tetris::Game::BoardBlockType>> board_t;
-typedef std::vector<std::vector<Tetris::Game::BlockType>> tetromino_t;
-typedef std::vector<tetromino_t> tetromino_rotations_t;
+typedef std::vector<std::vector<BoardBlockType>> board_t;
+typedef std::vector<std::vector<BlockType>>      tetromino_t;
+typedef std::vector<tetromino_t>                 tetromino_rotations_t;
 } // namespace Tetris::Game

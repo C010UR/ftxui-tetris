@@ -23,7 +23,7 @@ class Board
     std::vector<std::vector<ftxui::Color>> boardColor;
     board_t                                board;
 
-    Tetris::Game::Tetromino current;
+    Tetromino current;
 
     bool isLineFull(int line);
     int  removeFullLines();
@@ -37,22 +37,22 @@ class Board
 
     Board(){};
 
-    Board(Tetris::Game::Tetromino tetromino);
+    Board(Tetromino tetromino);
 
-    Tetris::Game::Tetromino *getCurrent();
+    Tetromino *getCurrent();
 
-    void setCurrent(Tetris::Game::Tetromino tetromino);
+    void setCurrent(Tetromino tetromino);
 
-    bool   tryRotateCurrent(Tetris::Game::RotationType rotation);
-    bool   canRotateCurrent(Tetris::Game::RotationType rotation);
-    bool   tryMoveCurrent(Tetris::Game::Point offset);
-    bool   canMoveCurrent(Tetris::Game::Point offset);
+    bool   tryRotateCurrent(RotationType rotation);
+    bool   canRotateCurrent(RotationType rotation);
+    bool   tryMoveCurrent(Point offset);
+    bool   canMoveCurrent(Point offset);
     double getRowsToObstacle();
 
     bool canStore();
     bool isBoardClear();
 
-    int store(Tetris::Game::Tetromino newTetromino);
+    int store(Tetromino newTetromino);
 
     ftxui::Element getDebugElement(double stepX = 1);
     ftxui::Element getElement(bool isEasyMode = false);

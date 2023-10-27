@@ -32,16 +32,16 @@ class Menu
     ftxui::ScreenInteractive &screen;
     ftxui::Component          tab;
 
-    Tetris::Menu::MainMenu  mainMenu;
-    Tetris::Menu::GameOver  gameOverMenu;
-    Tetris::Menu::Options   optionsMenu;
-    Tetris::Menu::Controls  controlsMenu;
-    Tetris::Menu::ChangeKey changeKeyMenu;
+    MainMenu  mainMenu;
+    GameOver  gameOverMenu;
+    Options   optionsMenu;
+    Controls  controlsMenu;
+    ChangeKey changeKeyMenu;
 
-    Tetris::Menu::MenuType currentMenu;
-    int                    currentMenuIndex;
+    MenuType currentMenu;
+    int      currentMenuIndex;
 
-    void setMenu(Tetris::Menu::MenuType menu);
+    void setMenu(MenuType menu);
     void startGame();
     void exitGame();
 
