@@ -2,12 +2,12 @@ config:
   easyMode: true
   level: 16
   updatesPerSecond: 240
-  currentTheme: Deep Dark
+  currentTheme: Ocean Breeze
   storeDelayMs: 500
   softDropDelayMs: 50
   softDropGravityMsPerRow: 50
   comboDelayMs: 6000
-  debug: true
+  debug: false
   themes:
     - name: Default
       mainColorsGradient:
