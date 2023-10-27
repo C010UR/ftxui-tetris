@@ -24,6 +24,7 @@ class Controls
     std::string softDrop;
     std::string hardDrop;
     std::string forfeit;
+    std::string retry;
 
     Controls();
 

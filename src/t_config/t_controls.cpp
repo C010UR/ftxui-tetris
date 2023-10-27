@@ -23,6 +23,7 @@ Controls::Controls()
     this->softDrop    = "s";
     this->hardDrop    = " ";
     this->forfeit     = "t";
+    this->retry        = "r";
 }
 
 Tetris::Engine::Trigger Controls::handleEvent(ftxui::Event event)
@@ -65,6 +66,11 @@ Tetris::Engine::Trigger Controls::handleEvent(ftxui::Event event)
     if (this->isCharacter(event, this->forfeit))
     {
         return Tetris::Engine::Trigger::KEY_FORFEIT;
+    }
+    
+    if (this->isCharacter(event, this->retry))
+    {
+        return Tetris::Engine::Trigger::KEY_RETRY;
     }
 
     return Tetris::Engine::Trigger::NONE;

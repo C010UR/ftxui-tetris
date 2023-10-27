@@ -14,6 +14,7 @@
 #include "t_game/t_next.hpp"
 #include "t_game/t_score.hpp"
 #include "t_game/t_tetromino.hpp"
+#include "t_renderer/t_enums.hpp"
 #include "t_renderer/t_key_value.hpp"
 
 #include <unordered_map>
@@ -53,6 +54,8 @@ class Game
     void handleCombo();
 
   public:
+
+    Tetris::Engine::ExitType exitType;
 
     Game(Tetris::Config::Config &config, Tetris::Config::Controls &controls);
 

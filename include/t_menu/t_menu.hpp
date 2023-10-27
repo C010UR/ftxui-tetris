@@ -47,7 +47,7 @@ class Menu
 
   public:
 
-    bool isStartGame;
+    Tetris::Engine::ExitType exitType;
 
     Menu(
         ftxui::ScreenInteractive &screen,

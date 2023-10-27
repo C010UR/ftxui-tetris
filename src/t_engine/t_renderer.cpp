@@ -18,7 +18,7 @@ void Renderer::configureScreen(ftxui::ScreenInteractive &screen)
     screen.SetCursor(cursor);
 }
 
-bool Renderer::menuLoop(Tetris::Config::Config &config, Tetris::Config::Controls &controls, bool isGameOver)
+ExitType Renderer::menuLoop(Tetris::Config::Config &config, Tetris::Config::Controls &controls, bool isGameOver)
 {
     ftxui::ScreenInteractive screen = ftxui::ScreenInteractive::Fullscreen();
     Renderer::configureScreen(screen);
@@ -31,10 +31,10 @@ bool Renderer::menuLoop(Tetris::Config::Config &config, Tetris::Config::Controls
 
     screen.Loop(component);
 
-    return menu.isStartGame;
+    return menu.exitType;
 }
 
-bool Renderer::gameLoop(Tetris::Config::Config &config, Tetris::Config::Controls &controls)
+ExitType Renderer::gameLoop(Tetris::Config::Config &config, Tetris::Config::Controls &controls)
 {
     Tetris::Game::Game game(config, controls);
 
@@ -67,28 +67,43 @@ bool Renderer::gameLoop(Tetris::Config::Config &config, Tetris::Config::Controls
 
             if (game.isGameOver())
             {
-                return true;
+                return game.exitType;
             }
         }
 
         screen.PostEvent(ftxui::Event::Special("render"));
     }
 
-    return true;
+    return ExitType::ABORT;
 }
 
 int Renderer::mainLoop(Tetris::Config::Config &config, Tetris::Config::Controls &controls)
 {
-    bool flag = false;
+    ExitType exitType;
+    bool     isGameOver = false;
+    bool     isRetry    = false;
 
-    while (true) {
-        flag = Renderer::menuLoop(config, controls, flag);
+    while (true)
+    {
+        if (!isRetry)
+        {
+            exitType = Renderer::menuLoop(config, controls, isGameOver);
 
-        if (!flag) {
+            if (exitType != ExitType::CONTINUE)
+            {
+                return EXIT_SUCCESS;
+            }
+        }
+
+        exitType = Renderer::gameLoop(config, controls);
+
+        if (exitType == ExitType::EXIT || exitType == ExitType::ABORT)
+        {
             return EXIT_SUCCESS;
-        } 
+        }
 
-        flag = Renderer::gameLoop(config, controls);
+        isGameOver = true;
+        isRetry    = exitType == ExitType::RETRY;
     }
 
     return EXIT_SUCCESS;

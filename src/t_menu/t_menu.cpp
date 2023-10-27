@@ -11,13 +11,13 @@ void Menu::setMenu(MenuType menu)
 
 void Menu::startGame()
 {
-    this->isStartGame = true;
+    this->exitType = Tetris::Engine::ExitType::CONTINUE;
     this->screen.Exit();
 }
 
 void Menu::exitGame()
 {
-    this->isStartGame = false;
+    this->exitType = Tetris::Engine::ExitType::EXIT;
     this->screen.Exit();
 }
 

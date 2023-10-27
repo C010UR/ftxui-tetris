@@ -9,7 +9,7 @@ void YAMLParser::decodeOptionalScalar(
     const YAML::Node &node, const std::string &name, T &value, std::function<bool(T)> validate
 )
 {
-    if (!node[name].IsScalar() || !validate(value))
+    if (!node[name].IsScalar() || !validate(node[name].as<T>()))
     {
         return;
     }
@@ -111,11 +111,10 @@ bool convert<Config>::decode(const YAML::Node &node, Config &config)
     {
         return true;
     }
-    std::function<bool(int)>         basicIntValidator    = [](int value) -> bool { return value > 0; };
-    std::function<bool(double)>      basicDoubleValidator = [](double value) -> bool { return value > 0; };
-    std::function<bool(std::string)> basicStringValidator = [](std::string value) -> bool { return !value.empty(); };
-    std::function<bool(int)>         levelValidator       = [](int value) -> bool { return value > 0 && value <= 15; };
-    std::function<bool(double)>      updatesPerSecondValidator = [](double value) -> bool { return value > 1; };
+    std::function<bool(int)>    basicIntValidator         = [](int value) -> bool { return value > 0; };
+    std::function<bool(double)> basicDoubleValidator      = [](double value) -> bool { return value > 0; };
+    std::function<bool(int)>    levelValidator            = [](int value) -> bool { return value > 0 && value <= 15; };
+    std::function<bool(double)> updatesPerSecondValidator = [](double value) -> bool { return value > 1; };
 
     YAMLParser::decodeOptionalBool(node, "debug", config.isDebug);
     YAMLParser::decodeOptionalBool(node, "easyMode", config.isEasyMode);
@@ -165,6 +164,7 @@ YAML::Node convert<Controls>::encode(const Controls &controls)
     node["softDrop"]    = controls.softDrop;
     node["hardDrop"]    = controls.hardDrop;
     node["forfeit"]     = controls.forfeit;
+    node["retry"]       = controls.retry;
 
     return node;
 }
@@ -242,6 +242,7 @@ bool convert<Controls>::decode(const YAML::Node &node, Controls &controls)
     YAMLParser::decodeOptionalString(node, "softDrop", controls.softDrop);
     YAMLParser::decodeOptionalString(node, "hardDrop", controls.hardDrop);
     YAMLParser::decodeOptionalString(node, "forfeit", controls.forfeit);
+    YAMLParser::decodeOptionalString(node, "retry", controls.retry);
 
     return true;
 }

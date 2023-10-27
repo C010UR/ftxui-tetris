@@ -1,11 +1,11 @@
 config:
   easyMode: true
-  level: 16
+  level: 1
   updatesPerSecond: 240
-  currentTheme: Ocean Breeze
+  currentTheme: Autumn Haze
   storeDelayMs: 500
   softDropDelayMs: 50
-  softDropGravityMsPerRow: 50
+  softDropGravityMsPerRow: 20
   comboDelayMs: 6000
   debug: false
   themes:
@@ -154,3 +154,4 @@ controls:
   softDrop: s
   hardDrop: " "
   forfeit: t
+  retry: r

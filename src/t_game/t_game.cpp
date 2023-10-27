@@ -1,4 +1,5 @@
 #include "t_game/t_game.hpp"
+#include "t_engine/t_enums.hpp"
 
 namespace Tetris::Game
 {
@@ -83,6 +84,10 @@ void Game::handleStore()
     }
 
     this->hold.unblock();
+
+    if (this->board.isGameOver) {
+        this->exitType = Tetris::Engine::ExitType::CONTINUE;
+    }
 }
 
 void Game::handleSwapHold()
@@ -124,6 +129,8 @@ Game::Game(Tetris::Config::Config &config, Tetris::Config::Controls &controls)
     this->score.level = config.level;
 
     this->isSoftDrop = false;
+
+    this->exitType = Tetris::Engine::ExitType::ABORT;
 }
 
 void Game::update()
@@ -174,8 +181,12 @@ void Game::handleInput()
             break;
         case Engine::Trigger::KEY_FORFEIT:
             this->board.isGameOver = true;
+            this->exitType = Tetris::Engine::ExitType::CONTINUE;
 
             break;
+        case Engine::Trigger::KEY_RETRY:
+            this->board.isGameOver = true;
+            this->exitType = Tetris::Engine::ExitType::RETRY;
         default:
             break;
         }

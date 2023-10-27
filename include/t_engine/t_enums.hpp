@@ -13,6 +13,15 @@ enum class Trigger
     KEY_SOFT_DROP,
     KEY_HARD_DROP,
     KEY_FORFEIT,
+    KEY_RETRY,
     NEXT_ROW
+};
+
+enum class ExitType
+{
+  ABORT,
+  EXIT,
+  CONTINUE,
+  RETRY  
 };
 } // namespace Tetris::Engine
