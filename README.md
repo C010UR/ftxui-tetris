@@ -32,3 +32,60 @@ You can compile the project using
 ```console
 meson compile -C {{ build directory }}
 ```
+
+## Configuration
+
+Configuration of the project is stored in the `config.yaml` file
+
+```yaml
+config:
+  easyMode: true # turns on shardow of the tetromino
+  level: 1 # level from 1 to 15
+  updatesPerSecond: 240 # can help with performance in certain cases
+  currentTheme: Autumn Haze # current theme
+  storeDelayMs: 500 # ms before tetromino is saved to the board
+  softDropDelayMs: 50 # detection rate of the soft drop press
+  softDropGravityMsPerRow: 20 # soft drop gravity 
+  comboDelayMs: 6000 # combo timeout
+  debug: false # debug mode
+  themes:
+    - name: Default
+      mainColorsGradient: # headers gradient
+        - "#4cd137"
+        - "#4cce3c"
+        - "#4ccb41"
+        - "#4cc54a"
+        - "#4bb85d"
+        - "#4bab70"
+        - "#42916a"
+        - "#387763"
+        - "#254f42"
+      gameOverColorsGradient: # game over gradient
+        - "#e84118"
+        - "#d63c1f"
+        - "#c43725"
+        - "#a02d32"
+        - "#57194b"
+      mainColor: "#4a9e83"
+      gameOverColor: "#57194b"
+      valueColor: "#4bb365"
+      trueColor: "#4cd137"
+      falseColor: "#e84118"
+      IColor: "#00a8ff"
+      OColor: "#fbc531"
+      TColor: "#9c88ff"
+      JColor: "#2b2cd5"
+      LColor: "#f28325"
+      SColor: "#4cd137"
+      ZColor: "#e84118"
+controls:
+  moveLeft: a
+  moveRight: d
+  rotateLeft: ","
+  rotateRight: .
+  swapHold: z
+  softDrop: s
+  hardDrop: " "
+  forfeit: t
+  retry: r
+```
