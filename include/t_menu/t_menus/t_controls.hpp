@@ -38,6 +38,7 @@ class Controls
     ftxui::Component hardDrop;
     ftxui::Component forfeit;
     ftxui::Component backButton;
+    ftxui::Component retry;
 
     ftxui::Component renderer;
     ftxui::Component inputs;

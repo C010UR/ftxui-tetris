@@ -63,6 +63,11 @@ void Controls::init(
         [changeKeyHandler] { changeKeyHandler(Tetris::Engine::Trigger::KEY_FORFEIT); },
         ftxui::ButtonOption::Ascii()
     );
+    this->retry = ftxui::Button(
+        "Change",
+        [changeKeyHandler] { changeKeyHandler(Tetris::Engine::Trigger::KEY_RETRY); },
+        ftxui::ButtonOption::Ascii()
+    );
 
     this->backButton = ftxui::Button(
         "Back",
@@ -81,6 +86,7 @@ void Controls::init(
          this->softDrop,
          this->hardDrop,
          this->forfeit,
+         this->retry,
          this->backButton}
     );
 
@@ -104,6 +110,8 @@ void Controls::init(
                         this->getRow("Hard Drop:    ", this->controls->hardDrop, this->hardDrop),
                         ftxui::filler() | ftxui::size(ftxui::HEIGHT, ftxui::EQUAL, 1),
                         this->getRow("Forfeit:      ", this->controls->forfeit, this->forfeit),
+                        ftxui::filler() | ftxui::size(ftxui::HEIGHT, ftxui::EQUAL, 1),
+                        this->getRow("Retry:        ", this->controls->retry, this->retry),
                         ftxui::filler() | ftxui::size(ftxui::HEIGHT, ftxui::EQUAL, 1),
                     }) | ftxui::center,
                     this->backButton->Render() | ftxui::center}

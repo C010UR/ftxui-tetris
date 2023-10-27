@@ -1,4 +1,5 @@
 #include "t_config/t_controls.hpp"
+#include "t_engine/t_enums.hpp"
 
 namespace Tetris::Config
 {
@@ -103,6 +104,9 @@ void Controls::changeKey(Tetris::Engine::Trigger trigger, std::string key)
         break;
     case Engine::Trigger::KEY_FORFEIT:
         this->forfeit = key;
+        break;
+    case Engine::Trigger::KEY_RETRY:
+        this->retry = key;
         break;
     default:
         break;
