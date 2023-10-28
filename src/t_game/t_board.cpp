@@ -249,7 +249,6 @@ ftxui::Element Board::getElement(bool isEasyMode)
     ftxui::Canvas canvas = Tetris::Renderer::Canvas::create(Board::width, Board::height);
 
     Tetris::Renderer::Canvas::drawBoard(canvas, this->board, this->boardColor);
-    Tetris::Renderer::Canvas::drawTetromino(canvas, this->current, false, false);
 
     if (isEasyMode)
     {
@@ -260,6 +259,8 @@ ftxui::Element Board::getElement(bool isEasyMode)
 
         this->current.move(this->board, {0, -y});
     }
+
+    Tetris::Renderer::Canvas::drawTetromino(canvas, this->current, false, false);
 
     return ftxui::canvas(canvas) | ftxui::border | ftxui::size(ftxui::HEIGHT, ftxui::EQUAL, this->height);
 }
