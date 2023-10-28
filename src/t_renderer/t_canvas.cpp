@@ -1,5 +1,8 @@
 #include "t_renderer/t_canvas.hpp"
 
+#include "ftxui/dom/canvas.hpp"
+#include "t_renderer/t_current_theme.hpp"
+
 namespace Tetris::Renderer
 {
 void Canvas::drawTetromino(ftxui::Canvas &canvas, Tetris::Game::Tetromino tetromino, bool isCentered, bool isShadow)
@@ -78,6 +81,8 @@ void Canvas::drawBlock(
             if (!isShadow)
             {
                 p.background_color = color;
+            } else {
+                p.background_color = Tetris::Renderer::CurrentTheme::backgroundColor;
             }
         }
     );
@@ -85,6 +90,18 @@ void Canvas::drawBlock(
 
 ftxui::Canvas Canvas::create(int width, int height)
 {
-    return ftxui::Canvas(width * stepX, height * stepY);
+    ftxui::Canvas canvas = ftxui::Canvas(width * Canvas::stepX, height * Canvas::stepY);
+
+    for (int y = 0; y < width; y++)
+    {
+        for (int x = 0; x < height; x++)
+        {
+            canvas.DrawText(y * Canvas::stepX, x * Canvas::stepY, "  ", [&](ftxui::Pixel &p) {
+                p.background_color = Tetris::Renderer::CurrentTheme::backgroundColor;
+            });
+        }
+    }
+
+    return canvas;
 }
 } // namespace Tetris::Renderer

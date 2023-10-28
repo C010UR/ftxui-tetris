@@ -73,7 +73,10 @@ void Controls::init(
         "Back",
         backButtonHandler,
         ftxui::ButtonOption::Animated(
-            ftxui::Color::Default, ftxui::Color::GrayDark, ftxui::Color::Default, Tetris::Renderer::CurrentTheme::mainColor
+            Tetris::Renderer::CurrentTheme::backgroundColor,
+            ftxui::Color::GrayDark,
+            Tetris::Renderer::CurrentTheme::backgroundColor,
+            Tetris::Renderer::CurrentTheme::mainColor
         )
     );
 

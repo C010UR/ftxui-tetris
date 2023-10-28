@@ -1,5 +1,7 @@
 #include "t_menu/t_menu.hpp"
 
+#include "t_engine/t_enums.hpp"
+
 namespace Tetris::Menu
 {
 
@@ -21,6 +23,12 @@ void Menu::exitGame()
     this->screen.Exit();
 }
 
+void Menu::restartMenu()
+{
+    this->exitType = Tetris::Engine::ExitType::RETRY;
+    this->screen.Exit();
+}
+
 Menu::Menu(
     ftxui::ScreenInteractive &screen,
     Tetris::Config::Config   &config,
@@ -34,6 +42,7 @@ Menu::Menu(
     auto controlsButtonHandler = [this] { this->setMenu(MenuType::CONTROLS); };
     auto mainMenuButtonHandler = [this] { this->setMenu(MenuType::MAIN_MENU); };
     auto exitButtonHandler     = [this] { this->exitGame(); };
+    auto restartHandler        = [this] { this->restartMenu(); };
     auto changeKeyHandler      = [this](Tetris::Engine::Trigger trigger) {
         this->changeKeyMenu.isModalOpen = true;
         this->changeKeyMenu.trigger     = trigger;
@@ -47,7 +56,7 @@ Menu::Menu(
     this->gameOverMenu.init(mainMenuButtonHandler, startButtonHandler, exitButtonHandler);
 
     this->optionsMenu = Options();
-    this->optionsMenu.init(this->config, mainMenuButtonHandler);
+    this->optionsMenu.init(this->config, mainMenuButtonHandler, restartHandler);
 
     this->changeKeyMenu = ChangeKey();
     this->changeKeyMenu.init(this->controls);

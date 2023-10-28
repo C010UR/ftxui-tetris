@@ -1,5 +1,6 @@
 #pragma once
 
+#include "ftxui/screen/color.hpp"
 #include "t_config/t_theme.hpp"
 
 #include <vector>
@@ -10,8 +11,9 @@ class Config
 {
   public:
 
-    int    isDebug;
-    int    isEasyMode;
+    bool    isDebug;
+    bool    isEasyMode;
+    bool    withBackgroundColor;
     int    storeDelay;
     int    softDropDelay;
     int    comboDelay;

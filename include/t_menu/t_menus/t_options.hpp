@@ -35,6 +35,7 @@ class Options
 
     ftxui::Component debugModeToggle;
     ftxui::Component easyModeToggle;
+    ftxui::Component backgroundModeToggle;
     ftxui::Component addStoreDelay;
     ftxui::Component subStoreDelay;
     ftxui::Component addSoftDropDelay;
@@ -56,7 +57,9 @@ class Options
 
     Options() : config(nullptr){};
 
-    void init(Tetris::Config::Config &config, std::function<void()> backButtonHandler);
+    void init(
+        Tetris::Config::Config &config, std::function<void()> backButtonHandler, std::function<void()> restartHandler
+    );
 
     Options &operator=(const Options &other);
 };

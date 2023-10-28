@@ -1,7 +1,9 @@
 #include "t_game/t_board.hpp"
 
+#include "ftxui/dom/canvas.hpp"
 #include "ftxui/dom/elements.hpp"
 #include "ftxui/dom/node.hpp"
+#include "ftxui/screen/color.hpp"
 #include "ftxui/screen/screen.hpp"
 #include "t_renderer/t_key_value.hpp"
 

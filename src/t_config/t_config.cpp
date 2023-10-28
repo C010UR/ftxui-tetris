@@ -4,14 +4,15 @@ namespace Tetris::Config
 {
 Config::Config()
 {
-    this->isDebug          = false;
-    this->isEasyMode       = true;
-    this->storeDelay       = 500;
-    this->softDropDelay    = 50;
-    this->comboDelay       = 6000;
-    this->updatesPerSecond = 240.;
-    this->softDropGravity  = 50.;
-    this->level            = 1;
+    this->isDebug             = false;
+    this->isEasyMode          = true;
+    this->storeDelay          = 500;
+    this->softDropDelay       = 50;
+    this->comboDelay          = 6000;
+    this->updatesPerSecond    = 240.;
+    this->softDropGravity     = 50.;
+    this->level               = 1;
+    this->withBackgroundColor = false;
 
     Theme defaultTheme;
 
@@ -52,6 +53,6 @@ void Config::applyTheme()
         return;
     }
 
-    this->themes[this->currentTheme].apply();
+    this->themes[this->currentTheme].apply((bool)this->withBackgroundColor);
 }
 } // namespace Tetris::Config

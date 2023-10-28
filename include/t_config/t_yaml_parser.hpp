@@ -34,7 +34,6 @@ class YAMLParser
         const YAML::Node &node, const std::string &name, std::vector<T> &value, std::function<bool(T)> validate = [] (T) -> bool { return true; }
     );
 
-    static void decodeOptionalBool(const YAML::Node &node, const std::string &name, int &value);
     static void decodeOptionalString(const YAML::Node &node, const std::string &name, std::string &value);
 
     static void loadData(Config &config, Controls &controls);

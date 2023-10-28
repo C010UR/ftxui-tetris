@@ -9,7 +9,7 @@ void YAMLParser::decodeOptionalScalar(
     const YAML::Node &node, const std::string &name, T &value, std::function<bool(T)> validate
 )
 {
-    if (!node[name].IsScalar() || !validate(node[name].as<T>()))
+    if (!node[name].IsDefined() || !node[name].IsScalar() || !validate(node[name].as<T>()))
     {
         return;
     }
@@ -22,7 +22,7 @@ void YAMLParser::decodeOptionalVector(
     const YAML::Node &node, const std::string &name, std::vector<T> &value, std::function<bool(T)> validate
 )
 {
-    if (!node[name].IsSequence() || !node[name].size())
+    if (!node[name].IsDefined() || !node[name].IsSequence() || !node[name].size())
     {
         return;
     }
@@ -38,16 +38,6 @@ void YAMLParser::decodeOptionalVector(
 
         value.push_back(it->as<T>());
     }
-}
-
-void YAMLParser::decodeOptionalBool(const YAML::Node &node, const std::string &name, int &value)
-{
-    if (!node[name].IsScalar())
-    {
-        return;
-    }
-
-    value = node[name].as<bool>();
 }
 
 void YAMLParser::decodeOptionalString(const YAML::Node &node, const std::string &name, std::string &value)
@@ -95,6 +85,7 @@ YAML::Node convert<Config>::encode(const Config &config)
     node["level"]                   = config.level;
     node["updatesPerSecond"]        = config.updatesPerSecond;
     node["currentTheme"]            = config.themes.size() ? config.themes[config.currentTheme].name : "Default";
+    node["forceBackgroundColor"]    = (bool)config.withBackgroundColor;
     node["storeDelayMs"]            = config.storeDelay;
     node["softDropDelayMs"]         = config.softDropDelay;
     node["softDropGravityMsPerRow"] = config.softDropGravity;
@@ -116,8 +107,9 @@ bool convert<Config>::decode(const YAML::Node &node, Config &config)
     std::function<bool(int)>    levelValidator            = [](int value) -> bool { return value > 0 && value <= 15; };
     std::function<bool(double)> updatesPerSecondValidator = [](double value) -> bool { return value > 1; };
 
-    YAMLParser::decodeOptionalBool(node, "debug", config.isDebug);
-    YAMLParser::decodeOptionalBool(node, "easyMode", config.isEasyMode);
+    YAMLParser::decodeOptionalScalar(node, "debug", config.isDebug);
+    YAMLParser::decodeOptionalScalar(node, "easyMode", config.isEasyMode);
+    YAMLParser::decodeOptionalScalar(node, "forceBackgroundColor", config.withBackgroundColor);
     YAMLParser::decodeOptionalScalar(node, "storeDelayMs", config.storeDelay, basicIntValidator);
     YAMLParser::decodeOptionalScalar(node, "softDropDelayMs", config.softDropDelay, basicIntValidator);
     YAMLParser::decodeOptionalScalar(node, "comboDelayMs", config.comboDelay, basicIntValidator);
@@ -263,8 +255,9 @@ YAML::Node convert<Theme>::encode(const Theme &theme)
         node["gameOverColorsGradient"].push_back(theme.gameOverColors[i]);
     }
 
-    node["mainColor"]     = theme.mainColor;
-    node["gameOverColor"] = theme.gameOverColor;
+    node["mainColor"]       = theme.mainColor;
+    node["gameOverColor"]   = theme.gameOverColor;
+    node["backgroundColor"] = theme.backgroundColor;
 
     node["valueColor"] = theme.valueColor;
     node["trueColor"]  = theme.trueColor;
@@ -296,6 +289,7 @@ bool convert<Theme>::decode(const YAML::Node &node, Theme &theme)
     YAMLParser::decodeOptionalVector(node, "gameOverColorsGradient", theme.gameOverColors);
 
     YAMLParser::decodeOptionalScalar(node, "mainColor", theme.mainColor);
+    YAMLParser::decodeOptionalScalar(node, "backgroundColor", theme.backgroundColor);
     YAMLParser::decodeOptionalScalar(node, "gameOverColor", theme.gameOverColor);
     YAMLParser::decodeOptionalScalar(node, "valueColor", theme.valueColor);
     YAMLParser::decodeOptionalScalar(node, "trueColor", theme.trueColor);

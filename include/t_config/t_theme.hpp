@@ -24,6 +24,7 @@ class Theme
 
     ftxui::Color mainColor     = ftxui::Color::Default;
     ftxui::Color gameOverColor = ftxui::Color::Default;
+    ftxui::Color backgroundColor = ftxui::Color::Default;
 
     ftxui::Color valueColor = ftxui::Color::Default;
     ftxui::Color trueColor  = ftxui::Color::Default;
@@ -37,7 +38,7 @@ class Theme
     ftxui::Color SColor = ftxui::Color::Default;
     ftxui::Color ZColor = ftxui::Color::Default;
 
-    void apply();
+    void apply(bool withBackground);
     void setDefault();
 
     ftxui::Component getDebugRenderer();

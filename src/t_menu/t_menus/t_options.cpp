@@ -1,14 +1,36 @@
 #include "t_menu/t_menus/t_options.hpp"
 
+#include "ftxui/component/component_options.hpp"
+#include "ftxui/dom/elements.hpp"
+#include "ftxui/screen/color.hpp"
+#include "t_renderer/t_current_theme.hpp"
+
 namespace Tetris::Menu
 {
 
-void Options::init(Tetris::Config::Config &config, std::function<void()> backButtonHandler)
+void Options::init(
+    Tetris::Config::Config &config, std::function<void()> backButtonHandler, std::function<void()> restartHandler
+)
 {
     this->config = &config;
 
-    this->debugModeToggle = ftxui::Toggle(&this->onOffEntries, &this->config->isDebug);
-    this->easyModeToggle  = ftxui::Toggle(&this->onOffEntries, &this->config->isEasyMode);
+    this->debugModeToggle = ftxui::Button(
+        "Toggle", [this] { this->config->isDebug = !this->config->isDebug; }, ftxui::ButtonOption::Ascii()
+    );
+
+    this->easyModeToggle = ftxui::Button(
+        "Toggle", [this] { this->config->isEasyMode = !this->config->isEasyMode; }, ftxui::ButtonOption::Ascii()
+    );
+
+    this->backgroundModeToggle = ftxui::Button(
+        "Toggle",
+        [this, restartHandler] {
+            this->config->withBackgroundColor = !this->config->withBackgroundColor;
+            this->config->applyTheme();
+            restartHandler();
+        },
+        ftxui::ButtonOption::Ascii()
+    );
 
     this->addStoreDelay = ftxui::Button(
         "+", [this] { this->config->storeDelay += this->storeDelayStep; }, ftxui::ButtonOption::Ascii()
@@ -70,24 +92,40 @@ void Options::init(Tetris::Config::Config &config, std::function<void()> backBut
         ftxui::ButtonOption::Ascii()
     );
 
+    this->nextTheme = ftxui::Button(
+        ">",
+        [this, restartHandler] {
+            this->config->nextTheme();
+            this->config->applyTheme();
+            restartHandler();
+        },
+        ftxui::ButtonOption::Ascii()
+    );
+    this->prevTheme = ftxui::Button(
+        "<",
+        [this, restartHandler] {
+            this->config->prevTheme();
+            this->config->applyTheme();
+            restartHandler();
+        },
+        ftxui::ButtonOption::Ascii()
+    );
+
     this->backButton = ftxui::Button(
         "Back",
         backButtonHandler,
         ftxui::ButtonOption::Animated(
-            ftxui::Color::Default, ftxui::Color::GrayDark, ftxui::Color::Default, Tetris::Renderer::CurrentTheme::mainColor
+            Tetris::Renderer::CurrentTheme::backgroundColor,
+            ftxui::Color::GrayDark,
+            Tetris::Renderer::CurrentTheme::backgroundColor,
+            Tetris::Renderer::CurrentTheme::mainColor
         )
-    );
-
-    this->nextTheme = ftxui::Button(
-        ">", [this] { this->config->nextTheme(); this->config->applyTheme(); }, ftxui::ButtonOption::Ascii()
-    );
-    this->prevTheme = ftxui::Button(
-        "<", [this] { this->config->prevTheme(); this->config->applyTheme(); }, ftxui::ButtonOption::Ascii()
     );
 
     this->inputs = ftxui::Container::Vertical(
         {this->debugModeToggle,
          this->easyModeToggle,
+         this->backgroundModeToggle,
          ftxui::Container::Horizontal({
              this->subLevel,
              this->addLevel,
@@ -125,9 +163,38 @@ void Options::init(Tetris::Config::Config &config, std::function<void()> backBut
                   {Tetris::Renderer::Header::options() | ftxui::center,
                    ftxui::filler() | ftxui::size(ftxui::HEIGHT, ftxui::EQUAL, 3),
                    ftxui::vbox({
-                       ftxui::hbox(ftxui::text("Debug Mode:        "), this->debugModeToggle->Render()),
+                       ftxui::hbox(
+                           ftxui::text("Debug mode:  ("),
+                           ftxui::text(this->config->isDebug ? "On " : "Off")
+                               | ftxui::color(
+                                   this->config->isDebug ? Tetris::Renderer::CurrentTheme::trueColor
+                                                         : Tetris::Renderer::CurrentTheme::falseColor
+                               ),
+                           ftxui::text(") "),
+                           this->debugModeToggle->Render()
+                       ),
                        ftxui::filler() | ftxui::size(ftxui::HEIGHT, ftxui::EQUAL, 1),
-                       ftxui::hbox(ftxui::text("Easy Mode:         "), this->easyModeToggle->Render()),
+                       ftxui::hbox(
+                           ftxui::text("Easy mode:   ("),
+                           ftxui::text(this->config->isEasyMode ? "On " : "Off")
+                               | ftxui::color(
+                                   this->config->isEasyMode ? Tetris::Renderer::CurrentTheme::trueColor
+                                                            : Tetris::Renderer::CurrentTheme::falseColor
+                               ),
+                           ftxui::text(") "),
+                           this->easyModeToggle->Render()
+                       ),
+                       ftxui::filler() | ftxui::size(ftxui::HEIGHT, ftxui::EQUAL, 1),
+                       ftxui::hbox(
+                           ftxui::text("Background:  ("),
+                           ftxui::text(this->config->withBackgroundColor ? "On " : "Off")
+                               | ftxui::color(
+                                   this->config->withBackgroundColor ? Tetris::Renderer::CurrentTheme::trueColor
+                                                                     : Tetris::Renderer::CurrentTheme::falseColor
+                               ),
+                           ftxui::text(") "),
+                           this->backgroundModeToggle->Render()
+                       ),
                        ftxui::filler() | ftxui::size(ftxui::HEIGHT, ftxui::EQUAL, 1),
                        ftxui::hbox({
                            ftxui::text("Starting Level:            "),
@@ -154,7 +221,8 @@ void Options::init(Tetris::Config::Config &config, std::function<void()> backBut
                                ),
                            ftxui::text(" " + std::to_string((int)this->config->updatesPerSecond) + " ")
                                | ftxui::color(Tetris::Renderer::CurrentTheme::valueColor),
-                           this->addUpdatesPerSecond->Render() | ftxui::color(Tetris::Renderer::CurrentTheme::trueColor),
+                           this->addUpdatesPerSecond->Render()
+                               | ftxui::color(Tetris::Renderer::CurrentTheme::trueColor),
                        }),
                        ftxui::filler() | ftxui::size(ftxui::HEIGHT, ftxui::EQUAL, 1),
                        ftxui::hbox({
@@ -198,7 +266,7 @@ void Options::init(Tetris::Config::Config &config, std::function<void()> backBut
                            this->subSoftDropGravity->Render()
                                | ftxui::color(
                                    this->config->softDropGravity == 0 ? ftxui::Color::Default
-                                                                    : Tetris::Renderer::CurrentTheme::falseColor
+                                                                      : Tetris::Renderer::CurrentTheme::falseColor
                                ),
                            ftxui::text(" " + std::to_string((int)this->config->softDropGravity) + " ")
                                | ftxui::color(Tetris::Renderer::CurrentTheme::valueColor),
@@ -217,6 +285,8 @@ void Options::init(Tetris::Config::Config &config, std::function<void()> backBut
                    this->backButton->Render() | ftxui::center}
               )
               | ftxui::center;
+
+        this->config->applyTheme();
 
         if (this->config->isDebug && !this->config->themes.empty())
         {

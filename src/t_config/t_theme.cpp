@@ -1,26 +1,30 @@
 #include "t_config/t_theme.hpp"
 
+#include "ftxui/screen/color.hpp"
+#include "t_renderer/t_current_theme.hpp"
+
 namespace Tetris::Config
 {
-void Theme::apply()
+void Theme::apply(bool withBackgroundColor)
 {
-    Tetris::Renderer::CurrentTheme::mainColors     = mainColors;
-    Tetris::Renderer::CurrentTheme::gameOverColors = gameOverColors;
+    Tetris::Renderer::CurrentTheme::mainColors     = this->mainColors;
+    Tetris::Renderer::CurrentTheme::gameOverColors = this->gameOverColors;
 
-    Tetris::Renderer::CurrentTheme::mainColor     = mainColor;
-    Tetris::Renderer::CurrentTheme::gameOverColor = gameOverColor;
+    Tetris::Renderer::CurrentTheme::mainColor       = this->mainColor;
+    Tetris::Renderer::CurrentTheme::gameOverColor   = this->gameOverColor;
+    Tetris::Renderer::CurrentTheme::backgroundColor = withBackgroundColor ? this->backgroundColor : ftxui::Color::Default;
 
-    Tetris::Renderer::CurrentTheme::valueColor = valueColor;
-    Tetris::Renderer::CurrentTheme::trueColor  = trueColor;
-    Tetris::Renderer::CurrentTheme::falseColor = falseColor;
+    Tetris::Renderer::CurrentTheme::valueColor = this->valueColor;
+    Tetris::Renderer::CurrentTheme::trueColor  = this->trueColor;
+    Tetris::Renderer::CurrentTheme::falseColor = this->falseColor;
 
-    Tetris::Renderer::CurrentTheme::IColor = IColor;
-    Tetris::Renderer::CurrentTheme::OColor = OColor;
-    Tetris::Renderer::CurrentTheme::TColor = TColor;
-    Tetris::Renderer::CurrentTheme::JColor = JColor;
-    Tetris::Renderer::CurrentTheme::LColor = LColor;
-    Tetris::Renderer::CurrentTheme::SColor = SColor;
-    Tetris::Renderer::CurrentTheme::ZColor = ZColor;
+    Tetris::Renderer::CurrentTheme::IColor = this->IColor;
+    Tetris::Renderer::CurrentTheme::OColor = this->OColor;
+    Tetris::Renderer::CurrentTheme::TColor = this->TColor;
+    Tetris::Renderer::CurrentTheme::JColor = this->JColor;
+    Tetris::Renderer::CurrentTheme::LColor = this->LColor;
+    Tetris::Renderer::CurrentTheme::SColor = this->SColor;
+    Tetris::Renderer::CurrentTheme::ZColor = this->ZColor;
 }
 
 void Theme::setDefault()
@@ -39,11 +43,13 @@ void Theme::setDefault()
            ftxui::Color::RGB(160, 45, 50),
            ftxui::Color::RGB(87, 25, 75)};
 
-    this->mainColor     = ftxui::Color::RGB(74, 158, 131);
-    this->gameOverColor = ftxui::Color::RGB(87, 25, 75);
-    this->valueColor    = ftxui::Color::RGB(75, 179, 101);
-    this->trueColor     = ftxui::Color::RGB(76, 209, 55);
-    this->falseColor    = ftxui::Color::RGB(232, 65, 24);
+    this->mainColor       = ftxui::Color::RGB(74, 158, 131);
+    this->gameOverColor   = ftxui::Color::RGB(87, 25, 75);
+    this->backgroundColor = ftxui::Color::RGB(0, 0, 0);
+
+    this->valueColor = ftxui::Color::RGB(75, 179, 101);
+    this->trueColor  = ftxui::Color::RGB(76, 209, 55);
+    this->falseColor = ftxui::Color::RGB(232, 65, 24);
 
     this->IColor = ftxui::Color::RGB(0, 168, 255);
     this->OColor = ftxui::Color::RGB(251, 197, 49);
@@ -81,6 +87,7 @@ ftxui::Component Theme::getDebugRenderer()
         elements.push_back(ftxui::separator());
 
         elements.push_back(Tetris::Renderer::KeyValue::create("Main Color", this->mainColor));
+        elements.push_back(Tetris::Renderer::KeyValue::create("Background Color", this->backgroundColor));
         elements.push_back(Tetris::Renderer::KeyValue::create("Game Over Color", this->gameOverColor));
         elements.push_back(Tetris::Renderer::KeyValue::create("Value Color", this->valueColor));
         elements.push_back(Tetris::Renderer::KeyValue::create("True Color", this->trueColor));

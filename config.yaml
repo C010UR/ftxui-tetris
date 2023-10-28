@@ -1,10 +1,11 @@
 config:
   easyMode: true
   level: 1
-  updatesPerSecond: 240
-  currentTheme: Autumn Haze
+  updatesPerSecond: 60
+  currentTheme: Ocean Breeze
+  forceBackgroundColor: false
   storeDelayMs: 500
-  softDropDelayMs: 50
+  softDropDelayMs: 20
   softDropGravityMsPerRow: 20
   comboDelayMs: 6000
   debug: false
@@ -26,8 +27,9 @@ config:
         - "#c43725"
         - "#a02d32"
         - "#57194b"
-      mainColor: "#4a9e83"
-      gameOverColor: "#57194b"
+      mainColor: "#3a9e83"
+      gameOverColor: "#e84118"
+      backgroundColor: "#000000"
       valueColor: "#4bb365"
       trueColor: "#4cd137"
       falseColor: "#e84118"
@@ -50,23 +52,22 @@ config:
         - "#372f65"
         - "#241f42"
       gameOverColorsGradient:
-        - "#e84118"
-        - "#d63c1f"
-        - "#c43725"
-        - "#a02d32"
-        - "#57194b"
-      mainColor: "#4a9e83"
-      gameOverColor: "#57194b"
-      valueColor: "#4bb365"
-      trueColor: "#4cd137"
-      falseColor: "#e84118"
-      IColor: "#00a8ff"
-      OColor: "#fbc531"
-      TColor: "#9c88ff"
-      JColor: "#2b2cd5"
-      LColor: "#f28325"
-      SColor: "#4cd137"
-      ZColor: "#e84118"
+        - "#584ca1"
+        - "#803f91"
+        - "#a83180"
+      mainColor: "#3776a9"
+      gameOverColor: "#a83180"
+      backgroundColor: "#000000"
+      valueColor: "#1787e8"
+      trueColor: "#2985b3"
+      falseColor: "#a83180"
+      IColor: "#9dd9d2"
+      OColor: "#79bcb8"
+      TColor: "#5ec2b7"
+      JColor: "#2ca6a4"
+      LColor: "#3aa7a3"
+      SColor: "#5786b0"
+      ZColor: "#625cb5"
     - name: Autumn Haze
       mainColorsGradient:
         - "#e07a5f"
@@ -77,23 +78,24 @@ config:
         - "#9eb988"
         - "#81b29a"
       gameOverColorsGradient:
-        - "#e84118"
-        - "#d63c1f"
-        - "#c43725"
-        - "#a02d32"
-        - "#57194b"
-      mainColor: "#4a9e83"
-      gameOverColor: "#57194b"
+        - "#f4a08b"
+        - "#ee9c8b"
+        - "#e9968b"
+        - "#dd888c"
+        - "#d265bc"
+      mainColor: "#f2cc8f"
+      gameOverColor: "#d265bc"
+      backgroundColor: "#000000"
       valueColor: "#4bb365"
-      trueColor: "#4cd137"
-      falseColor: "#e84118"
-      IColor: "#00a8ff"
-      OColor: "#fbc531"
-      TColor: "#9c88ff"
-      JColor: "#2b2cd5"
-      LColor: "#f28325"
-      SColor: "#4cd137"
-      ZColor: "#e84118"
+      trueColor: "#8cf28c"
+      falseColor: "#f28c8c"
+      IColor: "#80d4ff"
+      OColor: "#ffe369"
+      TColor: "#cec4ff"
+      JColor: "#8080ff"
+      LColor: "#ffc28c"
+      SColor: "#95ff85"
+      ZColor: "#ff9980"
     - name: Deep Dark
       mainColorsGradient:
         - "#000022"
@@ -110,6 +112,7 @@ config:
         - "#57194b"
       mainColor: "#4a9e83"
       gameOverColor: "#57194b"
+      backgroundColor: "#000000"
       valueColor: "#4bb365"
       trueColor: "#4cd137"
       falseColor: "#e84118"
@@ -135,6 +138,7 @@ config:
         - "#57194b"
       mainColor: "#4a9e83"
       gameOverColor: "#57194b"
+      backgroundColor: "#000000"
       valueColor: "#4bb365"
       trueColor: "#4cd137"
       falseColor: "#e84118"
@@ -154,4 +158,4 @@ controls:
   softDrop: s
   hardDrop: " "
   forfeit: t
-  retry: r
+  retry: g

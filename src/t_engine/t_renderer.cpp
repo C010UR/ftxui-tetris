@@ -1,5 +1,11 @@
 #include "t_engine/t_renderer.hpp"
 
+#include "ftxui/component/component.hpp"
+#include "ftxui/screen/color.hpp"
+#include "t_engine/t_enums.hpp"
+#include "t_menu/t_enums.hpp"
+#include "t_renderer/t_current_theme.hpp"
+
 namespace Tetris::Engine
 {
 double Renderer::getCurrentTime()
@@ -23,15 +29,29 @@ ExitType Renderer::menuLoop(Tetris::Config::Config &config, Tetris::Config::Cont
     ftxui::ScreenInteractive screen = ftxui::ScreenInteractive::Fullscreen();
     Renderer::configureScreen(screen);
 
-    Tetris::Menu::Menu menu = Tetris::Menu::Menu(screen, config, controls, isGameOver);
+    Tetris::Menu::MenuType currentMenu = Tetris::Menu::MenuType::MAIN_MENU;
 
-    ftxui::Component component = ftxui::CatchEvent(menu.getRenderer() | ftxui::center, [&menu](ftxui::Event event) {
-        return menu.handleEvent(event);
-    });
+    while (true)
+    {
+        Tetris::Menu::Menu menu = Tetris::Menu::Menu(screen, config, controls, isGameOver);
 
-    screen.Loop(component);
+        menu.setMenu(currentMenu);
 
-    return menu.exitType;
+        ftxui::Component component
+            = ftxui::CatchEvent(menu.getRenderer(), [&menu](ftxui::Event event) { return menu.handleEvent(event); })
+              | ftxui::bgcolor(Tetris::Renderer::CurrentTheme::backgroundColor);
+
+        screen.Loop(component);
+
+        if (menu.exitType == Tetris::Engine::ExitType::RETRY)
+        {
+            currentMenu = menu.currentMenu;
+        }
+        else
+        {
+            return menu.exitType;
+        }
+    }
 }
 
 ExitType Renderer::gameLoop(Tetris::Config::Config &config, Tetris::Config::Controls &controls)
@@ -44,7 +64,7 @@ ExitType Renderer::gameLoop(Tetris::Config::Config &config, Tetris::Config::Cont
     auto component
         = ftxui::CatchEvent(game.getRenderer(), [&game](ftxui::Event event) { return game.handleEvent(event); });
 
-    ftxui::Loop loop(&screen, component);
+    ftxui::Loop loop(&screen, component | ftxui::bgcolor(Tetris::Renderer::CurrentTheme::backgroundColor));
 
     double const msPerUpdate = 1000 / config.updatesPerSecond;
     double       previous    = getCurrentTime();
