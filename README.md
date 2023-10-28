@@ -6,9 +6,7 @@ This is a TUI implementation of modern-ish Tetris with SRS rotation sytem :)
 
 <img width="1280" alt="image" src="https://github.com/C010UR/ftxui-tetris/assets/95462776/fb7acba5-6ab7-4f0b-ab58-b5ebc5eb678e">
 
-https://github.com/C010UR/ftxui-tetris/assets/95462776/b863148f-418e-450b-878f-db82edf6e99c
-
-
+https://github.com/C010UR/ftxui-tetris/assets/95462776/3010beac-e954-4e35-85ee-bbc8f47f28ec
 
 This project is built with
 <img src="https://mesonbuild.com/assets/images/meson_logo.png" height="16px">
