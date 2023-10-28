@@ -37,15 +37,16 @@ Configuration of the project is stored in the `config.yaml` file
 
 ```yaml
 config:
-  easyMode: true # turns on shardow of the tetromino
-  level: 1 # level from 1 to 15
-  updatesPerSecond: 240 # can help with performance in certain cases
-  currentTheme: Autumn Haze # current theme
-  storeDelayMs: 500 # ms before tetromino is saved to the board
-  softDropDelayMs: 50 # detection rate of the soft drop press
-  softDropGravityMsPerRow: 20 # soft drop gravity 
-  comboDelayMs: 6000 # combo timeout
-  debug: false # debug mode
+  easyMode: true # Turns on shardows of the tetrominoes
+  level: 1 # Game level from 1 to 15
+  updatesPerSecond: 240 # Can help with performance and power consumption
+  currentTheme: Autumn Haze # Chosebn theme
+  forceBackgroundColor: false # Forces background color
+  storeDelayMs: 500 # Ms before tetromino is saved to the board
+  softDropDelayMs: 50 # Detection rate of the soft drop press
+  softDropGravityMsPerRow: 20 # Soft drop gravity 
+  comboDelayMs: 6000 # Combo timeout
+  debug: false # Debug mode
   themes:
     - name: Default
       mainColorsGradient: # headers gradient
@@ -66,6 +67,7 @@ config:
         - "#57194b"
       mainColor: "#4a9e83"
       gameOverColor: "#57194b"
+      backgroundColor: "#000000"
       valueColor: "#4bb365"
       trueColor: "#4cd137"
       falseColor: "#e84118"
