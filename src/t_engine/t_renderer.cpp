@@ -29,7 +29,8 @@ ExitType Renderer::menuLoop(Tetris::Config::Config &config, Tetris::Config::Cont
     ftxui::ScreenInteractive screen = ftxui::ScreenInteractive::Fullscreen();
     Renderer::configureScreen(screen);
 
-    Tetris::Menu::MenuType currentMenu = Tetris::Menu::MenuType::MAIN_MENU;
+    Tetris::Menu::MenuType currentMenu
+        = isGameOver ? Tetris::Menu::MenuType::GAME_OVER : Tetris::Menu::MenuType::MAIN_MENU;
 
     while (true)
     {
