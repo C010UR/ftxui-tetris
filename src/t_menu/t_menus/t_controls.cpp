@@ -122,4 +122,15 @@ void Controls::init(
                | ftxui::center;
     });
 }
+Controls &Controls::operator=(const Controls &other)
+{
+    if (this == &other)
+    {
+        return *this;
+    }
+
+    this->controls = other.controls;
+
+    return *this;
+}
 } // namespace Tetris::Menu

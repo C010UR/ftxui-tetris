@@ -1,9 +1,9 @@
 config:
-  easyMode: true
+  easyMode: false
   level: 1
-  updatesPerSecond: 60
+  updatesPerSecond: 240
   currentTheme: Default
-  forceBackgroundColor: false
+  forceBackgroundColor: true
   storeDelayMs: 500
   softDropDelayMs: 20
   softDropGravityMsPerRow: 20
@@ -29,7 +29,7 @@ config:
         - "#57194b"
       mainColor: "#3a9e83"
       gameOverColor: "#e84118"
-      backgroundColor: "#000000"
+      backgroundColor: "#141a14"
       valueColor: "#4bb365"
       trueColor: "#4cd137"
       falseColor: "#e84118"
@@ -40,7 +40,7 @@ config:
       LColor: "#f28325"
       SColor: "#4cd137"
       ZColor: "#e84118"
-    - name: Ocean Breeze
+    - name: Deep Dark
       mainColorsGradient:
         - "#2985b3"
         - "#2c82b0"
@@ -57,7 +57,7 @@ config:
         - "#a83180"
       mainColor: "#3776a9"
       gameOverColor: "#a83180"
-      backgroundColor: "#000000"
+      backgroundColor: "#08061a"
       valueColor: "#1787e8"
       trueColor: "#2985b3"
       falseColor: "#a83180"
@@ -68,7 +68,7 @@ config:
       LColor: "#3aa7a3"
       SColor: "#5786b0"
       ZColor: "#625cb5"
-    - name: Autumn Haze
+    - name: Vibrant Vines
       mainColorsGradient:
         - "#e07a5f"
         - "#e9a377"
@@ -85,8 +85,8 @@ config:
         - "#d265bc"
       mainColor: "#f2cc8f"
       gameOverColor: "#d265bc"
-      backgroundColor: "#000000"
-      valueColor: "#4bb365"
+      backgroundColor: "#201813"
+      valueColor: "#f2cc8f"
       trueColor: "#8cf28c"
       falseColor: "#f28c8c"
       IColor: "#80d4ff"
@@ -96,33 +96,6 @@ config:
       LColor: "#ffc28c"
       SColor: "#95ff85"
       ZColor: "#ff9980"
-    - name: Deep Dark
-      mainColorsGradient:
-        - "#000022"
-        - "#000932"
-        - "#001242"
-        - "#005384"
-        - "#0094c6"
-        - "#005e7c"
-      gameOverColorsGradient:
-        - "#e84118"
-        - "#d63c1f"
-        - "#c43725"
-        - "#a02d32"
-        - "#57194b"
-      mainColor: "#4a9e83"
-      gameOverColor: "#57194b"
-      backgroundColor: "#000000"
-      valueColor: "#4bb365"
-      trueColor: "#4cd137"
-      falseColor: "#e84118"
-      IColor: "#00a8ff"
-      OColor: "#fbc531"
-      TColor: "#9c88ff"
-      JColor: "#2b2cd5"
-      LColor: "#f28325"
-      SColor: "#4cd137"
-      ZColor: "#e84118"
     - name: Blood moon
       mainColorsGradient:
         - "#c52233"
@@ -136,19 +109,19 @@ config:
         - "#c43725"
         - "#a02d32"
         - "#57194b"
-      mainColor: "#4a9e83"
+      mainColor: "#d81159"
       gameOverColor: "#57194b"
-      backgroundColor: "#000000"
-      valueColor: "#4bb365"
-      trueColor: "#4cd137"
+      backgroundColor: "#1a0a0a"
+      valueColor: "#d81159"
+      trueColor: "#ffae03"
       falseColor: "#e84118"
-      IColor: "#00a8ff"
-      OColor: "#fbc531"
-      TColor: "#9c88ff"
-      JColor: "#2b2cd5"
-      LColor: "#f28325"
-      SColor: "#4cd137"
-      ZColor: "#e84118"
+      IColor: "#e67f0d"
+      OColor: "#ffae03"
+      TColor: "#fe4e00"
+      JColor: "#e9190f"
+      LColor: "#8f2d56"
+      SColor: "#ed4139"
+      ZColor: "#d81159"
 controls:
   moveLeft: a
   moveRight: d
@@ -158,4 +131,4 @@ controls:
   softDrop: s
   hardDrop: " "
   forfeit: t
-  retry: g
+  retry: r

@@ -27,9 +27,11 @@ class ChangeKey
 
     ftxui::Component renderer;
 
-    ChangeKey(){};
+    ChangeKey() : isModalOpen(false), trigger(Tetris::Engine::Trigger::NONE){};
 
     void init(Tetris::Config::Controls &controls);
     bool handleEvent(ftxui::Event event);
+
+    ChangeKey &operator=(const ChangeKey &other);
 };
 } // namespace Tetris::Menu

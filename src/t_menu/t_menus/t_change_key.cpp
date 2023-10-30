@@ -32,4 +32,16 @@ bool ChangeKey::handleEvent(ftxui::Event event)
     this->isModalOpen = false;
     return true;
 }
+
+ChangeKey &ChangeKey::operator=(const ChangeKey &other)
+{
+    if (this == &other)
+    {
+        return *this;
+    }
+
+    this->controls = other.controls;
+
+    return *this;
+}
 } // namespace Tetris::Menu

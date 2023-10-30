@@ -50,5 +50,6 @@ class Controls
         std::function<void(Tetris::Engine::Trigger)> changeKeyHandler,
         std::function<void()>                        backButtonHandler
     );
+    Controls &operator=(const Controls &other);
 };
-} // namespace Tetris::Menu
+}; // namespace Tetris::Menu
