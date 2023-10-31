@@ -1,6 +1,7 @@
 #include "t_engine/t_renderer.hpp"
 
 #include "t_renderer/t_current_theme.hpp"
+#include <chrono>
 
 namespace Tetris::Engine
 {
@@ -8,9 +9,9 @@ double Renderer::getCurrentTime()
 {
     auto currentTime = std::chrono::high_resolution_clock::now();
 
-    auto milliseconds = std::chrono::duration_cast<std::chrono::milliseconds>(currentTime.time_since_epoch());
+    auto nanoseconds = std::chrono::duration_cast<std::chrono::nanoseconds>(currentTime.time_since_epoch());
 
-    return static_cast<double>(milliseconds.count());
+    return static_cast<double>(nanoseconds.count()) / 1000000;
 }
 
 void Renderer::configureScreen(ftxui::ScreenInteractive &screen)
@@ -71,8 +72,11 @@ ExitType Renderer::gameLoop(Tetris::Config::Config &config, Tetris::Config::Cont
     );
 
     double const msPerUpdate = 1000 / config.updatesPerSecond;
-    double       previous    = getCurrentTime();
-    double       lag         = 0.0;
+
+    unsigned int frames   = 0;
+    double       start    = getCurrentTime();
+    double       previous = start;
+    double       lag      = 0.0;
 
     while (!loop.HasQuitted())
     {
@@ -97,6 +101,10 @@ ExitType Renderer::gameLoop(Tetris::Config::Config &config, Tetris::Config::Cont
         }
 
         screen.PostEvent(ftxui::Event::Special("render"));
+
+        frames++;
+        game.frameTime = elapsed;
+        game.fps       = frames / (current - start) * 1000;
     }
 
     return ExitType::ABORT;

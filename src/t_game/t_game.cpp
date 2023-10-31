@@ -1,5 +1,8 @@
 #include "t_game/t_game.hpp"
+
+#include "ftxui/dom/elements.hpp"
 #include "t_engine/t_enums.hpp"
+#include "t_renderer/t_key_value.hpp"
 
 namespace Tetris::Game
 {
@@ -85,7 +88,8 @@ void Game::handleStore()
 
     this->hold.unblock();
 
-    if (this->board.isGameOver) {
+    if (this->board.isGameOver)
+    {
         this->exitType = Tetris::Engine::ExitType::CONTINUE;
     }
 }
@@ -125,6 +129,9 @@ Game::Game(Tetris::Config::Config &config, Tetris::Config::Controls &controls)
     this->softDropDelayTicks = 0;
     this->comboDelayTicks    = 0;
     this->storeDelayTicks    = 0;
+
+    this->fps = 0;
+    this->frameTime = 0;
 
     this->score.level = config.level;
 
@@ -181,12 +188,12 @@ void Game::handleInput()
             break;
         case Engine::Trigger::KEY_FORFEIT:
             this->board.isGameOver = true;
-            this->exitType = Tetris::Engine::ExitType::CONTINUE;
+            this->exitType         = Tetris::Engine::ExitType::CONTINUE;
 
             break;
         case Engine::Trigger::KEY_RETRY:
             this->board.isGameOver = true;
-            this->exitType = Tetris::Engine::ExitType::RETRY;
+            this->exitType         = Tetris::Engine::ExitType::RETRY;
         default:
             break;
         }
@@ -230,23 +237,32 @@ bool Game::handleEvent(ftxui::Event event)
 
 ftxui::Element Game::getDebugElement()
 {
-    return ftxui::window(
-               ftxui::text("Debug"),
-               ftxui::vbox({
-                   Tetris::Renderer::KeyValue::create("Hold Blocked", this->hold.isBlocked),
-                   Tetris::Renderer::KeyValue::create("Gravity", this->score.getGravity()),
-                   Tetris::Renderer::KeyValue::create("Gravity per update", this->calculateGravity()),
-                   Tetris::Renderer::KeyValue::create("Soft drop", this->isSoftDrop),
-                   Tetris::Renderer::KeyValue::create(
-                       "Soft drop delay", this->softDropDelayTicks * this->config.updatesPerSecond
-                   ),
-                   Tetris::Renderer::KeyValue::create(
-                       "Store delay", this->storeDelayTicks * this->config.updatesPerSecond
-                   ),
-                   Tetris::Renderer::KeyValue::create(
-                       "Combo delay", this->comboDelayTicks * this->config.updatesPerSecond
-                   ),
-               })
+    return ftxui::vbox(
+               {ftxui::window(
+                    ftxui::text("Debug"),
+                    ftxui::vbox({
+                        Tetris::Renderer::KeyValue::create("Hold Blocked", this->hold.isBlocked),
+                        Tetris::Renderer::KeyValue::create("Gravity", this->score.getGravity()),
+                        Tetris::Renderer::KeyValue::create("Gravity per update", this->calculateGravity()),
+                        Tetris::Renderer::KeyValue::create("Soft drop", this->isSoftDrop),
+                        Tetris::Renderer::KeyValue::create(
+                            "Soft drop delay", this->softDropDelayTicks * this->config.updatesPerSecond
+                        ),
+                        Tetris::Renderer::KeyValue::create(
+                            "Store delay", this->storeDelayTicks * this->config.updatesPerSecond
+                        ),
+                        Tetris::Renderer::KeyValue::create(
+                            "Combo delay", this->comboDelayTicks * this->config.updatesPerSecond
+                        ),
+                    })
+                ),
+                ftxui::window(
+                    ftxui::text("Render"),
+                    ftxui::vbox(
+                        {Tetris::Renderer::KeyValue::create("FPS", this->fps),
+                         Tetris::Renderer::KeyValue::create("Frame Time, ms", this->frameTime)}
+                    )
+                )}
            )
            | ftxui::size(ftxui::WIDTH, ftxui::EQUAL, 30);
 }
@@ -282,9 +298,7 @@ ftxui::Component Game::getRenderer()
         if (this->config.isDebug)
         {
             elements.push_back(ftxui::filler() | ftxui::size(ftxui::WIDTH, ftxui::EQUAL, 3));
-
             elements.push_back(ftxui::vbox({this->board.getDebugElement(this->calculateGravity())}));
-
             elements.push_back(ftxui::vbox({this->getDebugElement()}));
         }
 

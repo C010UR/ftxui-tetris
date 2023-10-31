@@ -54,6 +54,8 @@ class Game
     void handleCombo();
 
   public:
+    double fps;
+    double frameTime;
 
     Tetris::Engine::ExitType exitType;
 
