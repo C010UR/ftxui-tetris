@@ -1,6 +1,7 @@
 #include "t_game/t_game.hpp"
 
 #include "ftxui/dom/elements.hpp"
+#include "ftxui/dom/node.hpp"
 #include "t_engine/t_enums.hpp"
 #include "t_renderer/t_key_value.hpp"
 
@@ -130,7 +131,7 @@ Game::Game(Tetris::Config::Config &config, Tetris::Config::Controls &controls)
     this->comboDelayTicks    = 0;
     this->storeDelayTicks    = 0;
 
-    this->fps = 0;
+    this->fps       = 0;
     this->frameTime = 0;
 
     this->score.level = config.level;

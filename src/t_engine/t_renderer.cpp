@@ -106,15 +106,22 @@ ExitType Renderer::gameLoop(Tetris::Config::Config &config, Tetris::Config::Cont
 
         current = getCurrentTime();
         elapsed = current - previous;
-        previous       = current;
 
         if (frameTimeCap > 0 && frameTimeCap > elapsed) {
             std::this_thread::sleep_for(std::chrono::milliseconds((int)(frameTimeCap - elapsed)));
         }
 
+        current = getCurrentTime();
+        elapsed = current - previous;
+
         frames++;
         game.frameTime = elapsed;
         game.fps       = frames / (current - start) * 1000;
+
+        if (start > 1000) {
+            frames = 0;
+            start = getCurrentTime();
+        }
     }
 
     return ExitType::ABORT;

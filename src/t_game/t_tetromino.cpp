@@ -252,14 +252,10 @@ void Tetromino::reset(int width)
 
 bool Tetromino::canMove(const board_t &board, Point offset)
 {
-    this->testPoints.clear();
-
     auto data = this->getData();
 
     int height = board.size() - 1;
     int width  = board[0].size() - 1;
-
-    this->testPoints.push_back(offset);
 
     for (int row = 0; row < (int)data.size(); row++)
     {
@@ -269,8 +265,6 @@ bool Tetromino::canMove(const board_t &board, Point offset)
             {
                 int newX = std::floor(this->currentPosition.x) + std::ceil(offset.x) + col;
                 int newY = std::floor(this->currentPosition.y) + std::ceil(offset.y) + row;
-
-                this->testPoints.push_back({(double)newX, (double)newY});
 
                 if (newX < 0 || newX > width || newY < 0 || newY > height || board[newY][newX] == BoardBlockType::BLOCK)
                 {

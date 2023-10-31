@@ -1,10 +1,11 @@
 # Meson subprojects
-/subprojects/*
+/subprojects
 !/subprojects/*.wrap
 !/subprojects/packagefiles
 
 # Build directory
-/build/*
+/build
+/release
 
 # Cache
-/.cache/*
+/.cache

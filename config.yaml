@@ -9,7 +9,7 @@ config:
   softDropDelayMs: 20
   softDropGravityMsPerRow: 20
   comboDelayMs: 6000
-  debug: false
+  debug: true
   themes:
     - name: Default
       mainColorsGradient:
