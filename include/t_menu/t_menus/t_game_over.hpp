@@ -5,6 +5,7 @@
 #include "ftxui/component/component_options.hpp"
 #include "ftxui/dom/elements.hpp"
 #include "ftxui/screen/color.hpp"
+#include "t_menu/t_menu_helper.hpp"
 #include "t_renderer/t_current_theme.hpp"
 #include "t_renderer/t_header.hpp"
 
@@ -19,7 +20,7 @@ class GameOver
 
     ftxui::Component mainMenu;
     ftxui::Component tryAgain;
-    ftxui::Component exitButton;
+    ftxui::Component exit;
 
     ftxui::Component renderer;
     ftxui::Component inputs;
@@ -30,7 +31,7 @@ class GameOver
         std::function<void()> mainMenuButtonHandler,
         std::function<void()> tryAgainButtonHandler,
         std::function<void()> exitButtonHandler,
-        int score
+        int                   score
     );
 };
 } // namespace Tetris::Menu

@@ -3,7 +3,7 @@ config:
   level: 1
   updatesPerSecond: 240
   fps: 60
-  currentTheme: Default
+  currentTheme: Autumn Haze
   forceBackgroundColor: true
   storeDelayMs: 500
   softDropDelayMs: 20

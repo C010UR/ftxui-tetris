@@ -8,7 +8,8 @@ void ChangeKey::init(Tetris::Config::Controls &controls)
     this->renderer = ftxui::Renderer([&] {
         return ftxui::vbox(
                    {ftxui::filler() | ftxui::size(ftxui::HEIGHT, ftxui::EQUAL, 1),
-                    ftxui::text("Press ESC to cancel or Any Button to change the controls"),
+                    ftxui::text("Press ESC to cancel or Any Button to change the controls")
+                        | ftxui::color(Tetris::Renderer::CurrentTheme::mainColor),
                     ftxui::filler() | ftxui::size(ftxui::HEIGHT, ftxui::EQUAL, 1)}
                )
                | ftxui::border | ftxui::center;
@@ -28,7 +29,7 @@ bool ChangeKey::handleEvent(ftxui::Event event)
         return true;
     }
 
-    this->controls->changeKey(this->trigger, event.character());
+    this->controls->changeKey(this->trigger, Tetris::Config::Controls::transformEvent(event));
     this->isModalOpen = false;
     return true;
 }

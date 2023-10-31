@@ -1,4 +1,5 @@
 #include "t_config/t_controls.hpp"
+
 #include "t_engine/t_enums.hpp"
 
 namespace Tetris::Config
@@ -24,52 +25,61 @@ Controls::Controls()
     this->softDrop    = "s";
     this->hardDrop    = " ";
     this->forfeit     = "t";
-    this->retry        = "r";
+    this->retry       = "r";
+}
+
+std::string Controls::transformEvent(ftxui::Event event)
+{
+    return event.character().size() == 1 && std::isalpha(event.character()[0])
+               ? std::string(1, std::tolower(event.character()[0]))
+               : event.character();
 }
 
 Tetris::Engine::Trigger Controls::handleEvent(ftxui::Event event)
 {
-    if (this->isCharacter(event, this->moveLeft))
+    std::string character = Controls::transformEvent(event);
+
+    if (this->moveLeft == character)
     {
         return Tetris::Engine::Trigger::KEY_MOVE_LEFT;
     }
 
-    if (this->isCharacter(event, this->moveRight))
+    if (this->moveRight == character)
     {
         return Tetris::Engine::Trigger::KEY_MOVE_RIGHT;
     }
 
-    if (this->isCharacter(event, this->rotateLeft))
+    if (this->rotateLeft == character)
     {
         return Tetris::Engine::Trigger::KEY_ROTATE_LEFT;
     }
 
-    if (this->isCharacter(event, this->rotateRight))
+    if (this->rotateRight == character)
     {
         return Tetris::Engine::Trigger::KEY_ROTATE_RIGHT;
     }
 
-    if (this->isCharacter(event, this->swapHold))
+    if (this->swapHold == character)
     {
         return Tetris::Engine::Trigger::KEY_SWAP_HOLD;
     }
 
-    if (this->isCharacter(event, this->softDrop))
+    if (this->softDrop == character)
     {
         return Tetris::Engine::Trigger::KEY_SOFT_DROP;
     }
 
-    if (this->isCharacter(event, this->hardDrop))
+    if (this->hardDrop == character)
     {
         return Tetris::Engine::Trigger::KEY_HARD_DROP;
     }
 
-    if (this->isCharacter(event, this->forfeit))
+    if (this->forfeit == character)
     {
         return Tetris::Engine::Trigger::KEY_FORFEIT;
     }
-    
-    if (this->isCharacter(event, this->retry))
+
+    if (this->retry == character)
     {
         return Tetris::Engine::Trigger::KEY_RETRY;
     }

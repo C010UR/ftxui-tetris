@@ -9,49 +9,10 @@ void MainMenu::init(
     std::function<void()> exitButtonHandler
 )
 {
-    this->startButton = ftxui::Button(
-        "Start Game",
-        startButtonHandler,
-        ftxui::ButtonOption::Animated(
-            Tetris::Renderer::CurrentTheme::backgroundColor,
-            Tetris::Renderer::CurrentTheme::foregroundColor,
-            Tetris::Renderer::CurrentTheme::backgroundColor,
-            Tetris::Renderer::CurrentTheme::mainColor
-        )
-    );
-
-    this->optionsButton = ftxui::Button(
-        "Options",
-        optionsButtonHandler,
-        ftxui::ButtonOption::Animated(
-            Tetris::Renderer::CurrentTheme::backgroundColor,
-            Tetris::Renderer::CurrentTheme::foregroundColor,
-            Tetris::Renderer::CurrentTheme::backgroundColor,
-            Tetris::Renderer::CurrentTheme::mainColor
-        )
-    );
-
-    this->controlsButton = ftxui::Button(
-        "Controls",
-        controlsButtonHandler,
-        ftxui::ButtonOption::Animated(
-            Tetris::Renderer::CurrentTheme::backgroundColor,
-            Tetris::Renderer::CurrentTheme::foregroundColor,
-            Tetris::Renderer::CurrentTheme::backgroundColor,
-            Tetris::Renderer::CurrentTheme::mainColor
-        )
-    );
-
-    this->exitButton = ftxui::Button(
-        "Exit",
-        exitButtonHandler,
-        ftxui::ButtonOption::Animated(
-            Tetris::Renderer::CurrentTheme::backgroundColor,
-            Tetris::Renderer::CurrentTheme::foregroundColor,
-            Tetris::Renderer::CurrentTheme::backgroundColor,
-            Tetris::Renderer::CurrentTheme::mainColor
-        )
-    );
+    this->startButton    = MenuHelper::getAnimatedButton("Start Game", startButtonHandler);
+    this->optionsButton  = MenuHelper::getAnimatedButton("Options", optionsButtonHandler);
+    this->controlsButton = MenuHelper::getAnimatedButton("Controls", controlsButtonHandler);
+    this->exitButton     = MenuHelper::getAnimatedButton("Exit", exitButtonHandler);
 
     this->inputs
         = ftxui::Container::Vertical({this->startButton, this->optionsButton, this->controlsButton, this->exitButton});

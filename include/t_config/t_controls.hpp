@@ -28,6 +28,8 @@ class Controls
 
     Controls();
 
+    static std::string transformEvent(ftxui::Event event);
+
     Tetris::Engine::Trigger handleEvent(ftxui::Event event);
 
     void changeKey(Tetris::Engine::Trigger trigger, std::string key);

@@ -11,6 +11,7 @@
 #include "t_renderer/t_current_theme.hpp"
 #include "t_renderer/t_header.hpp"
 
+#include <cctype>
 #include <functional>
 #include <vector>
 

@@ -1,18 +1,9 @@
 #include "t_menu/t_menus/t_controls.hpp"
 
+#include "t_menu/t_menu_helper.hpp"
+
 namespace Tetris::Menu
 {
-ftxui::Element Controls::getRow(const std::string label, const std::string current, ftxui::Component &button)
-{
-    return ftxui::hbox(
-        {ftxui::text(label),
-         ftxui::text("\"" + Tetris::Renderer::DataTransformer::transformKey(current) + "\"")
-             | ftxui::color(Tetris::Renderer::CurrentTheme::valueColor),
-         ftxui::filler() | ftxui::size(ftxui::WIDTH, ftxui::EQUAL, 3),
-         button->Render() | ftxui::color(Tetris::Renderer::CurrentTheme::mainColor)}
-    );
-}
-
 void Controls::init(
     Tetris::Config::Controls                    &controls,
     std::function<void(Tetris::Engine::Trigger)> changeKeyHandler,
@@ -23,62 +14,35 @@ void Controls::init(
 
     const std::string buttonText = "Change";
 
-    this->moveLeft = ftxui::Button(
-        "Change",
-        [changeKeyHandler] { changeKeyHandler(Tetris::Engine::Trigger::KEY_MOVE_LEFT); },
-        ftxui::ButtonOption::Ascii()
-    );
-    this->moveRight = ftxui::Button(
-        "Change",
-        [changeKeyHandler] { changeKeyHandler(Tetris::Engine::Trigger::KEY_MOVE_RIGHT); },
-        ftxui::ButtonOption::Ascii()
-    );
-    this->rotateLeft = ftxui::Button(
-        "Change",
-        [changeKeyHandler] { changeKeyHandler(Tetris::Engine::Trigger::KEY_ROTATE_LEFT); },
-        ftxui::ButtonOption::Ascii()
-    );
-    this->rotateRight = ftxui::Button(
-        "Change",
-        [changeKeyHandler] { changeKeyHandler(Tetris::Engine::Trigger::KEY_ROTATE_RIGHT); },
-        ftxui::ButtonOption::Ascii()
-    );
-    this->swapHold = ftxui::Button(
-        "Change",
-        [changeKeyHandler] { changeKeyHandler(Tetris::Engine::Trigger::KEY_SWAP_HOLD); },
-        ftxui::ButtonOption::Ascii()
-    );
-    this->softDrop = ftxui::Button(
-        "Change",
-        [changeKeyHandler] { changeKeyHandler(Tetris::Engine::Trigger::KEY_SOFT_DROP); },
-        ftxui::ButtonOption::Ascii()
-    );
-    this->hardDrop = ftxui::Button(
-        "Change",
-        [changeKeyHandler] { changeKeyHandler(Tetris::Engine::Trigger::KEY_HARD_DROP); },
-        ftxui::ButtonOption::Ascii()
-    );
-    this->forfeit = ftxui::Button(
-        "Change",
-        [changeKeyHandler] { changeKeyHandler(Tetris::Engine::Trigger::KEY_FORFEIT); },
-        ftxui::ButtonOption::Ascii()
-    );
-    this->retry = ftxui::Button(
-        "Change",
-        [changeKeyHandler] { changeKeyHandler(Tetris::Engine::Trigger::KEY_RETRY); },
-        ftxui::ButtonOption::Ascii()
-    );
+    this->moveLeft    = MenuHelper::getAsciiButton("Change", [changeKeyHandler] {
+        changeKeyHandler(Tetris::Engine::Trigger::KEY_MOVE_LEFT);
+    });
+    this->moveRight   = MenuHelper::getAsciiButton("Change", [changeKeyHandler] {
+        changeKeyHandler(Tetris::Engine::Trigger::KEY_MOVE_RIGHT);
+    });
+    this->rotateLeft  = MenuHelper::getAsciiButton("Change", [changeKeyHandler] {
+        changeKeyHandler(Tetris::Engine::Trigger::KEY_ROTATE_LEFT);
+    });
+    this->rotateRight = MenuHelper::getAsciiButton("Change", [changeKeyHandler] {
+        changeKeyHandler(Tetris::Engine::Trigger::KEY_ROTATE_RIGHT);
+    });
+    this->swapHold    = MenuHelper::getAsciiButton("Change", [changeKeyHandler] {
+        changeKeyHandler(Tetris::Engine::Trigger::KEY_SWAP_HOLD);
+    });
+    this->softDrop    = MenuHelper::getAsciiButton("Change", [changeKeyHandler] {
+        changeKeyHandler(Tetris::Engine::Trigger::KEY_SOFT_DROP);
+    });
+    this->hardDrop    = MenuHelper::getAsciiButton("Change", [changeKeyHandler] {
+        changeKeyHandler(Tetris::Engine::Trigger::KEY_HARD_DROP);
+    });
+    this->forfeit     = MenuHelper::getAsciiButton("Change", [changeKeyHandler] {
+        changeKeyHandler(Tetris::Engine::Trigger::KEY_FORFEIT);
+    });
+    this->retry       = MenuHelper::getAsciiButton("Change", [changeKeyHandler] {
+        changeKeyHandler(Tetris::Engine::Trigger::KEY_RETRY);
+    });
 
-    this->backButton = ftxui::Button(
-        "Back",
-        backButtonHandler,
-        ftxui::ButtonOption::Animated(
-            Tetris::Renderer::CurrentTheme::backgroundColor,
-            Tetris::Renderer::CurrentTheme::foregroundColor,
-            Tetris::Renderer::CurrentTheme::backgroundColor,
-            Tetris::Renderer::CurrentTheme::mainColor
-        )
-    );
+    this->backButton = MenuHelper::getAnimatedButton("Back", backButtonHandler);
 
     this->inputs = ftxui::Container::Vertical(
         {this->moveLeft,
@@ -94,34 +58,36 @@ void Controls::init(
     );
 
     this->renderer = ftxui::Renderer(this->inputs, [this] {
+        int width = 13;
+
         return ftxui::vbox(
                    {Tetris::Renderer::Header::controls(),
                     ftxui::filler() | ftxui::size(ftxui::HEIGHT, ftxui::EQUAL, 3),
                     ftxui::vbox({
-                        this->getRow("Move Left:    ", this->controls->moveLeft, this->moveLeft),
-                        ftxui::filler() | ftxui::size(ftxui::HEIGHT, ftxui::EQUAL, 1),
-                        this->getRow("Move Right:   ", this->controls->moveRight, this->moveRight),
-                        ftxui::filler() | ftxui::size(ftxui::HEIGHT, ftxui::EQUAL, 1),
-                        this->getRow("Rotate Left:  ", this->controls->rotateLeft, this->rotateLeft),
-                        ftxui::filler() | ftxui::size(ftxui::HEIGHT, ftxui::EQUAL, 1),
-                        this->getRow("Rotate Right: ", this->controls->rotateRight, this->rotateRight),
-                        ftxui::filler() | ftxui::size(ftxui::HEIGHT, ftxui::EQUAL, 1),
-                        this->getRow("Swap Hold:    ", this->controls->swapHold, this->swapHold),
-                        ftxui::filler() | ftxui::size(ftxui::HEIGHT, ftxui::EQUAL, 1),
-                        this->getRow("Soft Drop:    ", this->controls->softDrop, this->softDrop),
-                        ftxui::filler() | ftxui::size(ftxui::HEIGHT, ftxui::EQUAL, 1),
-                        this->getRow("Hard Drop:    ", this->controls->hardDrop, this->hardDrop),
-                        ftxui::filler() | ftxui::size(ftxui::HEIGHT, ftxui::EQUAL, 1),
-                        this->getRow("Forfeit:      ", this->controls->forfeit, this->forfeit),
-                        ftxui::filler() | ftxui::size(ftxui::HEIGHT, ftxui::EQUAL, 1),
-                        this->getRow("Retry:        ", this->controls->retry, this->retry),
-                        ftxui::filler() | ftxui::size(ftxui::HEIGHT, ftxui::EQUAL, 1),
+                        MenuHelper::getHeaderElement("Movement"),
+                        MenuHelper::getControlsElement("Move Left", this->controls->moveLeft, this->moveLeft, width),
+                        MenuHelper::getControlsElement("Move Right", this->controls->moveRight, this->moveRight, width),
+                        MenuHelper::getControlsElement(
+                            "Rotate Left", this->controls->rotateLeft, this->rotateLeft, width
+                        ),
+                        MenuHelper::getControlsElement(
+                            "Rotate Right", this->controls->rotateRight, this->rotateRight, width
+                        ),
+                        MenuHelper::getControlsElement("Swap Hold", this->controls->swapHold, this->swapHold, width),
+                        MenuHelper::getControlsElement("Soft Drop", this->controls->softDrop, this->softDrop, width),
+                        MenuHelper::getControlsElement("Hard Drop", this->controls->hardDrop, this->hardDrop, width),
+                        MenuHelper::getButtonMargin(),
+                        MenuHelper::getHeaderElement("Other"),
+                        MenuHelper::getControlsElement("Forfeit", this->controls->forfeit, this->forfeit, width),
+                        MenuHelper::getControlsElement("Retry", this->controls->retry, this->retry, width),
+                        MenuHelper::getButtonMargin(),
                     }) | ftxui::center,
                     this->backButton->Render() | ftxui::center}
                )
                | ftxui::center;
     });
 }
+
 Controls &Controls::operator=(const Controls &other)
 {
     if (this == &other)
