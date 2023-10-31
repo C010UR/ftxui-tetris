@@ -9,7 +9,7 @@ config:
   softDropDelayMs: 20
   softDropGravityMsPerRow: 20
   comboDelayMs: 6000
-  debug: true
+  debug: false
   themes:
     - name: Default
       mainColorsGradient:
@@ -71,7 +71,7 @@ config:
       LColor: "#3aa7a3"
       SColor: "#5786b0"
       ZColor: "#625cb5"
-    - name: Vibrant Vines
+    - name: Autumn Haze
       mainColorsGradient:
         - "#e07a5f"
         - "#e9a377"
