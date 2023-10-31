@@ -1,4 +1,5 @@
 #include "t_game/t_tetromino.hpp"
+#include <cmath>
 
 namespace Tetris::Game
 {
@@ -123,8 +124,8 @@ void Tetromino::move(const board_t &board, Point offset, RotationType rotation)
             if (data[row][col] == BlockType::SPIN_LOOKUP_BACK || data[row][col] == BlockType::SPIN_LOOKUP_FRONT)
             {
 
-                int newX = this->currentPosition.x + col;
-                int newY = this->currentPosition.y + row;
+                int newX = std::floor(this->currentPosition.x) + col;
+                int newY = std::floor(this->currentPosition.y) + row;
 
                 if (newX < 0 || newX > width || newY < 0 || newY > height || board[newY][newX] == BoardBlockType::BLOCK)
                 {
@@ -172,8 +173,8 @@ bool Tetromino::isColliding(const board_t &board)
             if (data[row][col] == BlockType::BLOCK)
             {
 
-                int newX = this->currentPosition.x + col;
-                int newY = this->currentPosition.y + row;
+                int newX = std::floor(this->currentPosition.x) + col;
+                int newY = std::floor(this->currentPosition.y) + row;
 
                 if (newX < 0 || newX > width || newY < 0 || newY > height || board[newY][newX] == BoardBlockType::BLOCK)
                 {
@@ -246,15 +247,19 @@ void Tetromino::reset(int width)
     }
 
     this->currentPosition
-        = {(double)((int)(width / 2) - minX - (this->type == TetrominoType::O ? 0 : 1)), (double)-minY};
+        = {(double)((int)(width / 2) - minX - (this->type == TetrominoType::O ? 1 : 2)), (double)-minY};
 }
 
 bool Tetromino::canMove(const board_t &board, Point offset)
 {
+    this->testPoints.clear();
+
     auto data = this->getData();
 
     int height = board.size() - 1;
     int width  = board[0].size() - 1;
+
+    this->testPoints.push_back(offset);
 
     for (int row = 0; row < (int)data.size(); row++)
     {
@@ -262,8 +267,10 @@ bool Tetromino::canMove(const board_t &board, Point offset)
         {
             if (data[row][col] == BlockType::BLOCK)
             {
-                int newX = this->currentPosition.x + offset.x + col;
-                int newY = this->currentPosition.y + offset.y + row;
+                int newX = std::floor(this->currentPosition.x) + std::ceil(offset.x) + col;
+                int newY = std::floor(this->currentPosition.y) + std::ceil(offset.y) + row;
+
+                this->testPoints.push_back({(double)newX, (double)newY});
 
                 if (newX < 0 || newX > width || newY < 0 || newY > height || board[newY][newX] == BoardBlockType::BLOCK)
                 {
@@ -297,8 +304,10 @@ bool Tetromino::canRotate(const board_t &board, Point &offset, RotationType rota
                     continue;
                 }
 
-                int newX = this->currentPosition.x + offset.x + col + wallKickTest[testEntry].x;
-                int newY = this->currentPosition.y + offset.y + row + wallKickTest[testEntry].y;
+                int newX = std::floor(this->currentPosition.x) + std::ceil(offset.x) + col
+                           + std::floor(wallKickTest[testEntry].x);
+                int newY = std::floor(this->currentPosition.y) + std::ceil(offset.y) + row
+                           + std::floor(wallKickTest[testEntry].y);
 
                 if ((newX < 0 || newX > width || newY < 0 || newY > height || board[newY][newX] == BoardBlockType::BLOCK
                     )
@@ -314,6 +323,7 @@ bool Tetromino::canRotate(const board_t &board, Point &offset, RotationType rota
                 break;
             }
         }
+
         if (canMove)
         {
             offset = wallKickTest[testEntry];

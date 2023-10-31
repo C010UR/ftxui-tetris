@@ -1,8 +1,5 @@
 #include "t_renderer/t_canvas.hpp"
 
-#include "ftxui/dom/canvas.hpp"
-#include "t_renderer/t_current_theme.hpp"
-
 namespace Tetris::Renderer
 {
 void Canvas::drawTetromino(ftxui::Canvas &canvas, Tetris::Game::Tetromino tetromino, bool isCentered, bool isShadow)
@@ -17,8 +14,8 @@ void Canvas::drawTetromino(ftxui::Canvas &canvas, Tetris::Game::Tetromino tetrom
             {
                 Canvas::drawBlock(
                     canvas,
-                    (!isCentered ? (int)tetromino.currentPosition.x : 1) + col,
-                    (!isCentered ? (int)tetromino.currentPosition.y : 1) + row,
+                    (!isCentered ? std::floor(tetromino.currentPosition.x) : 1) + col,
+                    (!isCentered ? std::floor(tetromino.currentPosition.y) : 1) + row,
                     tetromino.color,
                     isCentered,
                     isShadow,
@@ -81,7 +78,9 @@ void Canvas::drawBlock(
             if (!isShadow)
             {
                 p.background_color = color;
-            } else {
+            }
+            else
+            {
                 p.background_color = Tetris::Renderer::CurrentTheme::backgroundColor;
             }
         }

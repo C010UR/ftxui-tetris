@@ -6,6 +6,7 @@
 
 #include <charconv>
 #include <climits>
+#include <cmath>
 #include <stdexcept>
 #include <string>
 #include <vector>

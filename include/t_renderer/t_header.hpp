@@ -14,5 +14,6 @@ class Header
     static ftxui::Element gameOver();
     static ftxui::Element options();
     static ftxui::Element controls();
+    static ftxui::Element number(int value);
 };
 } // namespace Tetris::Renderer

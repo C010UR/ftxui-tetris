@@ -1,7 +1,5 @@
 #include "t_menu/t_menu.hpp"
 
-#include "t_engine/t_enums.hpp"
-
 namespace Tetris::Menu
 {
 
@@ -33,7 +31,8 @@ Menu::Menu(
     ftxui::ScreenInteractive &screen,
     Tetris::Config::Config   &config,
     Tetris::Config::Controls &controls,
-    bool                      isGameOver
+    bool                      isGameOver,
+    int                       lastScore
 )
     : config(config), controls(controls), screen(screen)
 {
@@ -53,7 +52,7 @@ Menu::Menu(
     this->mainMenu.init(startButtonHandler, optionsButtonHandler, controlsButtonHandler, exitButtonHandler);
 
     this->gameOverMenu = GameOver();
-    this->gameOverMenu.init(mainMenuButtonHandler, startButtonHandler, exitButtonHandler);
+    this->gameOverMenu.init(mainMenuButtonHandler, startButtonHandler, exitButtonHandler, lastScore);
 
     this->optionsMenu = Options();
     this->optionsMenu.init(this->config, mainMenuButtonHandler, restartHandler);

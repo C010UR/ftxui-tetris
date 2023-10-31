@@ -1,11 +1,5 @@
 #include "t_engine/t_renderer.hpp"
 
-#include "ftxui/component/component.hpp"
-#include "ftxui/screen/color.hpp"
-#include "t_engine/t_enums.hpp"
-#include "t_menu/t_enums.hpp"
-#include "t_renderer/t_current_theme.hpp"
-
 namespace Tetris::Engine
 {
 double Renderer::getCurrentTime()
@@ -24,7 +18,9 @@ void Renderer::configureScreen(ftxui::ScreenInteractive &screen)
     screen.SetCursor(cursor);
 }
 
-ExitType Renderer::menuLoop(Tetris::Config::Config &config, Tetris::Config::Controls &controls, bool isGameOver)
+ExitType Renderer::menuLoop(
+    Tetris::Config::Config &config, Tetris::Config::Controls &controls, bool isGameOver, int score
+)
 {
     ftxui::ScreenInteractive screen = ftxui::ScreenInteractive::Fullscreen();
     Renderer::configureScreen(screen);
@@ -34,7 +30,7 @@ ExitType Renderer::menuLoop(Tetris::Config::Config &config, Tetris::Config::Cont
 
     while (true)
     {
-        Tetris::Menu::Menu menu = Tetris::Menu::Menu(screen, config, controls, isGameOver);
+        Tetris::Menu::Menu menu = Tetris::Menu::Menu(screen, config, controls, isGameOver, score);
 
         menu.setMenu(currentMenu);
 
@@ -55,7 +51,7 @@ ExitType Renderer::menuLoop(Tetris::Config::Config &config, Tetris::Config::Cont
     }
 }
 
-ExitType Renderer::gameLoop(Tetris::Config::Config &config, Tetris::Config::Controls &controls)
+ExitType Renderer::gameLoop(Tetris::Config::Config &config, Tetris::Config::Controls &controls, int &score)
 {
     Tetris::Game::Game game(config, controls);
 
@@ -88,6 +84,7 @@ ExitType Renderer::gameLoop(Tetris::Config::Config &config, Tetris::Config::Cont
 
             if (game.isGameOver())
             {
+                score = game.getScore();
                 return game.exitType;
             }
         }
@@ -102,13 +99,14 @@ int Renderer::mainLoop(Tetris::Config::Config &config, Tetris::Config::Controls 
 {
     ExitType exitType;
     bool     isGameOver = false;
+    int      score      = 0;
     bool     isRetry    = false;
 
     while (true)
     {
         if (!isRetry)
         {
-            exitType = Renderer::menuLoop(config, controls, isGameOver);
+            exitType = Renderer::menuLoop(config, controls, isGameOver, score);
 
             if (exitType != ExitType::CONTINUE)
             {
@@ -116,7 +114,7 @@ int Renderer::mainLoop(Tetris::Config::Config &config, Tetris::Config::Controls 
             }
         }
 
-        exitType = Renderer::gameLoop(config, controls);
+        exitType = Renderer::gameLoop(config, controls, score);
 
         if (exitType == ExitType::EXIT || exitType == ExitType::ABORT)
         {

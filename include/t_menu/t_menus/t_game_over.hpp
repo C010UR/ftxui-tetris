@@ -29,7 +29,8 @@ class GameOver
     void init(
         std::function<void()> mainMenuButtonHandler,
         std::function<void()> tryAgainButtonHandler,
-        std::function<void()> exitButtonHandler
+        std::function<void()> exitButtonHandler,
+        int score
     );
 };
 } // namespace Tetris::Menu

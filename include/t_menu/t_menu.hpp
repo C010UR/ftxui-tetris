@@ -38,7 +38,7 @@ class Menu
     Controls  controlsMenu;
     ChangeKey changeKeyMenu;
 
-    int      currentMenuIndex;
+    int currentMenuIndex;
 
     void startGame();
     void exitGame();
@@ -46,14 +46,15 @@ class Menu
 
   public:
 
-    MenuType currentMenu;
+    MenuType                 currentMenu;
     Tetris::Engine::ExitType exitType;
 
     Menu(
         ftxui::ScreenInteractive &screen,
         Tetris::Config::Config   &config,
         Tetris::Config::Controls &controls,
-        bool                      isGameOver = false
+        bool                      isGameOver = false,
+        int                       lastScore  = 0
     );
 
     void setMenu(MenuType menu);

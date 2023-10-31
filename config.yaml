@@ -4,11 +4,11 @@ config:
   updatesPerSecond: 240
   currentTheme: Default
   forceBackgroundColor: true
-  storeDelayMs: 500
+  storeDelayMs: 10100
   softDropDelayMs: 20
   softDropGravityMsPerRow: 20
   comboDelayMs: 6000
-  debug: false
+  debug: true
   themes:
     - name: Default
       mainColorsGradient:

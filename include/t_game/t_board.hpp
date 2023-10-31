@@ -4,11 +4,13 @@
 #include "ftxui/dom/elements.hpp"
 #include "ftxui/dom/node.hpp"
 #include "ftxui/screen/color.hpp"
+#include "ftxui/screen/screen.hpp"
 #include "t_game/t_enums.hpp"
 #include "t_game/t_point.hpp"
 #include "t_game/t_tetromino.hpp"
 #include "t_game/t_tetromino_factory.hpp"
 #include "t_renderer/t_canvas.hpp"
+#include "t_renderer/t_current_theme.hpp"
 #include "t_renderer/t_data_transformer.hpp"
 #include "t_renderer/t_key_value.hpp"
 

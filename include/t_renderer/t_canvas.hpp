@@ -2,7 +2,9 @@
 
 #include "ftxui/dom/canvas.hpp"
 #include "t_game/t_tetromino.hpp"
+#include "t_renderer/t_current_theme.hpp"
 
+#include <cmath>
 #include <string>
 
 namespace Tetris::Renderer

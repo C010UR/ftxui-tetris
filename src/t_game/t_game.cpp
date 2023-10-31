@@ -297,4 +297,9 @@ bool Game::isGameOver()
     return this->board.isGameOver;
 }
 
+int Game::getScore()
+{
+    return this->score.score;
+}
+
 } // namespace Tetris::Game

@@ -69,5 +69,6 @@ class Game
     ftxui::Component getRenderer();
 
     bool isGameOver();
+    int getScore();
 };
 } // namespace Tetris::Game

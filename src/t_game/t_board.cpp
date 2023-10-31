@@ -1,12 +1,5 @@
 #include "t_game/t_board.hpp"
 
-#include "ftxui/dom/canvas.hpp"
-#include "ftxui/dom/elements.hpp"
-#include "ftxui/dom/node.hpp"
-#include "ftxui/screen/color.hpp"
-#include "ftxui/screen/screen.hpp"
-#include "t_renderer/t_key_value.hpp"
-
 namespace Tetris::Game
 {
 
@@ -74,6 +67,13 @@ Board::Board(Tetromino tetromino)
     }
 
     this->setCurrent(tetromino);
+
+    for (int i = 2; i < height; i++) {
+        for (int j = 0; j < width; j++) {
+            this->board[i][j] = BoardBlockType::BLOCK;
+            this->boardColor[i][j] = Tetris::Renderer::CurrentTheme::IColor;
+        }
+    }
 }
 
 Tetromino *Board::getCurrent()
@@ -152,8 +152,8 @@ int Board::store(Tetromino newTetromino)
 {
     auto data = this->current.getData();
 
-    int x = this->current.currentPosition.x;
-    int y = this->current.currentPosition.y;
+    int x = std::floor(this->current.currentPosition.x);
+    int y = std::floor(this->current.currentPosition.y);
 
     for (int row = 0; row < (int)data.size(); row++)
     {
