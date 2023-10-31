@@ -2,6 +2,7 @@
 
 #include "t_renderer/t_current_theme.hpp"
 #include <chrono>
+#include <thread>
 
 namespace Tetris::Engine
 {
@@ -73,6 +74,7 @@ ExitType Renderer::gameLoop(Tetris::Config::Config &config, Tetris::Config::Cont
 
     double const msPerUpdate = 1000 / config.updatesPerSecond;
 
+    double frameTimeCap = config.fps > 0 ?  1000. / config.fps : 0.;
     unsigned int frames   = 0;
     double       start    = getCurrentTime();
     double       previous = start;
@@ -101,6 +103,14 @@ ExitType Renderer::gameLoop(Tetris::Config::Config &config, Tetris::Config::Cont
         }
 
         screen.PostEvent(ftxui::Event::Special("render"));
+
+        current = getCurrentTime();
+        elapsed = current - previous;
+        previous       = current;
+
+        if (frameTimeCap > 0 && frameTimeCap > elapsed) {
+            std::this_thread::sleep_for(std::chrono::milliseconds((int)(frameTimeCap - elapsed)));
+        }
 
         frames++;
         game.frameTime = elapsed;

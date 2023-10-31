@@ -84,6 +84,7 @@ YAML::Node convert<Config>::encode(const Config &config)
     node["easyMode"]                = (bool)config.isEasyMode;
     node["level"]                   = config.level;
     node["updatesPerSecond"]        = config.updatesPerSecond;
+    node["fps"]                     = config.fps;
     node["currentTheme"]            = config.themes.size() ? config.themes[config.currentTheme].name : "Default";
     node["forceBackgroundColor"]    = (bool)config.withBackgroundColor;
     node["storeDelayMs"]            = config.storeDelay;
@@ -114,6 +115,7 @@ bool convert<Config>::decode(const YAML::Node &node, Config &config)
     YAMLParser::decodeOptionalScalar(node, "softDropDelayMs", config.softDropDelay, basicIntValidator);
     YAMLParser::decodeOptionalScalar(node, "comboDelayMs", config.comboDelay, basicIntValidator);
     YAMLParser::decodeOptionalScalar(node, "updatesPerSecond", config.updatesPerSecond, updatesPerSecondValidator);
+    YAMLParser::decodeOptionalScalar(node, "fps", config.fps, basicDoubleValidator);
     YAMLParser::decodeOptionalScalar(node, "softDropGravityMsPerRow", config.softDropGravity, basicDoubleValidator);
     YAMLParser::decodeOptionalScalar(node, "level", config.level, levelValidator);
 
@@ -255,8 +257,8 @@ YAML::Node convert<Theme>::encode(const Theme &theme)
         node["gameOverColorsGradient"].push_back(theme.gameOverColors[i]);
     }
 
-    node["mainColor"]       = theme.mainColor;
-    node["gameOverColor"]   = theme.gameOverColor;
+    node["mainColor"]     = theme.mainColor;
+    node["gameOverColor"] = theme.gameOverColor;
 
     node["backgroundColor"] = theme.backgroundColor;
     node["foregroundColor"] = theme.foregroundColor;
@@ -295,7 +297,7 @@ bool convert<Theme>::decode(const YAML::Node &node, Theme &theme)
 
     YAMLParser::decodeOptionalScalar(node, "backgroundColor", theme.backgroundColor);
     YAMLParser::decodeOptionalScalar(node, "foregroundColor", theme.foregroundColor);
-    
+
     YAMLParser::decodeOptionalScalar(node, "valueColor", theme.valueColor);
     YAMLParser::decodeOptionalScalar(node, "trueColor", theme.trueColor);
     YAMLParser::decodeOptionalScalar(node, "falseColor", theme.falseColor);

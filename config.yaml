@@ -2,13 +2,14 @@ config:
   easyMode: true
   level: 1
   updatesPerSecond: 240
+  fps: 60
   currentTheme: Default
   forceBackgroundColor: true
   storeDelayMs: 500
   softDropDelayMs: 20
   softDropGravityMsPerRow: 20
   comboDelayMs: 6000
-  debug: true
+  debug: false
   themes:
     - name: Default
       mainColorsGradient:

@@ -11,15 +11,20 @@ class Config
 {
   public:
 
-    bool    isDebug;
-    bool    isEasyMode;
-    bool    withBackgroundColor;
-    int    storeDelay;
-    int    softDropDelay;
-    int    comboDelay;
+    bool isDebug;
+    bool isEasyMode;
+
+    bool withBackgroundColor;
+
+    int storeDelay;
+    int softDropDelay;
+    int comboDelay;
+
+    double fps;
     double updatesPerSecond;
     double softDropGravity;
-    int    level;
+
+    int level;
 
     std::vector<Theme> themes;
 

@@ -10,6 +10,7 @@ Config::Config()
     this->softDropDelay       = 50;
     this->comboDelay          = 6000;
     this->updatesPerSecond    = 240.;
+    this->fps = 60.;
     this->softDropGravity     = 50.;
     this->level               = 1;
     this->withBackgroundColor = false;
