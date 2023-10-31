@@ -14,7 +14,7 @@ void MainMenu::init(
         startButtonHandler,
         ftxui::ButtonOption::Animated(
             Tetris::Renderer::CurrentTheme::backgroundColor,
-            ftxui::Color::GrayDark,
+            Tetris::Renderer::CurrentTheme::foregroundColor,
             Tetris::Renderer::CurrentTheme::backgroundColor,
             Tetris::Renderer::CurrentTheme::mainColor
         )
@@ -25,7 +25,7 @@ void MainMenu::init(
         optionsButtonHandler,
         ftxui::ButtonOption::Animated(
             Tetris::Renderer::CurrentTheme::backgroundColor,
-            ftxui::Color::GrayDark,
+            Tetris::Renderer::CurrentTheme::foregroundColor,
             Tetris::Renderer::CurrentTheme::backgroundColor,
             Tetris::Renderer::CurrentTheme::mainColor
         )
@@ -36,7 +36,7 @@ void MainMenu::init(
         controlsButtonHandler,
         ftxui::ButtonOption::Animated(
             Tetris::Renderer::CurrentTheme::backgroundColor,
-            ftxui::Color::GrayDark,
+            Tetris::Renderer::CurrentTheme::foregroundColor,
             Tetris::Renderer::CurrentTheme::backgroundColor,
             Tetris::Renderer::CurrentTheme::mainColor
         )
@@ -47,7 +47,7 @@ void MainMenu::init(
         exitButtonHandler,
         ftxui::ButtonOption::Animated(
             Tetris::Renderer::CurrentTheme::backgroundColor,
-            ftxui::Color::GrayDark,
+            Tetris::Renderer::CurrentTheme::foregroundColor,
             Tetris::Renderer::CurrentTheme::backgroundColor,
             Tetris::Renderer::CurrentTheme::mainColor
         )

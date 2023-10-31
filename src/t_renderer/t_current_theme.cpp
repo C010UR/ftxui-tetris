@@ -50,7 +50,9 @@ std::vector<ftxui::Color> CurrentTheme::gameOverColors
 
 ftxui::Color CurrentTheme::mainColor       = ftxui::Color::RGB(74, 158, 131);
 ftxui::Color CurrentTheme::gameOverColor   = ftxui::Color::RGB(87, 25, 75);
+
 ftxui::Color CurrentTheme::backgroundColor = ftxui::Color::RGB(0, 0, 0);
+ftxui::Color CurrentTheme::foregroundColor = ftxui::Color::RGB(230, 230, 230);
 
 ftxui::Color CurrentTheme::valueColor = ftxui::Color::RGB(75, 179, 101);
 ftxui::Color CurrentTheme::trueColor  = ftxui::Color::RGB(76, 209, 55);

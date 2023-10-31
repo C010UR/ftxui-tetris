@@ -1,5 +1,7 @@
 #include "t_engine/t_renderer.hpp"
 
+#include "t_renderer/t_current_theme.hpp"
+
 namespace Tetris::Engine
 {
 double Renderer::getCurrentTime()
@@ -36,7 +38,8 @@ ExitType Renderer::menuLoop(
 
         ftxui::Component component
             = ftxui::CatchEvent(menu.getRenderer(), [&menu](ftxui::Event event) { return menu.handleEvent(event); })
-              | ftxui::bgcolor(Tetris::Renderer::CurrentTheme::backgroundColor);
+              | ftxui::bgcolor(Tetris::Renderer::CurrentTheme::backgroundColor)
+              | ftxui::color(Tetris::Renderer::CurrentTheme::foregroundColor);
 
         screen.Loop(component);
 
@@ -61,7 +64,11 @@ ExitType Renderer::gameLoop(Tetris::Config::Config &config, Tetris::Config::Cont
     auto component
         = ftxui::CatchEvent(game.getRenderer(), [&game](ftxui::Event event) { return game.handleEvent(event); });
 
-    ftxui::Loop loop(&screen, component | ftxui::bgcolor(Tetris::Renderer::CurrentTheme::backgroundColor));
+    ftxui::Loop loop(
+        &screen,
+        component | ftxui::bgcolor(Tetris::Renderer::CurrentTheme::backgroundColor)
+            | ftxui::color(Tetris::Renderer::CurrentTheme::foregroundColor)
+    );
 
     double const msPerUpdate = 1000 / config.updatesPerSecond;
     double       previous    = getCurrentTime();

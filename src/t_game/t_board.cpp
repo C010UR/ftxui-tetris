@@ -67,13 +67,6 @@ Board::Board(Tetromino tetromino)
     }
 
     this->setCurrent(tetromino);
-
-    for (int i = 2; i < height; i++) {
-        for (int j = 0; j < width; j++) {
-            this->board[i][j] = BoardBlockType::BLOCK;
-            this->boardColor[i][j] = Tetris::Renderer::CurrentTheme::IColor;
-        }
-    }
 }
 
 Tetromino *Board::getCurrent()

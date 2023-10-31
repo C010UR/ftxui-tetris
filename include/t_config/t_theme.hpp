@@ -24,7 +24,9 @@ class Theme
 
     ftxui::Color mainColor     = ftxui::Color::Default;
     ftxui::Color gameOverColor = ftxui::Color::Default;
+
     ftxui::Color backgroundColor = ftxui::Color::Default;
+    ftxui::Color foregroundColor = ftxui::Color::Default;
 
     ftxui::Color valueColor = ftxui::Color::Default;
     ftxui::Color trueColor  = ftxui::Color::Default;

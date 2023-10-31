@@ -16,7 +16,9 @@ class CurrentTheme
 
     static ftxui::Color mainColor;
     static ftxui::Color gameOverColor;
+    
     static ftxui::Color backgroundColor;
+    static ftxui::Color foregroundColor;
 
     static ftxui::Color valueColor;
     static ftxui::Color trueColor;

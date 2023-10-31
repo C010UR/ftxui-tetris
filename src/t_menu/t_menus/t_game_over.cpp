@@ -14,7 +14,7 @@ void GameOver::init(
         mainMenuButtonHandler,
         ftxui::ButtonOption::Animated(
             Tetris::Renderer::CurrentTheme::backgroundColor,
-            ftxui::Color::GrayDark,
+            Tetris::Renderer::CurrentTheme::foregroundColor,
             Tetris::Renderer::CurrentTheme::backgroundColor,
             Tetris::Renderer::CurrentTheme::gameOverColor
         )
@@ -25,7 +25,7 @@ void GameOver::init(
         tryAgainButtonHandler,
         ftxui::ButtonOption::Animated(
             Tetris::Renderer::CurrentTheme::backgroundColor,
-            ftxui::Color::GrayDark,
+            Tetris::Renderer::CurrentTheme::foregroundColor,
             Tetris::Renderer::CurrentTheme::backgroundColor,
             Tetris::Renderer::CurrentTheme::gameOverColor
         )
@@ -36,7 +36,7 @@ void GameOver::init(
         exitButtonHandler,
         ftxui::ButtonOption::Animated(
             Tetris::Renderer::CurrentTheme::backgroundColor,
-            ftxui::Color::GrayDark,
+            Tetris::Renderer::CurrentTheme::foregroundColor,
             Tetris::Renderer::CurrentTheme::backgroundColor,
             Tetris::Renderer::CurrentTheme::gameOverColor
         )

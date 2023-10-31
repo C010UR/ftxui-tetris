@@ -257,7 +257,9 @@ YAML::Node convert<Theme>::encode(const Theme &theme)
 
     node["mainColor"]       = theme.mainColor;
     node["gameOverColor"]   = theme.gameOverColor;
+
     node["backgroundColor"] = theme.backgroundColor;
+    node["foregroundColor"] = theme.foregroundColor;
 
     node["valueColor"] = theme.valueColor;
     node["trueColor"]  = theme.trueColor;
@@ -289,11 +291,15 @@ bool convert<Theme>::decode(const YAML::Node &node, Theme &theme)
     YAMLParser::decodeOptionalVector(node, "gameOverColorsGradient", theme.gameOverColors);
 
     YAMLParser::decodeOptionalScalar(node, "mainColor", theme.mainColor);
-    YAMLParser::decodeOptionalScalar(node, "backgroundColor", theme.backgroundColor);
     YAMLParser::decodeOptionalScalar(node, "gameOverColor", theme.gameOverColor);
+
+    YAMLParser::decodeOptionalScalar(node, "backgroundColor", theme.backgroundColor);
+    YAMLParser::decodeOptionalScalar(node, "foregroundColor", theme.foregroundColor);
+    
     YAMLParser::decodeOptionalScalar(node, "valueColor", theme.valueColor);
     YAMLParser::decodeOptionalScalar(node, "trueColor", theme.trueColor);
     YAMLParser::decodeOptionalScalar(node, "falseColor", theme.falseColor);
+
     YAMLParser::decodeOptionalScalar(node, "IColor", theme.IColor);
     YAMLParser::decodeOptionalScalar(node, "OColor", theme.OColor);
     YAMLParser::decodeOptionalScalar(node, "TColor", theme.TColor);

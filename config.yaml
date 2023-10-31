@@ -1,10 +1,10 @@
 config:
-  easyMode: false
+  easyMode: true
   level: 1
   updatesPerSecond: 240
   currentTheme: Default
   forceBackgroundColor: true
-  storeDelayMs: 10100
+  storeDelayMs: 500
   softDropDelayMs: 20
   softDropGravityMsPerRow: 20
   comboDelayMs: 6000
@@ -30,6 +30,7 @@ config:
       mainColor: "#3a9e83"
       gameOverColor: "#e84118"
       backgroundColor: "#141a14"
+      foregroundColor: "#dfdfdf"
       valueColor: "#4bb365"
       trueColor: "#4cd137"
       falseColor: "#e84118"
@@ -58,6 +59,7 @@ config:
       mainColor: "#3776a9"
       gameOverColor: "#a83180"
       backgroundColor: "#08061a"
+      foregroundColor: "#dfdfdf"
       valueColor: "#1787e8"
       trueColor: "#2985b3"
       falseColor: "#a83180"
@@ -86,6 +88,7 @@ config:
       mainColor: "#f2cc8f"
       gameOverColor: "#d265bc"
       backgroundColor: "#201813"
+      foregroundColor: "#dfdfdf"
       valueColor: "#f2cc8f"
       trueColor: "#8cf28c"
       falseColor: "#f28c8c"
@@ -112,6 +115,7 @@ config:
       mainColor: "#d81159"
       gameOverColor: "#57194b"
       backgroundColor: "#1a0a0a"
+      foregroundColor: "#dfdfdf"
       valueColor: "#d81159"
       trueColor: "#ffae03"
       falseColor: "#e84118"
