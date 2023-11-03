@@ -174,7 +174,7 @@ void Score::update(int linesCleared, bool isBoardClear, SpinType spin)
 double Score::getGravity()
 {
     const std::vector<double> gravity
-        = {1000, 643, 404, 249, 150, 88, 50.5, 28.3, 15.5, 8.27, 4.31, 2.19, 1.08, 0.52, 0.00024};
+        = {1000, 643, 404, 249, 150, 88, 50, 30, 20, 15, 10, 5, 3,  1};
 
     if (this->level > (int)gravity.size())
     {
