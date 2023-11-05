@@ -1,5 +1,5 @@
 project('FTXUI Tetris', 'cpp',
-  version : '1',
+  version : '2.0.0',
   meson_version: '>= 1.2.0',
   default_options : [
     'warning_level=3',
