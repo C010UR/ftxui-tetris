@@ -124,7 +124,7 @@ void Options::init(
     );
 
     this->renderer = ftxui::Renderer(this->inputs, [this] {
-        int width = 24;
+        int width = 27;
 
         std::function<bool(int)>    basicIntValidator            = [](int value) -> bool { return value > 0; };
         std::function<bool(double)> basicDoubleValidator         = [](double value) -> bool { return value > 0; };
@@ -163,7 +163,7 @@ void Options::init(
                            width
                        ),
                        MenuHelper::getOptionElement(
-                           "Store Delay",
+                           "Store Delay (ms)",
                            this->config->storeDelay,
                            this->subStoreDelay,
                            this->addStoreDelay,
@@ -172,7 +172,7 @@ void Options::init(
                            width
                        ),
                        MenuHelper::getOptionElement(
-                           "Combo Delay",
+                           "Combo Duration (ms)",
                            this->config->comboDelay,
                            this->subComboDelay,
                            this->addComboDelay,
@@ -181,7 +181,7 @@ void Options::init(
                            width
                        ),
                        MenuHelper::getOptionElement(
-                           "Soft Drop Delay",
+                           "Soft Drop Delay (ms)",
                            this->config->softDropDelay,
                            this->subSoftDropDelay,
                            this->addSoftDropDelay,
@@ -190,7 +190,7 @@ void Options::init(
                            width
                        ),
                        MenuHelper::getOptionElement(
-                           "Soft Drop Gravity",
+                           "Soft Drop Gravity (ms/row)",
                            this->config->softDropGravity,
                            this->subSoftDropGravity,
                            this->addSoftDropGravity,
