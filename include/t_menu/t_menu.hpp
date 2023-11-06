@@ -20,12 +20,10 @@
 
 #include <string>
 
-namespace Tetris::Menu
-{
+namespace Tetris::Menu {
 class Menu
 {
   private:
-
     Tetris::Config::Config   &config;
     Tetris::Config::Controls &controls;
 
@@ -45,7 +43,6 @@ class Menu
     void restartMenu();
 
   public:
-
     MenuType                 currentMenu;
     Tetris::Engine::ExitType exitType;
 
@@ -54,8 +51,7 @@ class Menu
         Tetris::Config::Config   &config,
         Tetris::Config::Controls &controls,
         bool                      isGameOver = false,
-        int                       lastScore  = 0
-    );
+        int                       lastScore  = 0);
 
     void setMenu(MenuType menu);
 

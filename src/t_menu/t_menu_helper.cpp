@@ -7,8 +7,7 @@
 
 #include <string>
 
-namespace Tetris::Menu
-{
+namespace Tetris::Menu {
 
 ftxui::Component MenuHelper::getAsciiButton(const std::string &name, std::function<void()> function)
 {
@@ -24,9 +23,7 @@ ftxui::Component MenuHelper::getAnimatedButton(const std::string &name, std::fun
             Tetris::Renderer::CurrentTheme::backgroundColor,
             Tetris::Renderer::CurrentTheme::foregroundColor,
             Tetris::Renderer::CurrentTheme::backgroundColor,
-            isGameOver ? Tetris::Renderer::CurrentTheme::gameOverColor : Tetris::Renderer::CurrentTheme::mainColor
-        )
-    );
+            isGameOver ? Tetris::Renderer::CurrentTheme::gameOverColor : Tetris::Renderer::CurrentTheme::mainColor));
 }
 
 ftxui::Element MenuHelper::getOptionElement(
@@ -37,8 +34,7 @@ ftxui::Element MenuHelper::getOptionElement(
     const bool              validateAdd,
     const bool              validateSub,
     int                     width,
-    int                     leftPad
-)
+    int                     leftPad)
 {
     width -= name.size() + 1;
 
@@ -64,15 +60,20 @@ ftxui::Element MenuHelper::getOptionElement(
     const std::function<bool(double)> validateAdd,
     const std::function<bool(double)> validateSub,
     int                               width,
-    int                               leftPad
-)
+    int                               leftPad)
 {
     std::stringstream stream;
     stream << std::fixed << std::setprecision(3) << value;
 
     return MenuHelper::getOptionElement(
-        name, stream.str(), addButton, subButton, validateAdd(value), validateSub(value), width, leftPad
-    );
+        name,
+        stream.str(),
+        addButton,
+        subButton,
+        validateAdd(value),
+        validateSub(value),
+        width,
+        leftPad);
 }
 
 ftxui::Element MenuHelper::getOptionElement(
@@ -83,12 +84,17 @@ ftxui::Element MenuHelper::getOptionElement(
     const std::function<bool(int)> validateAdd,
     const std::function<bool(int)> validateSub,
     int                            width,
-    int                            leftPad
-)
+    int                            leftPad)
 {
     return MenuHelper::getOptionElement(
-        name, std::to_string(value), addButton, subButton, validateAdd(value), validateSub(value), width, leftPad
-    );
+        name,
+        std::to_string(value),
+        addButton,
+        subButton,
+        validateAdd(value),
+        validateSub(value),
+        width,
+        leftPad);
 }
 
 ftxui::Element MenuHelper::getOptionElement(
@@ -97,16 +103,17 @@ ftxui::Element MenuHelper::getOptionElement(
     const ftxui::Component &addButton,
     const ftxui::Component &subButton,
     int                     width,
-    int                     leftPad
-)
+    int                     leftPad)
 {
-
     return MenuHelper::getOptionElement(name, valueString, addButton, subButton, true, true, width, leftPad);
 }
 
 ftxui::Element MenuHelper::getToggleOptionElement(
-    const std::string &name, const bool value, const ftxui::Component &toggleButton, int width, int leftPad
-)
+    const std::string      &name,
+    const bool              value,
+    const ftxui::Component &toggleButton,
+    int                     width,
+    int                     leftPad)
 {
     width -= name.size() + 1;
 
@@ -118,15 +125,16 @@ ftxui::Element MenuHelper::getToggleOptionElement(
         ftxui::text(" ("),
         ftxui::text(value ? "ON" : "OFF")
             | ftxui::color(
-                value ? Tetris::Renderer::CurrentTheme::trueColor : Tetris::Renderer::CurrentTheme::falseColor
-            ),
-        ftxui::text(") ")
-    );
+                value ? Tetris::Renderer::CurrentTheme::trueColor : Tetris::Renderer::CurrentTheme::falseColor),
+        ftxui::text(") "));
 }
 
 ftxui::Element MenuHelper::getControlsElement(
-    const std::string &name, const std::string &controls, const ftxui::Component &button, int width, int leftPad
-)
+    const std::string      &name,
+    const std::string      &controls,
+    const ftxui::Component &button,
+    int                     width,
+    int                     leftPad)
 {
     std::string transformedControl = Tetris::Renderer::DataTransformer::transformKey(controls);
     width -= name.size() + 1;
@@ -138,9 +146,7 @@ ftxui::Element MenuHelper::getControlsElement(
          button->Render() | ftxui::color(Tetris::Renderer::CurrentTheme::mainColor),
          ftxui::text(" ("),
          ftxui::text(transformedControl) | ftxui::color(Tetris::Renderer::CurrentTheme::valueColor),
-         ftxui::text(")")
-        }
-    );
+         ftxui::text(")")});
 }
 
 ftxui::Element MenuHelper::getHeaderElement(const std::string &name)

@@ -5,12 +5,10 @@
 
 #include <vector>
 
-namespace Tetris::Config
-{
+namespace Tetris::Config {
 class Config
 {
   public:
-
     bool isDebug;
     bool isEasyMode;
 

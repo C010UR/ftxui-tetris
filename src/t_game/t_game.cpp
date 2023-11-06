@@ -5,8 +5,7 @@
 #include "t_engine/t_enums.hpp"
 #include "t_renderer/t_key_value.hpp"
 
-namespace Tetris::Game
-{
+namespace Tetris::Game {
 unsigned Game::calculateTicks(double ms)
 {
     return ms / 1000 * this->config.updatesPerSecond;
@@ -19,8 +18,7 @@ double Game::calculateGravity()
          / (isSoftDrop && this->config.softDropGravity < this->score.getGravity() ? this->config.softDropGravity
                                                                                   : this->score.getGravity()))
             / this->config.updatesPerSecond,
-        (double)std::max(this->board.getRowsToObstacle(), 1.)
-    );
+        (double)std::max(this->board.getRowsToObstacle(), 1.));
 }
 
 void Game::handleGravity()
@@ -29,14 +27,12 @@ void Game::handleGravity()
     double offset       = this->calculateGravity();
     double prevPosition = this->board.getCurrent()->currentPosition.y;
 
-    if (this->board.tryMoveCurrent({0, offset}))
-    {
+    if (this->board.tryMoveCurrent({0, offset})) {
         this->storeDelayTicks = 0;
 
         double nextPosition = this->board.getCurrent()->currentPosition.y;
 
-        if ((int)prevPosition != (int)nextPosition)
-        {
+        if ((int)prevPosition != (int)nextPosition) {
             this->triggers.push_back(Tetris::Engine::Trigger::NEXT_ROW);
         }
     }
@@ -44,13 +40,11 @@ void Game::handleGravity()
 
 void Game::handleSoftDrop()
 {
-    if (!this->isSoftDrop)
-    {
+    if (!this->isSoftDrop) {
         return;
     }
 
-    if (this->softDropDelayTicks == this->calculateTicks(this->config.softDropDelay))
-    {
+    if (this->softDropDelayTicks == this->calculateTicks(this->config.softDropDelay)) {
         this->isSoftDrop         = 0;
         this->softDropDelayTicks = 0;
     }
@@ -60,8 +54,7 @@ void Game::handleSoftDrop()
 
 void Game::handleDrop()
 {
-    if (this->storeDelayTicks != this->calculateTicks(this->config.storeDelay))
-    {
+    if (this->storeDelayTicks != this->calculateTicks(this->config.storeDelay)) {
         return;
     }
 
@@ -71,8 +64,7 @@ void Game::handleDrop()
 
 void Game::handleStore()
 {
-    if (this->board.canMoveCurrent({0, 1}))
-    {
+    if (this->board.canMoveCurrent({0, 1})) {
         return;
     }
 
@@ -80,8 +72,7 @@ void Game::handleStore()
 
     int linesCleared = this->board.store(this->next.pop());
 
-    if (linesCleared > 0)
-    {
+    if (linesCleared > 0) {
         this->comboDelayTicks = this->calculateTicks(this->config.comboDelay);
         this->score.update(linesCleared, this->board.isBoardClear(), lastSpinType);
         this->board.getCurrent()->resetSpinData();
@@ -89,8 +80,7 @@ void Game::handleStore()
 
     this->hold.unblock();
 
-    if (this->board.isGameOver)
-    {
+    if (this->board.isGameOver) {
         this->exitType = Tetris::Engine::ExitType::CONTINUE;
     }
 }
@@ -106,13 +96,11 @@ void Game::handleSwapHold()
 
 void Game::handleCombo()
 {
-    if (this->comboDelayTicks == 0)
-    {
+    if (this->comboDelayTicks == 0) {
         this->score.resetCombo();
     }
 
-    if (this->comboDelayTicks > 0)
-    {
+    if (this->comboDelayTicks > 0) {
         this->comboDelayTicks--;
     }
 }
@@ -152,51 +140,49 @@ void Game::update()
 
 void Game::handleInput()
 {
-    for (const auto &trigger : this->inputTriggers)
-    {
-        switch (trigger)
-        {
-        case Engine::Trigger::KEY_MOVE_LEFT:
-            this->board.tryMoveCurrent({-1, 0});
+    for (const auto &trigger : this->inputTriggers) {
+        switch (trigger) {
+            case Engine::Trigger::KEY_MOVE_LEFT:
+                this->board.tryMoveCurrent({-1, 0});
 
-            break;
-        case Engine::Trigger::KEY_MOVE_RIGHT:
-            this->board.tryMoveCurrent({1, 0});
+                break;
+            case Engine::Trigger::KEY_MOVE_RIGHT:
+                this->board.tryMoveCurrent({1, 0});
 
-            break;
-        case Engine::Trigger::KEY_ROTATE_LEFT:
-            this->board.tryRotateCurrent(RotationType::LEFT);
+                break;
+            case Engine::Trigger::KEY_ROTATE_LEFT:
+                this->board.tryRotateCurrent(RotationType::LEFT);
 
-            break;
-        case Engine::Trigger::KEY_ROTATE_RIGHT:
-            this->board.tryRotateCurrent(RotationType::RIGHT);
+                break;
+            case Engine::Trigger::KEY_ROTATE_RIGHT:
+                this->board.tryRotateCurrent(RotationType::RIGHT);
 
-            break;
-        case Engine::Trigger::KEY_SWAP_HOLD:
-            this->handleSwapHold();
+                break;
+            case Engine::Trigger::KEY_SWAP_HOLD:
+                this->handleSwapHold();
 
-            break;
-        case Engine::Trigger::KEY_SOFT_DROP:
-            this->isSoftDrop         = true;
-            this->softDropDelayTicks = 0;
+                break;
+            case Engine::Trigger::KEY_SOFT_DROP:
+                this->isSoftDrop         = true;
+                this->softDropDelayTicks = 0;
 
-            break;
-        case Engine::Trigger::KEY_HARD_DROP:
-            this->score.add(ScoreType::HARD_DROP, (int)this->board.getRowsToObstacle());
-            this->board.tryMoveCurrent({0, this->board.getRowsToObstacle()});
-            this->handleStore();
+                break;
+            case Engine::Trigger::KEY_HARD_DROP:
+                this->score.add(ScoreType::HARD_DROP, (int)this->board.getRowsToObstacle());
+                this->board.tryMoveCurrent({0, this->board.getRowsToObstacle()});
+                this->handleStore();
 
-            break;
-        case Engine::Trigger::KEY_FORFEIT:
-            this->board.isGameOver = true;
-            this->exitType         = Tetris::Engine::ExitType::CONTINUE;
+                break;
+            case Engine::Trigger::KEY_FORFEIT:
+                this->board.isGameOver = true;
+                this->exitType         = Tetris::Engine::ExitType::CONTINUE;
 
-            break;
-        case Engine::Trigger::KEY_RETRY:
-            this->board.isGameOver = true;
-            this->exitType         = Tetris::Engine::ExitType::RETRY;
-        default:
-            break;
+                break;
+            case Engine::Trigger::KEY_RETRY:
+                this->board.isGameOver = true;
+                this->exitType         = Tetris::Engine::ExitType::RETRY;
+            default:
+                break;
         }
     }
 
@@ -205,19 +191,16 @@ void Game::handleInput()
 
 void Game::handleTriggers()
 {
-    for (const auto &trigger : this->triggers)
-    {
-        switch (trigger)
-        {
-        case Tetris::Engine::Trigger::NEXT_ROW:
-            if (this->isSoftDrop)
-            {
-                this->score.add(ScoreType::SOFT_DROP, 1);
-            }
+    for (const auto &trigger : this->triggers) {
+        switch (trigger) {
+            case Tetris::Engine::Trigger::NEXT_ROW:
+                if (this->isSoftDrop) {
+                    this->score.add(ScoreType::SOFT_DROP, 1);
+                }
 
-            break;
-        default:
-            break;
+                break;
+            default:
+                break;
         }
     }
 
@@ -228,8 +211,7 @@ bool Game::handleEvent(ftxui::Event event)
 {
     Tetris::Engine::Trigger trigger = this->controls.handleEvent(event);
 
-    if (trigger != Tetris::Engine::Trigger::NONE)
-    {
+    if (trigger != Tetris::Engine::Trigger::NONE) {
         this->inputTriggers.push_back(trigger);
     }
 
@@ -247,24 +229,20 @@ ftxui::Element Game::getDebugElement()
                         Tetris::Renderer::KeyValue::create("Gravity per update", this->calculateGravity()),
                         Tetris::Renderer::KeyValue::create("Soft drop", this->isSoftDrop),
                         Tetris::Renderer::KeyValue::create(
-                            "Soft drop delay", this->softDropDelayTicks * this->config.updatesPerSecond
-                        ),
+                            "Soft drop delay",
+                            this->softDropDelayTicks * this->config.updatesPerSecond),
                         Tetris::Renderer::KeyValue::create(
-                            "Store delay", this->storeDelayTicks * this->config.updatesPerSecond
-                        ),
+                            "Store delay",
+                            this->storeDelayTicks * this->config.updatesPerSecond),
                         Tetris::Renderer::KeyValue::create(
-                            "Combo delay", this->comboDelayTicks * this->config.updatesPerSecond
-                        ),
-                    })
-                ),
+                            "Combo delay",
+                            this->comboDelayTicks * this->config.updatesPerSecond),
+                    })),
                 ftxui::window(
                     ftxui::text("Render"),
                     ftxui::vbox(
                         {Tetris::Renderer::KeyValue::create("FPS", this->fps),
-                         Tetris::Renderer::KeyValue::create("Frame Time, ms", this->frameTime)}
-                    )
-                )}
-           )
+                         Tetris::Renderer::KeyValue::create("Frame Time, ms", this->frameTime)}))})
            | ftxui::size(ftxui::WIDTH, ftxui::EQUAL, 30);
 }
 
@@ -277,27 +255,21 @@ ftxui::Component Game::getRenderer()
             ftxui::vbox(
                 {this->score.getStatsElement(),
                  ftxui::filler() | ftxui::size(ftxui::HEIGHT, ftxui::EQUAL, 13),
-                 this->score.getComboElement()}
-            )
-            | ftxui::size(ftxui::WIDTH, ftxui::EQUAL, 20)
-        );
+                 this->score.getComboElement()})
+            | ftxui::size(ftxui::WIDTH, ftxui::EQUAL, 20));
 
         elements.push_back(this->board.getElement(this->config.isEasyMode));
         elements.push_back(
             this->score.getComboGaugeElement(
-                (double)this->comboDelayTicks / this->calculateTicks(this->config.comboDelay)
-            )
-            | ftxui::size(ftxui::HEIGHT, ftxui::EQUAL, this->board.height)
-        );
+                (double)this->comboDelayTicks / this->calculateTicks(this->config.comboDelay))
+            | ftxui::size(ftxui::HEIGHT, ftxui::EQUAL, this->board.height));
 
         elements.push_back({ftxui::vbox(
             {this->next.getElement(),
              ftxui::filler() | ftxui::size(ftxui::HEIGHT, ftxui::EQUAL, 10),
-             this->hold.getElement()}
-        )});
+             this->hold.getElement()})});
 
-        if (this->config.isDebug)
-        {
+        if (this->config.isDebug) {
             elements.push_back(ftxui::filler() | ftxui::size(ftxui::WIDTH, ftxui::EQUAL, 3));
             elements.push_back(ftxui::vbox({this->board.getDebugElement(this->calculateGravity())}));
             elements.push_back(ftxui::vbox({this->getDebugElement()}));

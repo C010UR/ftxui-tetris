@@ -12,12 +12,10 @@
 #include <functional>
 #include <vector>
 
-namespace Tetris::Menu
-{
+namespace Tetris::Menu {
 class MainMenu
 {
   public:
-
     ftxui::Component startButton;
     ftxui::Component optionsButton;
     ftxui::Component controlsButton;
@@ -26,13 +24,12 @@ class MainMenu
     ftxui::Component renderer;
     ftxui::Component inputs;
 
-    MainMenu(){};
+    MainMenu() {};
 
     void init(
         std::function<void()> startButtonHandler,
         std::function<void()> optionsButtonHandler,
         std::function<void()> controlsButtonHandler,
-        std::function<void()> exitButtonHandler
-    );
+        std::function<void()> exitButtonHandler);
 };
 } // namespace Tetris::Menu

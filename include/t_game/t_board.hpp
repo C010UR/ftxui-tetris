@@ -16,12 +16,10 @@
 
 #include <vector>
 
-namespace Tetris::Game
-{
+namespace Tetris::Game {
 class Board
 {
   private:
-
     std::vector<std::vector<ftxui::Color>> boardColor;
     board_t                                board;
 
@@ -31,13 +29,12 @@ class Board
     int  removeFullLines();
 
   public:
-
     inline static const int width  = 10;
     inline static const int height = 20;
 
     bool isGameOver;
 
-    Board(){};
+    Board() {};
 
     Board(Tetromino tetromino);
 

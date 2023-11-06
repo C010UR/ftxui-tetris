@@ -6,16 +6,13 @@
 
 #include <optional>
 
-namespace Tetris::Game
-{
+namespace Tetris::Game {
 class Hold
 {
   private:
-
     std::optional<Tetromino> current;
 
   public:
-
     bool isBlocked;
 
     Hold();

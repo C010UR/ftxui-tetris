@@ -9,17 +9,14 @@
 
 #include <algorithm>
 
-namespace Tetris::Game
-{
+namespace Tetris::Game {
 class Score
 {
   private:
-
     void      calculateLevel();
     ScoreType calculateScore(int linesCleared, bool isBoardClear, SpinType spin = SpinType::NONE);
 
   public:
-
     int score;
     int level;
     int combo;

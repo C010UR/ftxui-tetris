@@ -15,24 +15,29 @@
 #include <yaml-cpp/node/type.h>
 #include <yaml-cpp/yaml.h>
 
-namespace Tetris::Config
-{
+namespace Tetris::Config {
 class YAMLParser
 {
-
   public:
-
     inline const static std::string fileName = "config.yaml";
 
-    template <typename T>
+    template<typename T>
     static void decodeOptionalScalar(
-        const YAML::Node &node, const std::string &name, T &value, std::function<bool(T)> validate  = [] (T) -> bool { return true; }
-    );
+        const YAML::Node      &node,
+        const std::string     &name,
+        T                     &value,
+        std::function<bool(T)> validate = [](T) -> bool {
+            return true;
+        });
 
-    template <typename T>
+    template<typename T>
     static void decodeOptionalVector(
-        const YAML::Node &node, const std::string &name, std::vector<T> &value, std::function<bool(T)> validate = [] (T) -> bool { return true; }
-    );
+        const YAML::Node      &node,
+        const std::string     &name,
+        std::vector<T>        &value,
+        std::function<bool(T)> validate = [](T) -> bool {
+            return true;
+        });
 
     static void decodeOptionalString(const YAML::Node &node, const std::string &name, std::string &value);
 
@@ -41,43 +46,42 @@ class YAMLParser
 };
 } // namespace Tetris::Config
 
-namespace YAML
-{
+namespace YAML {
 
 using Tetris::Config::Config;
 using Tetris::Config::Controls;
 using Tetris::Config::Theme;
 using Tetris::Config::YAMLParser;
 
-template <>
+template<>
 struct convert<Config>
 {
     static YAML::Node encode(const Config &config);
     static bool       decode(const YAML::Node &node, Config &config);
 };
 
-template <>
+template<>
 struct convert<Controls>
 {
     static YAML::Node encode(const Controls &controls);
     static bool       decode(const YAML::Node &node, Controls &controls);
 };
 
-template <>
+template<>
 struct convert<ftxui::Color>
 {
     static YAML::Node encode(const ftxui::Color &color);
     static bool       decode(const YAML::Node &node, ftxui::Color &color);
 };
 
-template <>
+template<>
 struct convert<Theme>
 {
     static YAML::Node encode(const Theme &theme);
     static bool       decode(const YAML::Node &node, Theme &theme);
 };
 
-template <>
+template<>
 struct convert<std::vector<Theme>>
 {
     static YAML::Node encode(const std::vector<Theme> &themes);

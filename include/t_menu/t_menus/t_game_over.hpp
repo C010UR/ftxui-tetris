@@ -12,12 +12,10 @@
 #include <functional>
 #include <vector>
 
-namespace Tetris::Menu
-{
+namespace Tetris::Menu {
 class GameOver
 {
   public:
-
     ftxui::Component mainMenu;
     ftxui::Component tryAgain;
     ftxui::Component exit;
@@ -25,13 +23,12 @@ class GameOver
     ftxui::Component renderer;
     ftxui::Component inputs;
 
-    GameOver(){};
+    GameOver() {};
 
     void init(
         std::function<void()> mainMenuButtonHandler,
         std::function<void()> tryAgainButtonHandler,
         std::function<void()> exitButtonHandler,
-        int                   score
-    );
+        int                   score);
 };
 } // namespace Tetris::Menu

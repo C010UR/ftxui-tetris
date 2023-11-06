@@ -1,7 +1,6 @@
 #include "t_game/t_hold.hpp"
 
-namespace Tetris::Game
-{
+namespace Tetris::Game {
 Hold::Hold()
 {
     this->current->reset();
@@ -38,8 +37,7 @@ ftxui::Element Hold::getElement()
 {
     ftxui::Canvas canvas = Tetris::Renderer::Canvas::create(5, 4);
 
-    if (this->has())
-    {
+    if (this->has()) {
         Tetris::Renderer::Canvas::drawTetromino(canvas, this->current.value(), true, this->isBlocked);
     }
 

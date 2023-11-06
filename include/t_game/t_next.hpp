@@ -6,19 +6,16 @@
 #include "t_renderer/t_canvas.hpp"
 
 #include <vector>
-namespace Tetris::Game
-{
+namespace Tetris::Game {
 class Next
 {
   private:
-
     std::vector<Tetromino> bag;
     int                    index;
 
     void checkBag();
 
   public:
-
     Next();
 
     Tetromino pop();

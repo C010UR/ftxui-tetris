@@ -1,7 +1,6 @@
 #include "t_renderer/t_key_value.hpp"
 
-namespace Tetris::Renderer
-{
+namespace Tetris::Renderer {
 std::string KeyValue::roundDouble(double value)
 {
     std::stringstream stream;

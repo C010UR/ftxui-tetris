@@ -9,12 +9,10 @@
 #include <sstream>
 #include <string>
 
-namespace Tetris::Renderer
-{
+namespace Tetris::Renderer {
 class DataTransformer
 {
   public:
-
     static std::string transformKey(std::string key);
 
     static std::string toString(Tetris::Game::ScoreType type);

@@ -1,7 +1,6 @@
 #pragma once
 
-namespace Tetris::Engine
-{
+namespace Tetris::Engine {
 enum class Trigger
 {
     NONE,
@@ -19,9 +18,9 @@ enum class Trigger
 
 enum class ExitType
 {
-  ABORT,
-  EXIT,
-  CONTINUE,
-  RETRY  
+    ABORT,
+    EXIT,
+    CONTINUE,
+    RETRY
 };
 } // namespace Tetris::Engine

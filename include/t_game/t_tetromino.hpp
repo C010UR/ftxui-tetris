@@ -11,18 +11,15 @@
 #include <string>
 #include <vector>
 
-namespace Tetris::Game
-{
+namespace Tetris::Game {
 class Tetromino
 {
   private:
-
     tetromino_rotations_t           tetromino;
     std::vector<std::vector<Point>> wallKickOffsets;
     int                             rotate(RotationType rotation);
 
   public:
-
     Point currentPosition;
 
     TetrominoType type;
@@ -34,14 +31,13 @@ class Tetromino
     bool isLastMoveResultedInSpin;
     bool isMiniSpin;
 
-    Tetromino(){};
+    Tetromino() {};
 
     Tetromino(
         tetromino_rotations_t           tetromino,
         std::vector<std::vector<Point>> wallKickOffsets,
         ftxui::Color                    color,
-        TetrominoType                   type
-    );
+        TetrominoType                   type);
 
     static tetromino_rotations_t parseInputTetromino(std::vector<std::vector<std::string>> data, int size);
 

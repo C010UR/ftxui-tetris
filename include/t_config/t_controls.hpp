@@ -6,16 +6,13 @@
 #include <cctype>
 #include <string>
 
-namespace Tetris::Config
-{
+namespace Tetris::Config {
 class Controls
 {
   private:
-
     bool isCharacter(ftxui::Event event, std::string character);
 
   public:
-
     std::string moveLeft;
     std::string moveRight;
     std::string rotateLeft;

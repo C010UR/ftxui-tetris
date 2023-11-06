@@ -1,7 +1,6 @@
 #include "t_menu/t_menu.hpp"
 
-namespace Tetris::Menu
-{
+namespace Tetris::Menu {
 
 void Menu::setMenu(MenuType menu)
 {
@@ -32,17 +31,29 @@ Menu::Menu(
     Tetris::Config::Config   &config,
     Tetris::Config::Controls &controls,
     bool                      isGameOver,
-    int                       lastScore
-)
-    : config(config), controls(controls), screen(screen)
+    int                       lastScore):
+    config(config),
+    controls(controls), screen(screen)
 {
-    auto startButtonHandler    = [this] { this->startGame(); };
-    auto optionsButtonHandler  = [this] { this->setMenu(MenuType::OPTIONS); };
-    auto controlsButtonHandler = [this] { this->setMenu(MenuType::CONTROLS); };
-    auto mainMenuButtonHandler = [this] { this->setMenu(MenuType::MAIN_MENU); };
-    auto exitButtonHandler     = [this] { this->exitGame(); };
-    auto restartHandler        = [this] { this->restartMenu(); };
-    auto changeKeyHandler      = [this](Tetris::Engine::Trigger trigger) {
+    auto startButtonHandler = [this] {
+        this->startGame();
+    };
+    auto optionsButtonHandler = [this] {
+        this->setMenu(MenuType::OPTIONS);
+    };
+    auto controlsButtonHandler = [this] {
+        this->setMenu(MenuType::CONTROLS);
+    };
+    auto mainMenuButtonHandler = [this] {
+        this->setMenu(MenuType::MAIN_MENU);
+    };
+    auto exitButtonHandler = [this] {
+        this->exitGame();
+    };
+    auto restartHandler = [this] {
+        this->restartMenu();
+    };
+    auto changeKeyHandler = [this](Tetris::Engine::Trigger trigger) {
         this->changeKeyMenu.isModalOpen = true;
         this->changeKeyMenu.trigger     = trigger;
         this->setMenu(MenuType::CHANGE_KEY);
@@ -73,8 +84,7 @@ Menu::Menu(
             this->controlsMenu.renderer,
             this->changeKeyMenu.renderer,
         },
-        &this->currentMenuIndex
-    );
+        &this->currentMenuIndex);
 }
 
 ftxui::Component Menu::getRenderer()
@@ -82,26 +92,25 @@ ftxui::Component Menu::getRenderer()
     return ftxui::Renderer(this->tab, [this] {
         ftxui::Element document;
 
-        switch (this->currentMenu)
-        {
-        case MenuType::MAIN_MENU:
-            document = this->mainMenu.renderer->Render();
-            break;
-        case MenuType::GAME_OVER:
-            document = this->gameOverMenu.renderer->Render();
-            break;
-        case MenuType::OPTIONS:
-            document = this->optionsMenu.renderer->Render();
-            break;
-        case MenuType::CONTROLS:
-            document = this->controlsMenu.renderer->Render();
-            break;
-        case MenuType::CHANGE_KEY:
-            document = this->controlsMenu.renderer->Render();
+        switch (this->currentMenu) {
+            case MenuType::MAIN_MENU:
+                document = this->mainMenu.renderer->Render();
+                break;
+            case MenuType::GAME_OVER:
+                document = this->gameOverMenu.renderer->Render();
+                break;
+            case MenuType::OPTIONS:
+                document = this->optionsMenu.renderer->Render();
+                break;
+            case MenuType::CONTROLS:
+                document = this->controlsMenu.renderer->Render();
+                break;
+            case MenuType::CHANGE_KEY:
+                document = this->controlsMenu.renderer->Render();
 
-            document
-                = ftxui::dbox({document, this->changeKeyMenu.renderer->Render() | ftxui::clear_under | ftxui::center});
-            break;
+                document = ftxui::dbox(
+                    {document, this->changeKeyMenu.renderer->Render() | ftxui::clear_under | ftxui::center});
+                break;
         }
 
         return document;
@@ -110,8 +119,7 @@ ftxui::Component Menu::getRenderer()
 
 bool Menu::handleEvent(ftxui::Event event)
 {
-    if (this->changeKeyMenu.handleEvent(event))
-    {
+    if (this->changeKeyMenu.handleEvent(event)) {
         this->setMenu(MenuType::CONTROLS);
     };
 

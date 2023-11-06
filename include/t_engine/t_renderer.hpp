@@ -16,18 +16,16 @@
 #include <chrono>
 #include <cstdlib>
 
-namespace Tetris::Engine
-{
+namespace Tetris::Engine {
 class Renderer
 {
   private:
-
     static double getCurrentTime();
     static void   configureScreen(ftxui::ScreenInteractive &screen);
 
   public:
-
-    static ExitType menuLoop(Tetris::Config::Config &config, Tetris::Config::Controls &controls, bool isGameOver, int score);
+    static ExitType
+    menuLoop(Tetris::Config::Config &config, Tetris::Config::Controls &controls, bool isGameOver, int score);
     static ExitType gameLoop(Tetris::Config::Config &config, Tetris::Config::Controls &controls, int &score);
     static int      mainLoop(Tetris::Config::Config &config, Tetris::Config::Controls &controls);
 };

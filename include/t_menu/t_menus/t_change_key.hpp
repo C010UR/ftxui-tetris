@@ -15,12 +15,10 @@
 #include <functional>
 #include <vector>
 
-namespace Tetris::Menu
-{
+namespace Tetris::Menu {
 class ChangeKey
 {
   public:
-
     Tetris::Config::Controls *controls;
 
     bool                    isModalOpen;
@@ -28,7 +26,7 @@ class ChangeKey
 
     ftxui::Component renderer;
 
-    ChangeKey() : isModalOpen(false), trigger(Tetris::Engine::Trigger::NONE){};
+    ChangeKey(): isModalOpen(false), trigger(Tetris::Engine::Trigger::NONE) {};
 
     void init(Tetris::Config::Controls &controls);
     bool handleEvent(ftxui::Event event);

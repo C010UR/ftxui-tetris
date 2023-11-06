@@ -9,12 +9,10 @@
 #include <random>
 #include <vector>
 
-namespace Tetris::Game
-{
+namespace Tetris::Game {
 class TetrominoFactory
 {
   private:
-
     static std::vector<std::vector<Point>> OWallKickData;
     static std::vector<std::vector<Point>> IWallKickData;
     static std::vector<std::vector<Point>> JLTSZWallKickData;
@@ -28,7 +26,6 @@ class TetrominoFactory
     static std::vector<std::vector<std::vector<BlockType>>> Z;
 
   public:
-
     static Tetromino              get(TetrominoType type);
     static std::vector<Tetromino> getBag();
 };

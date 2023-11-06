@@ -1,7 +1,6 @@
 #include "t_renderer/t_current_theme.hpp"
 
-namespace Tetris::Renderer
-{
+namespace Tetris::Renderer {
 ftxui::LinearGradient CurrentTheme::mainGradient(float angle)
 {
     auto gradient = ftxui::LinearGradient().Angle(angle);
@@ -9,8 +8,7 @@ ftxui::LinearGradient CurrentTheme::mainGradient(float angle)
     double position = 0.0;
     double step     = 1. / (mainColors.size() - 1);
 
-    for (auto color : mainColors)
-    {
+    for (auto color : mainColors) {
         gradient.Stop(color, position);
         position += step;
     }
@@ -25,8 +23,7 @@ ftxui::LinearGradient CurrentTheme::badGradient(float angle)
     double position = 0.0;
     double step     = 1. / (gameOverColors.size() - 1);
 
-    for (auto color : gameOverColors)
-    {
+    for (auto color : gameOverColors) {
         gradient.Stop(color, position);
         position += step;
     }
@@ -34,22 +31,22 @@ ftxui::LinearGradient CurrentTheme::badGradient(float angle)
     return gradient;
 }
 
-std::vector<ftxui::Color> CurrentTheme::mainColors
-    = {ftxui::Color::RGB(76, 209, 55),
-       ftxui::Color::RGB(76, 204, 63),
-       ftxui::Color::RGB(76, 199, 71),
-       ftxui::Color::RGB(75, 179, 101),
-       ftxui::Color::RGB(74, 158, 131)};
+std::vector<ftxui::Color> CurrentTheme::mainColors = {
+    ftxui::Color::RGB(76, 209, 55),
+    ftxui::Color::RGB(76, 204, 63),
+    ftxui::Color::RGB(76, 199, 71),
+    ftxui::Color::RGB(75, 179, 101),
+    ftxui::Color::RGB(74, 158, 131)};
 
-std::vector<ftxui::Color> CurrentTheme::gameOverColors
-    = {ftxui::Color::RGB(232, 65, 24),
-       ftxui::Color::RGB(214, 60, 31),
-       ftxui::Color::RGB(196, 55, 37),
-       ftxui::Color::RGB(160, 45, 50),
-       ftxui::Color::RGB(87, 25, 75)};
+std::vector<ftxui::Color> CurrentTheme::gameOverColors = {
+    ftxui::Color::RGB(232, 65, 24),
+    ftxui::Color::RGB(214, 60, 31),
+    ftxui::Color::RGB(196, 55, 37),
+    ftxui::Color::RGB(160, 45, 50),
+    ftxui::Color::RGB(87, 25, 75)};
 
-ftxui::Color CurrentTheme::mainColor       = ftxui::Color::RGB(74, 158, 131);
-ftxui::Color CurrentTheme::gameOverColor   = ftxui::Color::RGB(87, 25, 75);
+ftxui::Color CurrentTheme::mainColor     = ftxui::Color::RGB(74, 158, 131);
+ftxui::Color CurrentTheme::gameOverColor = ftxui::Color::RGB(87, 25, 75);
 
 ftxui::Color CurrentTheme::backgroundColor = ftxui::Color::RGB(0, 0, 0);
 ftxui::Color CurrentTheme::foregroundColor = ftxui::Color::RGB(230, 230, 230);

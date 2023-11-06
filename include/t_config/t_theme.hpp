@@ -11,12 +11,10 @@
 #include <string>
 #include <vector>
 
-namespace Tetris::Config
-{
+namespace Tetris::Config {
 class Theme
 {
   public:
-
     std::string name = "Default";
 
     std::vector<ftxui::Color> mainColors     = {ftxui::Color::Default};

@@ -3,18 +3,19 @@
 #include "ftxui/screen/color.hpp"
 #include "t_renderer/t_current_theme.hpp"
 
-namespace Tetris::Config
-{
+namespace Tetris::Config {
 void Theme::apply(bool withBackgroundColor)
 {
     Tetris::Renderer::CurrentTheme::mainColors     = this->mainColors;
     Tetris::Renderer::CurrentTheme::gameOverColors = this->gameOverColors;
 
-    Tetris::Renderer::CurrentTheme::mainColor       = this->mainColor;
-    Tetris::Renderer::CurrentTheme::gameOverColor   = this->gameOverColor;
+    Tetris::Renderer::CurrentTheme::mainColor     = this->mainColor;
+    Tetris::Renderer::CurrentTheme::gameOverColor = this->gameOverColor;
 
-    Tetris::Renderer::CurrentTheme::backgroundColor = withBackgroundColor ? this->backgroundColor : ftxui::Color::Default;
-    Tetris::Renderer::CurrentTheme::foregroundColor = withBackgroundColor ? this->foregroundColor : ftxui::Color::Default;
+    Tetris::Renderer::CurrentTheme::backgroundColor =
+        withBackgroundColor ? this->backgroundColor : ftxui::Color::Default;
+    Tetris::Renderer::CurrentTheme::foregroundColor =
+        withBackgroundColor ? this->foregroundColor : ftxui::Color::Default;
 
     Tetris::Renderer::CurrentTheme::valueColor = this->valueColor;
     Tetris::Renderer::CurrentTheme::trueColor  = this->trueColor;
@@ -31,19 +32,19 @@ void Theme::apply(bool withBackgroundColor)
 
 void Theme::setDefault()
 {
-    this->mainColors
-        = {ftxui::Color::RGB(76, 209, 55),
-           ftxui::Color::RGB(76, 204, 63),
-           ftxui::Color::RGB(76, 199, 71),
-           ftxui::Color::RGB(75, 179, 101),
-           ftxui::Color::RGB(74, 158, 131)};
+    this->mainColors = {
+        ftxui::Color::RGB(76, 209, 55),
+        ftxui::Color::RGB(76, 204, 63),
+        ftxui::Color::RGB(76, 199, 71),
+        ftxui::Color::RGB(75, 179, 101),
+        ftxui::Color::RGB(74, 158, 131)};
 
-    this->gameOverColors
-        = {ftxui::Color::RGB(232, 65, 24),
-           ftxui::Color::RGB(214, 60, 31),
-           ftxui::Color::RGB(196, 55, 37),
-           ftxui::Color::RGB(160, 45, 50),
-           ftxui::Color::RGB(87, 25, 75)};
+    this->gameOverColors = {
+        ftxui::Color::RGB(232, 65, 24),
+        ftxui::Color::RGB(214, 60, 31),
+        ftxui::Color::RGB(196, 55, 37),
+        ftxui::Color::RGB(160, 45, 50),
+        ftxui::Color::RGB(87, 25, 75)};
 
     this->mainColor       = ftxui::Color::RGB(74, 158, 131);
     this->gameOverColor   = ftxui::Color::RGB(87, 25, 75);
@@ -71,20 +72,17 @@ ftxui::Component Theme::getDebugRenderer()
         elements.push_back(Tetris::Renderer::KeyValue::create("Name", this->name));
         elements.push_back(ftxui::separator());
 
-        for (int i = 0; i < (int)this->mainColors.size(); i++)
-        {
+        for (int i = 0; i < (int)this->mainColors.size(); i++) {
             elements.push_back(
-                Tetris::Renderer::KeyValue::create("Main Gradient " + std::to_string(i + 1), this->mainColors[i])
-            );
+                Tetris::Renderer::KeyValue::create("Main Gradient " + std::to_string(i + 1), this->mainColors[i]));
         }
 
         elements.push_back(ftxui::separator());
 
-        for (int i = 0; i < (int)this->gameOverColors.size(); i++)
-        {
+        for (int i = 0; i < (int)this->gameOverColors.size(); i++) {
             elements.push_back(Tetris::Renderer::KeyValue::create(
-                "Game Over Gradient " + std::to_string(i + 1), this->gameOverColors[i]
-            ));
+                "Game Over Gradient " + std::to_string(i + 1),
+                this->gameOverColors[i]));
         }
 
         elements.push_back(ftxui::separator());

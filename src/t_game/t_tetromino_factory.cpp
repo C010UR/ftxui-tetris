@@ -1,7 +1,6 @@
 #include "t_game/t_tetromino_factory.hpp"
 
-namespace Tetris::Game
-{
+namespace Tetris::Game {
 Tetromino TetrominoFactory::get(TetrominoType type)
 {
     // clang-format off
@@ -84,11 +83,10 @@ std::vector<Tetromino> TetrominoFactory::getBag()
 }
 
 std::vector<std::vector<Point>> TetrominoFactory::IWallKickData = {
-    {{0, 0},   {-1, 0}, {2, 0},   {-1, 0}, {2, 0} },
-    {{-1, 0},  {0, 0},  {0, 0},   {0, -1}, {0, 2} },
-    {{-1, -1}, {1, -1}, {-2, -1}, {1, 0},  {-2, 0}},
-    {{0, -1},  {0, -1}, {0, -1},  {0, 1},  {0, -2}}
-};
+    {{0, 0}, {-1, 0}, {2, 0}, {-1, 0}, {2, 0}},
+    {{-1, 0}, {0, 0}, {0, 0}, {0, -1}, {0, 2}},
+    {{-1, -1}, {1, -1}, {-2, -1}, {1, 0}, {-2, 0}},
+    {{0, -1}, {0, -1}, {0, -1}, {0, 1}, {0, -2}}};
 
 std::vector<std::vector<Point>> TetrominoFactory::OWallKickData = {
     {{0, 0}},
@@ -98,11 +96,10 @@ std::vector<std::vector<Point>> TetrominoFactory::OWallKickData = {
 };
 
 std::vector<std::vector<Point>> TetrominoFactory::JLTSZWallKickData = {
-    {{0, 0}, {0, 0},  {0, 0},  {0, 0},  {0, 0}  },
-    {{0, 0}, {1, 0},  {1, 1},  {0, -2}, {1, -2} },
-    {{0, 0}, {0, 0},  {0, 0},  {0, 0},  {0, 0}  },
-    {{0, 0}, {-1, 0}, {-1, 1}, {0, -2}, {-1, -2}}
-};
+    {{0, 0}, {0, 0}, {0, 0}, {0, 0}, {0, 0}},
+    {{0, 0}, {1, 0}, {1, 1}, {0, -2}, {1, -2}},
+    {{0, 0}, {0, 0}, {0, 0}, {0, 0}, {0, 0}},
+    {{0, 0}, {-1, 0}, {-1, 1}, {0, -2}, {-1, -2}}};
 
 // clang-format off
 std::vector<std::vector<std::vector<BlockType>>> TetrominoFactory::I

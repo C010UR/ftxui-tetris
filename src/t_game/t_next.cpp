@@ -1,12 +1,10 @@
 #include "t_game/t_next.hpp"
 
-namespace Tetris::Game
-{
+namespace Tetris::Game {
 
 void Next::checkBag()
 {
-    if (!bag.size() || this->index == (int)this->bag.size())
-    {
+    if (!bag.size() || this->index == (int)this->bag.size()) {
         this->bag   = TetrominoFactory::getBag();
         this->index = 0;
     }

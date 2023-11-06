@@ -2,37 +2,36 @@
 
 #include <string>
 
-namespace Tetris::Config
-{
-template <typename T>
+namespace Tetris::Config {
+template<typename T>
 void YAMLParser::decodeOptionalScalar(
-    const YAML::Node &node, const std::string &name, T &value, std::function<bool(T)> validate
-)
+    const YAML::Node      &node,
+    const std::string     &name,
+    T                     &value,
+    std::function<bool(T)> validate)
 {
-    if (!node[name].IsDefined() || !node[name].IsScalar() || !validate(node[name].as<T>()))
-    {
+    if (!node[name].IsDefined() || !node[name].IsScalar() || !validate(node[name].as<T>())) {
         return;
     }
 
     value = node[name].as<T>();
 }
 
-template <typename T>
+template<typename T>
 void YAMLParser::decodeOptionalVector(
-    const YAML::Node &node, const std::string &name, std::vector<T> &value, std::function<bool(T)> validate
-)
+    const YAML::Node      &node,
+    const std::string     &name,
+    std::vector<T>        &value,
+    std::function<bool(T)> validate)
 {
-    if (!node[name].IsDefined() || !node[name].IsSequence() || !node[name].size())
-    {
+    if (!node[name].IsDefined() || !node[name].IsSequence() || !node[name].size()) {
         return;
     }
 
     value.clear();
 
-    for (YAML::const_iterator it = node[name].begin(); it != node[name].end(); ++it)
-    {
-        if (!validate(it->as<T>()))
-        {
+    for (YAML::const_iterator it = node[name].begin(); it != node[name].end(); ++it) {
+        if (!validate(it->as<T>())) {
             continue;
         }
 
@@ -42,8 +41,7 @@ void YAMLParser::decodeOptionalVector(
 
 void YAMLParser::decodeOptionalString(const YAML::Node &node, const std::string &name, std::string &value)
 {
-    if (!node[name].IsDefined() || node[name].IsNull() || node[name].as<std::string>().empty())
-    {
+    if (!node[name].IsDefined() || node[name].IsNull() || node[name].as<std::string>().empty()) {
         return;
     }
 
@@ -74,8 +72,7 @@ void YAMLParser::saveData(const Config &config, const Controls &controls)
 }
 } // namespace Tetris::Config
 
-namespace YAML
-{
+namespace YAML {
 
 YAML::Node convert<Config>::encode(const Config &config)
 {
@@ -99,14 +96,21 @@ YAML::Node convert<Config>::encode(const Config &config)
 
 bool convert<Config>::decode(const YAML::Node &node, Config &config)
 {
-    if (!node.IsMap())
-    {
+    if (!node.IsMap()) {
         return true;
     }
-    std::function<bool(int)>    basicIntValidator         = [](int value) -> bool { return value > 0; };
-    std::function<bool(double)> basicDoubleValidator      = [](double value) -> bool { return value > 0; };
-    std::function<bool(int)>    levelValidator            = [](int value) -> bool { return value > 0 && value <= 15; };
-    std::function<bool(double)> updatesPerSecondValidator = [](double value) -> bool { return value > 1; };
+    std::function<bool(int)> basicIntValidator = [](int value) -> bool {
+        return value > 0;
+    };
+    std::function<bool(double)> basicDoubleValidator = [](double value) -> bool {
+        return value > 0;
+    };
+    std::function<bool(int)> levelValidator = [](int value) -> bool {
+        return value > 0 && value <= 15;
+    };
+    std::function<bool(double)> updatesPerSecondValidator = [](double value) -> bool {
+        return value > 1;
+    };
 
     YAMLParser::decodeOptionalScalar(node, "debug", config.isDebug);
     YAMLParser::decodeOptionalScalar(node, "easyMode", config.isEasyMode);
@@ -127,14 +131,12 @@ bool convert<Config>::decode(const YAML::Node &node, Config &config)
 
     std::transform(currentTheme.begin(), currentTheme.end(), currentTheme.begin(), ::tolower);
 
-    for (int i = 0; i < (int)config.themes.size(); i++)
-    {
+    for (int i = 0; i < (int)config.themes.size(); i++) {
         std::string themeName = config.themes[i].name;
 
         std::transform(themeName.begin(), themeName.end(), themeName.begin(), ::tolower);
 
-        if (currentTheme == themeName)
-        {
+        if (currentTheme == themeName) {
             config.currentTheme = i;
 
             break;
@@ -175,15 +177,13 @@ YAML::Node convert<ftxui::Color>::encode(const ftxui::Color &color)
 bool convert<ftxui::Color>::decode(const YAML::Node &node, ftxui::Color &color)
 {
     if (node.IsMap() && node["r"] && node["r"].IsScalar() && node["g"] && node["g"].IsScalar() && node["b"]
-        && node["b"].IsScalar())
-    {
+        && node["b"].IsScalar()) {
         color = ftxui::Color::RGB(node["r"].as<int>(), node["g"].as<int>(), node["b"].as<int>());
 
         return true;
     }
 
-    if (!node.IsScalar())
-    {
+    if (!node.IsScalar()) {
         return false;
     }
 
@@ -192,26 +192,21 @@ bool convert<ftxui::Color>::decode(const YAML::Node &node, ftxui::Color &color)
     std::regex rgbPattern(
         "\\s*rgb\\((25[0-5]|2[0-4][0-9]|1[0-9][0-9]|\\d{1,2})\\s*,\\s*(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|\\d{1,2})\\s*,"
         "\\s*(25[0-5]|2[0-4][0-9]|1[0-9][0-9]|\\d{1,2})\\)\\s*",
-        std::regex_constants::icase
-    );
+        std::regex_constants::icase);
 
     std::regex hexPattern("\\s*#([A-Fa-f0-9]{2})([A-Fa-f0-9]{2})([A-Fa-f0-9]{2})\\s*");
 
     std::smatch match;
 
-    if (std::regex_match(value, match, rgbPattern))
-    {
+    if (std::regex_match(value, match, rgbPattern)) {
         color = ftxui::Color::RGB(std::stoi(match[1].str()), std::stoi(match[2].str()), std::stoi(match[3].str()));
 
         return true;
-    }
-    else if (std::regex_match(value, match, hexPattern))
-    {
+    } else if (std::regex_match(value, match, hexPattern)) {
         color = ftxui::Color::RGB(
             std::stoi(match[1].str(), nullptr, 16),
             std::stoi(match[2].str(), nullptr, 16),
-            std::stoi(match[3].str(), nullptr, 16)
-        );
+            std::stoi(match[3].str(), nullptr, 16));
 
         return true;
     }
@@ -221,12 +216,13 @@ bool convert<ftxui::Color>::decode(const YAML::Node &node, ftxui::Color &color)
 
 bool convert<Controls>::decode(const YAML::Node &node, Controls &controls)
 {
-    if (!node.IsMap())
-    {
+    if (!node.IsMap()) {
         return true;
     }
 
-    std::function<bool(std::string)> basicStringValidator = [](std::string value) -> bool { return !value.empty(); };
+    std::function<bool(std::string)> basicStringValidator = [](std::string value) -> bool {
+        return !value.empty();
+    };
 
     YAMLParser::decodeOptionalString(node, "moveLeft", controls.moveLeft);
     YAMLParser::decodeOptionalString(node, "moveRight", controls.moveRight);
@@ -247,13 +243,11 @@ YAML::Node convert<Theme>::encode(const Theme &theme)
 
     node["name"] = theme.name;
 
-    for (int i = 0; i < (int)theme.mainColors.size(); i++)
-    {
+    for (int i = 0; i < (int)theme.mainColors.size(); i++) {
         node["mainColorsGradient"].push_back(theme.mainColors[i]);
     }
 
-    for (int i = 0; i < (int)theme.gameOverColors.size(); i++)
-    {
+    for (int i = 0; i < (int)theme.gameOverColors.size(); i++) {
         node["gameOverColorsGradient"].push_back(theme.gameOverColors[i]);
     }
 
@@ -280,12 +274,13 @@ YAML::Node convert<Theme>::encode(const Theme &theme)
 
 bool convert<Theme>::decode(const YAML::Node &node, Theme &theme)
 {
-    if (!node.IsMap())
-    {
+    if (!node.IsMap()) {
         return true;
     }
 
-    std::function<bool(std::string)> basicStringValidator = [](std::string value) -> bool { return !value.empty(); };
+    std::function<bool(std::string)> basicStringValidator = [](std::string value) -> bool {
+        return !value.empty();
+    };
 
     YAMLParser::decodeOptionalString(node, "name", theme.name);
 
@@ -317,8 +312,7 @@ YAML::Node convert<std::vector<Theme>>::encode(const std::vector<Theme> &themes)
 {
     YAML::Node node(YAML::NodeType::Sequence);
 
-    for (int i = 0; i < (int)themes.size(); i++)
-    {
+    for (int i = 0; i < (int)themes.size(); i++) {
         node.push_back(themes[i]);
     }
 
@@ -327,20 +321,17 @@ YAML::Node convert<std::vector<Theme>>::encode(const std::vector<Theme> &themes)
 
 bool convert<std::vector<Theme>>::decode(const YAML::Node &node, std::vector<Theme> &themes)
 {
-    if (!node.IsSequence() || !node.size())
-    {
+    if (!node.IsSequence() || !node.size()) {
         return true;
     }
 
     themes.clear();
 
-    for (YAML::const_iterator it = node.begin(); it != node.end(); ++it)
-    {
+    for (YAML::const_iterator it = node.begin(); it != node.end(); ++it) {
         themes.push_back(it->as<Theme>());
     }
 
-    if (themes.empty())
-    {
+    if (themes.empty()) {
         Theme theme;
         theme.setDefault();
 

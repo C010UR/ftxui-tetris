@@ -1,11 +1,11 @@
 #include "t_engine/t_renderer.hpp"
 
 #include "t_renderer/t_current_theme.hpp"
+
 #include <chrono>
 #include <thread>
 
-namespace Tetris::Engine
-{
+namespace Tetris::Engine {
 double Renderer::getCurrentTime()
 {
     auto currentTime = std::chrono::high_resolution_clock::now();
@@ -22,35 +22,33 @@ void Renderer::configureScreen(ftxui::ScreenInteractive &screen)
     screen.SetCursor(cursor);
 }
 
-ExitType Renderer::menuLoop(
-    Tetris::Config::Config &config, Tetris::Config::Controls &controls, bool isGameOver, int score
-)
+ExitType
+Renderer::menuLoop(Tetris::Config::Config &config, Tetris::Config::Controls &controls, bool isGameOver, int score)
 {
     ftxui::ScreenInteractive screen = ftxui::ScreenInteractive::Fullscreen();
     Renderer::configureScreen(screen);
 
-    Tetris::Menu::MenuType currentMenu
-        = isGameOver ? Tetris::Menu::MenuType::GAME_OVER : Tetris::Menu::MenuType::MAIN_MENU;
+    Tetris::Menu::MenuType currentMenu =
+        isGameOver ? Tetris::Menu::MenuType::GAME_OVER : Tetris::Menu::MenuType::MAIN_MENU;
 
-    while (true)
-    {
+    while (true) {
         Tetris::Menu::Menu menu = Tetris::Menu::Menu(screen, config, controls, isGameOver, score);
 
         menu.setMenu(currentMenu);
 
-        ftxui::Component component
-            = ftxui::CatchEvent(menu.getRenderer(), [&menu](ftxui::Event event) { return menu.handleEvent(event); })
-              | ftxui::bgcolor(Tetris::Renderer::CurrentTheme::backgroundColor)
-              | ftxui::color(Tetris::Renderer::CurrentTheme::foregroundColor);
+        ftxui::Component component = ftxui::CatchEvent(
+                                         menu.getRenderer(),
+                                         [&menu](ftxui::Event event) {
+                                             return menu.handleEvent(event);
+                                         })
+                                     | ftxui::bgcolor(Tetris::Renderer::CurrentTheme::backgroundColor)
+                                     | ftxui::color(Tetris::Renderer::CurrentTheme::foregroundColor);
 
         screen.Loop(component);
 
-        if (menu.exitType == Tetris::Engine::ExitType::RETRY)
-        {
+        if (menu.exitType == Tetris::Engine::ExitType::RETRY) {
             currentMenu = menu.currentMenu;
-        }
-        else
-        {
+        } else {
             return menu.exitType;
         }
     }
@@ -63,25 +61,24 @@ ExitType Renderer::gameLoop(Tetris::Config::Config &config, Tetris::Config::Cont
     ftxui::ScreenInteractive screen = ftxui::ScreenInteractive::Fullscreen();
     Renderer::configureScreen(screen);
 
-    auto component
-        = ftxui::CatchEvent(game.getRenderer(), [&game](ftxui::Event event) { return game.handleEvent(event); });
+    auto component = ftxui::CatchEvent(game.getRenderer(), [&game](ftxui::Event event) {
+        return game.handleEvent(event);
+    });
 
     ftxui::Loop loop(
         &screen,
         component | ftxui::bgcolor(Tetris::Renderer::CurrentTheme::backgroundColor)
-            | ftxui::color(Tetris::Renderer::CurrentTheme::foregroundColor)
-    );
+            | ftxui::color(Tetris::Renderer::CurrentTheme::foregroundColor));
 
     double const msPerUpdate = 1000 / config.updatesPerSecond;
 
-    double frameTimeCap = config.fps > 0 ?  1000. / config.fps : 0.;
-    unsigned int frames   = 0;
-    double       start    = getCurrentTime();
-    double       previous = start;
-    double       lag      = 0.0;
+    double       frameTimeCap = config.fps > 0 ? 1000. / config.fps : 0.;
+    unsigned int frames       = 0;
+    double       start        = getCurrentTime();
+    double       previous     = start;
+    double       lag          = 0.0;
 
-    while (!loop.HasQuitted())
-    {
+    while (!loop.HasQuitted()) {
         double current = getCurrentTime();
         double elapsed = current - previous;
         previous       = current;
@@ -90,13 +87,11 @@ ExitType Renderer::gameLoop(Tetris::Config::Config &config, Tetris::Config::Cont
         loop.RunOnce();
         game.handleInput();
 
-        while (lag >= msPerUpdate)
-        {
+        while (lag >= msPerUpdate) {
             game.update();
             lag -= msPerUpdate;
 
-            if (game.isGameOver())
-            {
+            if (game.isGameOver()) {
                 score = game.getScore();
                 return game.exitType;
             }
@@ -120,7 +115,7 @@ ExitType Renderer::gameLoop(Tetris::Config::Config &config, Tetris::Config::Cont
 
         if (start > 1000) {
             frames = 0;
-            start = getCurrentTime();
+            start  = getCurrentTime();
         }
     }
 
@@ -134,22 +129,18 @@ int Renderer::mainLoop(Tetris::Config::Config &config, Tetris::Config::Controls 
     int      score      = 0;
     bool     isRetry    = false;
 
-    while (true)
-    {
-        if (!isRetry)
-        {
+    while (true) {
+        if (!isRetry) {
             exitType = Renderer::menuLoop(config, controls, isGameOver, score);
 
-            if (exitType != ExitType::CONTINUE)
-            {
+            if (exitType != ExitType::CONTINUE) {
                 return EXIT_SUCCESS;
             }
         }
 
         exitType = Renderer::gameLoop(config, controls, score);
 
-        if (exitType == ExitType::EXIT || exitType == ExitType::ABORT)
-        {
+        if (exitType == ExitType::EXIT || exitType == ExitType::ABORT) {
             return EXIT_SUCCESS;
         }
 

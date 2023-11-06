@@ -1,8 +1,7 @@
 #pragma once
 
 #include <vector>
-namespace Tetris::Game
-{
+namespace Tetris::Game {
 enum class TetrominoType
 {
     I,

@@ -18,16 +18,13 @@
 #include <functional>
 #include <vector>
 
-namespace Tetris::Menu
-{
+namespace Tetris::Menu {
 class Controls
 {
   private:
-
     Tetris::Config::Controls *controls;
 
   public:
-
     ftxui::Component moveLeft;
     ftxui::Component moveRight;
     ftxui::Component rotateLeft;
@@ -42,14 +39,13 @@ class Controls
     ftxui::Component renderer;
     ftxui::Component inputs;
 
-    Controls(){};
+    Controls() {};
 
     void init(
         Tetris::Config::Controls                    &controls,
         std::function<void(Tetris::Engine::Trigger)> changeKeyHandler,
-        std::function<void()>                        backButtonHandler
-    );
-    
+        std::function<void()>                        backButtonHandler);
+
     Controls &operator=(const Controls &other);
 };
 }; // namespace Tetris::Menu

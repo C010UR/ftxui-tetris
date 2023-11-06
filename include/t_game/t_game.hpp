@@ -14,18 +14,15 @@
 #include "t_game/t_next.hpp"
 #include "t_game/t_score.hpp"
 #include "t_game/t_tetromino.hpp"
-#include "t_renderer/t_enums.hpp"
 #include "t_renderer/t_key_value.hpp"
 
 #include <unordered_map>
 #include <vector>
 
-namespace Tetris::Game
-{
+namespace Tetris::Game {
 class Game
 {
   private:
-
     Board board;
     Score score;
     Hold  hold;
@@ -71,6 +68,6 @@ class Game
     ftxui::Component getRenderer();
 
     bool isGameOver();
-    int getScore();
+    int  getScore();
 };
 } // namespace Tetris::Game

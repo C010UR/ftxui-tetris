@@ -1,7 +1,6 @@
 #include "t_game/t_score.hpp"
 
-namespace Tetris::Game
-{
+namespace Tetris::Game {
 
 void Score::calculateLevel()
 {
@@ -9,8 +8,7 @@ void Score::calculateLevel()
 
     int j = 3;
 
-    for (int i = j; i <= this->totalLinesCleared; i += j)
-    {
+    for (int i = j; i <= this->totalLinesCleared; i += j) {
         level++;
         j += 2;
     }
@@ -21,64 +19,56 @@ void Score::calculateLevel()
 ScoreType Score::calculateScore(int linesCleared, bool isBoardClear, SpinType spin)
 {
     {
-        if (linesCleared == 0 && spin == SpinType::NONE)
-        {
+        if (linesCleared == 0 && spin == SpinType::NONE) {
             return ScoreType::NONE;
         }
 
-        if (isBoardClear)
-        {
-            switch (linesCleared)
-            {
+        if (isBoardClear) {
+            switch (linesCleared) {
+                case 1:
+                    return ScoreType::SINGLE_LINE_PERFECT_CLEAR;
+                case 2:
+                    return ScoreType::DOUBLE_LINE_PERFECT_CLEAR;
+                case 3:
+                    return ScoreType::TRIPLE_LINE_PERFECT_CLEAR;
+                default:
+                    return ScoreType::TETRIS_LINE_PERFECT_CLEAR;
+            }
+        }
+
+        if (spin == SpinType::T_SPIN_MINI) {
+            switch (linesCleared) {
+                case 1:
+                    return ScoreType::MINI_T_SPIN_SINGLE;
+                case 2:
+                    return ScoreType::MINI_T_SPIN_DOUBLE;
+                default:
+                    return ScoreType::MINI_T_SPIN_NO_LINES;
+            }
+        }
+
+        if (spin == SpinType::T_SPIN_FULL) {
+            switch (linesCleared) {
+                case 1:
+                    return ScoreType::T_SPIN_SINGLE;
+                case 2:
+                    return ScoreType::T_SPIN_DOUBLE;
+                case 3:
+                    return ScoreType::T_SPIN_TRIPLE;
+                default:
+                    return ScoreType::T_SPIN_NO_LINES;
+            }
+        }
+
+        switch (linesCleared) {
             case 1:
-                return ScoreType::SINGLE_LINE_PERFECT_CLEAR;
+                return ScoreType::SINGLE;
             case 2:
-                return ScoreType::DOUBLE_LINE_PERFECT_CLEAR;
+                return ScoreType::DOUBLE;
             case 3:
-                return ScoreType::TRIPLE_LINE_PERFECT_CLEAR;
+                return ScoreType::TRIPLE;
             default:
-                return ScoreType::TETRIS_LINE_PERFECT_CLEAR;
-            }
-        }
-
-        if (spin == SpinType::T_SPIN_MINI)
-        {
-            switch (linesCleared)
-            {
-            case 1:
-                return ScoreType::MINI_T_SPIN_SINGLE;
-            case 2:
-                return ScoreType::MINI_T_SPIN_DOUBLE;
-            default:
-                return ScoreType::MINI_T_SPIN_NO_LINES;
-            }
-        }
-
-        if (spin == SpinType::T_SPIN_FULL)
-        {
-            switch (linesCleared)
-            {
-            case 1:
-                return ScoreType::T_SPIN_SINGLE;
-            case 2:
-                return ScoreType::T_SPIN_DOUBLE;
-            case 3:
-                return ScoreType::T_SPIN_TRIPLE;
-            default:
-                return ScoreType::T_SPIN_NO_LINES;
-            }
-        }
-
-        switch (linesCleared)
-        {
-        case 1:
-            return ScoreType::SINGLE;
-        case 2:
-            return ScoreType::DOUBLE;
-        case 3:
-            return ScoreType::TRIPLE;
-        default:
-            return ScoreType::TETRIS;
+                return ScoreType::TETRIS;
         }
     }
 }
@@ -94,15 +84,13 @@ Score::Score(int level)
 
 void Score::add(ScoreType type, int lines)
 {
-    if (type == ScoreType::SOFT_DROP)
-    {
+    if (type == ScoreType::SOFT_DROP) {
         this->score += 1 * lines;
 
         return;
     }
 
-    if (type == ScoreType::HARD_DROP)
-    {
+    if (type == ScoreType::HARD_DROP) {
         this->score += 2 * lines;
 
         return;
@@ -110,48 +98,47 @@ void Score::add(ScoreType type, int lines)
 
     int score = 0;
 
-    switch (type)
-    {
-    case ScoreType::SINGLE:
-    case ScoreType::MINI_T_SPIN_NO_LINES:
-        score = 100;
-        break;
-    case ScoreType::MINI_T_SPIN_SINGLE:
-        score = 200;
-        break;
-    case ScoreType::DOUBLE:
-        score = 300;
-        break;
-    case ScoreType::T_SPIN_NO_LINES:
-    case ScoreType::MINI_T_SPIN_DOUBLE:
-        score = 400;
-        break;
-    case ScoreType::TRIPLE:
-        score = 500;
-        break;
-    case ScoreType::TETRIS:
-    case ScoreType::SINGLE_LINE_PERFECT_CLEAR:
-        score = 800;
-        break;
-    case ScoreType::T_SPIN_SINGLE:
-        score = 800;
-        break;
-    case ScoreType::T_SPIN_DOUBLE:
-    case ScoreType::DOUBLE_LINE_PERFECT_CLEAR:
-        score = 1200;
-        break;
-    case ScoreType::T_SPIN_TRIPLE:
-        score = 1600;
-        break;
-    case ScoreType::TRIPLE_LINE_PERFECT_CLEAR:
-        score = 1800;
-        break;
-    case ScoreType::TETRIS_LINE_PERFECT_CLEAR:
-        score = 2000;
-        break;
-    default:
-        score = 0;
-        break;
+    switch (type) {
+        case ScoreType::SINGLE:
+        case ScoreType::MINI_T_SPIN_NO_LINES:
+            score = 100;
+            break;
+        case ScoreType::MINI_T_SPIN_SINGLE:
+            score = 200;
+            break;
+        case ScoreType::DOUBLE:
+            score = 300;
+            break;
+        case ScoreType::T_SPIN_NO_LINES:
+        case ScoreType::MINI_T_SPIN_DOUBLE:
+            score = 400;
+            break;
+        case ScoreType::TRIPLE:
+            score = 500;
+            break;
+        case ScoreType::TETRIS:
+        case ScoreType::SINGLE_LINE_PERFECT_CLEAR:
+            score = 800;
+            break;
+        case ScoreType::T_SPIN_SINGLE:
+            score = 800;
+            break;
+        case ScoreType::T_SPIN_DOUBLE:
+        case ScoreType::DOUBLE_LINE_PERFECT_CLEAR:
+            score = 1200;
+            break;
+        case ScoreType::T_SPIN_TRIPLE:
+            score = 1600;
+            break;
+        case ScoreType::TRIPLE_LINE_PERFECT_CLEAR:
+            score = 1800;
+            break;
+        case ScoreType::TETRIS_LINE_PERFECT_CLEAR:
+            score = 2000;
+            break;
+        default:
+            score = 0;
+            break;
     }
 
     this->score += (score + 50 * this->combo) * this->level;
@@ -160,8 +147,7 @@ void Score::add(ScoreType type, int lines)
 
 void Score::update(int linesCleared, bool isBoardClear, SpinType spin)
 {
-    if (linesCleared > 0)
-    {
+    if (linesCleared > 0) {
         this->combo++;
     }
 
@@ -173,11 +159,9 @@ void Score::update(int linesCleared, bool isBoardClear, SpinType spin)
 
 double Score::getGravity()
 {
-    const std::vector<double> gravity
-        = {1000, 643, 404, 249, 150, 88, 50, 30, 20, 15, 10, 5, 3,  1};
+    const std::vector<double> gravity = {1000, 643, 404, 249, 150, 88, 50, 30, 20, 15, 10, 5, 3, 1};
 
-    if (this->level > (int)gravity.size())
-    {
+    if (this->level > (int)gravity.size()) {
         return gravity[gravity.size() - 1];
     }
 
@@ -198,8 +182,7 @@ ftxui::Element Score::getStatsElement()
             Tetris::Renderer::KeyValue::create("Level", this->level),
             Tetris::Renderer::KeyValue::create("Score", this->score),
             Tetris::Renderer::KeyValue::create("Lines cleared", this->totalLinesCleared),
-        })
-    );
+        }));
 }
 
 ftxui::Element Score::getComboElement()
@@ -208,9 +191,7 @@ ftxui::Element Score::getComboElement()
         ftxui::text("Combo"),
         ftxui::vbox(
             {ftxui::text(Tetris::Renderer::DataTransformer::toString(this->lastScoreType)),
-             Tetris::Renderer::KeyValue::create("Combo", "x" + std::to_string(this->combo))}
-        )
-    );
+             Tetris::Renderer::KeyValue::create("Combo", "x" + std::to_string(this->combo))}));
 }
 
 ftxui::Element Score::getComboGaugeElement(double progress)

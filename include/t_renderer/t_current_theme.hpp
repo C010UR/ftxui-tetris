@@ -5,18 +5,16 @@
 
 #include <vector>
 
-namespace Tetris::Renderer
-{
+namespace Tetris::Renderer {
 class CurrentTheme
 {
   public:
-
     static std::vector<ftxui::Color> mainColors;
     static std::vector<ftxui::Color> gameOverColors;
 
     static ftxui::Color mainColor;
     static ftxui::Color gameOverColor;
-    
+
     static ftxui::Color backgroundColor;
     static ftxui::Color foregroundColor;
 

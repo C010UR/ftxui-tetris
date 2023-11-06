@@ -13,16 +13,13 @@
 #include <functional>
 #include <vector>
 
-namespace Tetris::Menu
-{
+namespace Tetris::Menu {
 class Options
 {
   private:
-
     Tetris::Config::Config *config;
 
   public:
-
     const std::vector<std::string> onOffEntries = {"Off", "On"};
 
     const int    storeDelayStep       = 50;
@@ -59,11 +56,10 @@ class Options
     ftxui::Component renderer;
     ftxui::Component inputs;
 
-    Options() : config(nullptr){};
+    Options(): config(nullptr) {};
 
-    void init(
-        Tetris::Config::Config &config, std::function<void()> backButtonHandler, std::function<void()> restartHandler
-    );
+    void
+    init(Tetris::Config::Config &config, std::function<void()> backButtonHandler, std::function<void()> restartHandler);
 
     Options &operator=(const Options &other);
 };

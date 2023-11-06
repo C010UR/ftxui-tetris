@@ -7,15 +7,13 @@
 #include <iomanip>
 #include <sstream>
 
-namespace Tetris::Renderer
-{
+namespace Tetris::Renderer {
 class KeyValue
 {
   private:
     static std::string roundDouble(double value);
 
   public:
-
     static ftxui::Element create(std::string key, std::string value);
     static ftxui::Element create(std::string key, int value);
     static ftxui::Element create(std::string key, double value);

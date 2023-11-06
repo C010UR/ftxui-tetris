@@ -1,7 +1,6 @@
 #include "t_config/t_config.hpp"
 
-namespace Tetris::Config
-{
+namespace Tetris::Config {
 Config::Config()
 {
     this->isDebug             = false;
@@ -10,7 +9,7 @@ Config::Config()
     this->softDropDelay       = 50;
     this->comboDelay          = 6000;
     this->updatesPerSecond    = 240.;
-    this->fps = 60.;
+    this->fps                 = 60.;
     this->softDropGravity     = 50.;
     this->level               = 1;
     this->withBackgroundColor = false;
@@ -25,32 +24,25 @@ Config::Config()
 
 void Config::nextTheme()
 {
-    if (this->currentTheme == (int)this->themes.size() - 1)
-    {
+    if (this->currentTheme == (int)this->themes.size() - 1) {
         this->currentTheme = 0;
-    }
-    else
-    {
+    } else {
         this->currentTheme++;
     }
 }
 
 void Config::prevTheme()
 {
-    if (this->currentTheme == 0)
-    {
+    if (this->currentTheme == 0) {
         this->currentTheme = (int)this->themes.size() - 1;
-    }
-    else
-    {
+    } else {
         this->currentTheme--;
     }
 }
 
 void Config::applyTheme()
 {
-    if (this->themes.empty())
-    {
+    if (this->themes.empty()) {
         return;
     }
 
