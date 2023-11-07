@@ -188,7 +188,7 @@ void Tetromino::reset()
     this->resetSpinData();
 }
 
-void Tetromino::reset(int width)
+void Tetromino::reset(int width, int offset)
 {
     this->reset();
 
@@ -216,7 +216,7 @@ void Tetromino::reset(int width)
 
     this->currentPosition = {
         (double)((int)(width / 2) - minX - (this->type == TetrominoType::O ? 1 : 2)),
-        (double)-minY};
+        (double)-minY + offset};
 }
 
 bool Tetromino::canMove(const board_t &board, Point offset)

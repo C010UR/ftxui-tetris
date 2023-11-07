@@ -55,7 +55,7 @@ Board::Board(Tetromino tetromino)
     this->board.clear();
     this->boardColor.clear();
 
-    for (int i = 0; i < height; i++) {
+    for (int i = 0; i < Board::actualHeight; i++) {
         this->board.push_back(std::vector<BoardBlockType>(width, BoardBlockType::NONE));
         this->boardColor.push_back(std::vector<ftxui::Color>(width, ftxui::Color::Default));
     }
@@ -71,7 +71,7 @@ Tetromino *Board::getCurrent()
 void Board::setCurrent(Tetromino tetromino)
 {
     this->current = tetromino;
-    this->current.reset(this->width);
+    this->current.reset(this->width, Board::actualHeight - Board::height);
 
     this->isGameOver = this->current.isColliding(this->board);
 }
@@ -228,20 +228,20 @@ ftxui::Element Board::getElement(bool isEasyMode)
 {
     ftxui::Canvas canvas = Tetris::Renderer::Canvas::create(Board::width, Board::height);
 
-    Tetris::Renderer::Canvas::drawBoard(canvas, this->board, this->boardColor);
+    Tetris::Renderer::Canvas::drawBoard(canvas, this->board, this->boardColor, Board::actualHeight - Board::height);
 
     if (isEasyMode) {
         double y = this->current.getRowsToObstacle(this->board);
         this->current.move(this->board, {0, y});
 
-        Tetris::Renderer::Canvas::drawTetromino(canvas, this->current, false, true);
+        Tetris::Renderer::Canvas::drawTetromino(canvas, this->current, false, true, Board::actualHeight - Board::height);
 
         this->current.move(this->board, {0, -y});
     }
 
-    Tetris::Renderer::Canvas::drawTetromino(canvas, this->current, false, false);
+    Tetris::Renderer::Canvas::drawTetromino(canvas, this->current, false, false, Board::actualHeight - Board::height);
 
-    return ftxui::canvas(canvas) | ftxui::border | ftxui::size(ftxui::HEIGHT, ftxui::EQUAL, this->height);
+    return ftxui::canvas(canvas) | ftxui::border | ftxui::size(ftxui::HEIGHT, ftxui::EQUAL, Board::height);
 }
 
 } // namespace Tetris::Game

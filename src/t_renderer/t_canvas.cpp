@@ -1,7 +1,12 @@
 #include "t_renderer/t_canvas.hpp"
 
 namespace Tetris::Renderer {
-void Canvas::drawTetromino(ftxui::Canvas &canvas, Tetris::Game::Tetromino tetromino, bool isCentered, bool isShadow)
+void Canvas::drawTetromino(
+    ftxui::Canvas          &canvas,
+    Tetris::Game::Tetromino tetromino,
+    bool                    isCentered,
+    bool                    isShadow,
+    int                     offset)
 {
     auto data = tetromino.getData();
 
@@ -11,7 +16,7 @@ void Canvas::drawTetromino(ftxui::Canvas &canvas, Tetris::Game::Tetromino tetrom
                 Canvas::drawBlock(
                     canvas,
                     (!isCentered ? std::floor(tetromino.currentPosition.x) : 1) + col,
-                    (!isCentered ? std::floor(tetromino.currentPosition.y) : 1) + row,
+                    (!isCentered ? std::floor(tetromino.currentPosition.y) : 1) + row - offset,
                     tetromino.color,
                     isCentered,
                     isShadow,
@@ -24,12 +29,13 @@ void Canvas::drawTetromino(ftxui::Canvas &canvas, Tetris::Game::Tetromino tetrom
 void Canvas::drawBoard(
     ftxui::Canvas                                         &canvas,
     std::vector<std::vector<Tetris::Game::BoardBlockType>> board,
-    std::vector<std::vector<ftxui::Color>>                 boardColor)
+    std::vector<std::vector<ftxui::Color>>                 boardColor,
+    int                                                    offset)
 {
-    for (int row = 0; row < (int)board.size(); row++) {
+    for (int row = offset; row < (int)board.size(); row++) {
         for (int col = 0; col < (int)board[row].size(); col++) {
             if (board[row][col] == Tetris::Game::BoardBlockType::BLOCK) {
-                Canvas::drawBlock(canvas, col, row, boardColor[row][col]);
+                Canvas::drawBlock(canvas, col, row - offset, boardColor[row][col]);
             }
         }
     }

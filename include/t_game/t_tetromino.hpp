@@ -50,7 +50,7 @@ class Tetromino
 
     void move(const board_t &board, Point offset, RotationType = RotationType::NONE);
     void reset();
-    void reset(int width);
+    void reset(int width, int offset);
 
     void     resetSpinData();
     SpinType getSpinType();

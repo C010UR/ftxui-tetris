@@ -20,12 +20,14 @@ class Canvas
         ftxui::Canvas          &canvas,
         Tetris::Game::Tetromino tetromino,
         bool                    isCentered = false,
-        bool                    isShadow   = false);
+        bool                    isShadow   = false,
+        int                     offset     = 0);
 
     static void drawBoard(
         ftxui::Canvas                                         &canvas,
         std::vector<std::vector<Tetris::Game::BoardBlockType>> board,
-        std::vector<std::vector<ftxui::Color>>                 boardColor);
+        std::vector<std::vector<ftxui::Color>>                 boardColor,
+        int                                                    offset);
 
     static void drawBlock(
         ftxui::Canvas              &canvas,

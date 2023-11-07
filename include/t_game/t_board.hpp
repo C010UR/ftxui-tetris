@@ -30,6 +30,7 @@ class Board
 
   public:
     inline static const int width  = 10;
+    inline static const int actualHeight = 22;
     inline static const int height = 20;
 
     bool isGameOver;
