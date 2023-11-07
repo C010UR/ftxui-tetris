@@ -15,13 +15,15 @@
 namespace Tetris::Menu {
 class GameOver
 {
-  public:
+  private:
     ftxui::Component mainMenu;
     ftxui::Component tryAgain;
     ftxui::Component exit;
 
-    ftxui::Component renderer;
     ftxui::Component inputs;
+
+  public:
+    ftxui::Component renderer;
 
     GameOver() {};
 

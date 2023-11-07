@@ -10,12 +10,12 @@
 namespace Tetris::Renderer {
 class Canvas
 {
-  public:
     inline static const int         stepX             = 4;
     inline static const int         stepY             = 4;
     inline static const std::string blockSymbol       = "██";
     inline static const std::string shadowBlockSymbol = "░░";
 
+  public:
     static void drawTetromino(
         ftxui::Canvas          &canvas,
         Tetris::Game::Tetromino tetromino,

@@ -18,13 +18,15 @@
 namespace Tetris::Menu {
 class ChangeKey
 {
-  public:
+  private:
     Tetris::Config::Controls *controls;
 
-    bool                    isModalOpen;
-    Tetris::Engine::Trigger trigger;
-
+  public:
     ftxui::Component renderer;
+
+    bool isModalOpen;
+
+    Tetris::Engine::Trigger trigger;
 
     ChangeKey(): isModalOpen(false), trigger(Tetris::Engine::Trigger::NONE) {};
 

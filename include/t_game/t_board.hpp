@@ -29,9 +29,9 @@ class Board
     int  removeFullLines();
 
   public:
-    inline static const int width  = 10;
+    inline static const int width        = 10;
     inline static const int actualHeight = 22;
-    inline static const int height = 20;
+    inline static const int height       = 20;
 
     bool isGameOver;
 
@@ -43,10 +43,12 @@ class Board
 
     void setCurrent(Tetromino tetromino);
 
-    bool   tryRotateCurrent(RotationType rotation);
-    bool   canRotateCurrent(RotationType rotation);
-    bool   tryMoveCurrent(Point offset);
-    bool   canMoveCurrent(Point offset);
+    bool tryRotateCurrent(RotationType rotation);
+    bool canRotateCurrent(RotationType rotation);
+
+    bool tryMoveCurrent(Point offset);
+    bool canMoveCurrent(Point offset);
+
     double getRowsToObstacle();
 
     bool canStore();
@@ -54,7 +56,7 @@ class Board
 
     int store(Tetromino newTetromino);
 
-    ftxui::Element getDebugElement(double stepX = 1);
+    ftxui::Element getDebugElement(double stepY = 1);
     ftxui::Element getElement(bool isEasyMode = false);
 };
 } // namespace Tetris::Game

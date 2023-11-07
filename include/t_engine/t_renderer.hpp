@@ -26,6 +26,7 @@ class Renderer
   public:
     static ExitType
     menuLoop(Tetris::Config::Config &config, Tetris::Config::Controls &controls, bool isGameOver, int score);
+
     static ExitType gameLoop(Tetris::Config::Config &config, Tetris::Config::Controls &controls, int &score);
     static int      mainLoop(Tetris::Config::Config &config, Tetris::Config::Controls &controls);
 };

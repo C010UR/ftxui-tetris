@@ -17,6 +17,7 @@ AllowShortLoopsOnASingleLine: "false"
 AlwaysBreakAfterReturnType: None
 AlwaysBreakBeforeMultilineStrings: "true"
 AlwaysBreakTemplateDeclarations: "Yes"
+AlwaysBreakAfterDefinitionReturnType: None
 BinPackArguments: "false"
 BinPackParameters: "false"
 BreakBeforeBinaryOperators: NonAssignment

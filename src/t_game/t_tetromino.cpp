@@ -4,10 +4,10 @@
 
 namespace Tetris::Game {
 Tetromino::Tetromino(
-    tetromino_rotations_t           tetromino,
-    std::vector<std::vector<Point>> wallKickOffsets,
-    ftxui::Color                    color,
-    TetrominoType                   type)
+    tetromino_rotations_t tetromino,
+    wall_kick_offsets_t   wallKickOffsets,
+    ftxui::Color          color,
+    TetrominoType         type)
 {
     this->tetromino       = tetromino;
     this->wallKickOffsets = wallKickOffsets;
@@ -105,8 +105,6 @@ void Tetromino::move(const board_t &board, Point offset, RotationType rotation)
     int width        = board[0].size() - 1;
     int frontCorners = 0, backCorners = 0;
 
-    this->testPoints.clear();
-
     for (int row = 0; row < (int)data.size(); row++) {
         for (int col = 0; col < (int)data[row].size(); col++) {
             if (data[row][col] == BlockType::SPIN_LOOKUP_BACK || data[row][col] == BlockType::SPIN_LOOKUP_FRONT) {
@@ -115,15 +113,11 @@ void Tetromino::move(const board_t &board, Point offset, RotationType rotation)
 
                 if (newX < 0 || newX > width || newY < 0 || newY > height
                     || board[newY][newX] == BoardBlockType::BLOCK) {
-                    this->testPoints.push_back({(double)newX, (double)newY});
-
                     data[row][col] == BlockType::SPIN_LOOKUP_BACK ? backCorners++ : frontCorners++;
                 }
             }
         }
     }
-
-    this->testPoints.push_back({(double)backCorners, (double)frontCorners});
 
     bool wasLastWallKickTest = offset == wallKickTest[wallKickTest.size() - 1];
 
@@ -184,7 +178,6 @@ void Tetromino::reset()
 {
     this->currentPosition = {0, 0};
     this->currentRotation = 0;
-    this->testPoints.clear();
     this->resetSpinData();
 }
 

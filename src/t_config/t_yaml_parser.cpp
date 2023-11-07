@@ -50,11 +50,11 @@ void YAMLParser::decodeOptionalString(const YAML::Node &node, const std::string 
 
 void YAMLParser::loadData(Config &config, Controls &controls)
 {
-    std::fstream fs;
-    fs.open(YAMLParser::fileName, std::ios::out | std::ios::app);
-    fs.close();
+    std::fstream file;
+    file.open(YAMLParser::filename, std::ios::out | std::ios::app);
+    file.close();
 
-    YAML::Node data = YAML::LoadFile(YAMLParser::fileName);
+    YAML::Node data = YAML::LoadFile(YAMLParser::filename);
 
     config   = data["config"].as<Config>();
     controls = data["controls"].as<Controls>();
@@ -67,8 +67,8 @@ void YAMLParser::saveData(const Config &config, const Controls &controls)
     data["config"]   = config;
     data["controls"] = controls;
 
-    std::ofstream fout(YAMLParser::fileName);
-    fout << data;
+    std::ofstream file(YAMLParser::filename);
+    file << data;
 }
 } // namespace Tetris::Config
 

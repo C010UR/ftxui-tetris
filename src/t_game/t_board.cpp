@@ -167,13 +167,6 @@ ftxui::Element Board::getDebugElement(double stepY)
     Point offsetRight;
     bool  canRotateRight = this->current.canRotate(this->board, offsetRight, RotationType::RIGHT);
 
-    ftxui::Elements testPoints;
-
-    for (int i = 0; i < (int)this->current.testPoints.size(); i++) {
-        testPoints.push_back(
-            Tetris::Renderer::KeyValue::create("Point " + std::to_string(i + 1), this->current.testPoints[i]));
-    }
-
     ftxui::Elements elements;
 
     elements.push_back(
@@ -215,12 +208,6 @@ ftxui::Element Board::getDebugElement(double stepY)
                  }))})
         | ftxui::size(ftxui::WIDTH, ftxui::EQUAL, 40));
 
-    if (!testPoints.empty()) {
-        elements.push_back(
-            ftxui::vbox({ftxui::window(ftxui::text("Test points"), ftxui::vbox(testPoints))})
-            | ftxui::size(ftxui::WIDTH, ftxui::EQUAL, 20));
-    }
-
     return ftxui::hbox(elements);
 }
 
@@ -234,7 +221,12 @@ ftxui::Element Board::getElement(bool isEasyMode)
         double y = this->current.getRowsToObstacle(this->board);
         this->current.move(this->board, {0, y});
 
-        Tetris::Renderer::Canvas::drawTetromino(canvas, this->current, false, true, Board::actualHeight - Board::height);
+        Tetris::Renderer::Canvas::drawTetromino(
+            canvas,
+            this->current,
+            false,
+            true,
+            Board::actualHeight - Board::height);
 
         this->current.move(this->board, {0, -y});
     }

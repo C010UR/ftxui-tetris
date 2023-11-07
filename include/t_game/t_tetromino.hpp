@@ -15,17 +15,15 @@ namespace Tetris::Game {
 class Tetromino
 {
   private:
-    tetromino_rotations_t           tetromino;
-    std::vector<std::vector<Point>> wallKickOffsets;
-    int                             rotate(RotationType rotation);
+    tetromino_rotations_t tetromino;
+    wall_kick_offsets_t   wallKickOffsets;
+    int                   rotate(RotationType rotation);
 
   public:
     Point currentPosition;
 
     TetrominoType type;
     ftxui::Color  color;
-
-    std::vector<Point> testPoints;
 
     int  currentRotation;
     bool isLastMoveResultedInSpin;
@@ -34,10 +32,10 @@ class Tetromino
     Tetromino() {};
 
     Tetromino(
-        tetromino_rotations_t           tetromino,
-        std::vector<std::vector<Point>> wallKickOffsets,
-        ftxui::Color                    color,
-        TetrominoType                   type);
+        tetromino_rotations_t tetromino,
+        wall_kick_offsets_t   wallKickOffsets,
+        ftxui::Color          color,
+        TetrominoType         type);
 
     static tetromino_rotations_t parseInputTetromino(std::vector<std::vector<std::string>> data, int size);
 

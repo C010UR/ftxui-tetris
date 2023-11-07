@@ -19,7 +19,7 @@ namespace Tetris::Config {
 class YAMLParser
 {
   public:
-    inline const static std::string fileName = "config.yaml";
+    inline const static std::string filename = "config.yaml";
 
     template<typename T>
     static void decodeOptionalScalar(

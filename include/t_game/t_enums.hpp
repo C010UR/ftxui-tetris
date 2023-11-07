@@ -1,5 +1,7 @@
 #pragma once
 
+#include "t_game/t_point.hpp"
+
 #include <vector>
 namespace Tetris::Game {
 enum class TetrominoType
@@ -66,4 +68,5 @@ enum class ScoreType
 typedef std::vector<std::vector<BoardBlockType>> board_t;
 typedef std::vector<std::vector<BlockType>>      tetromino_t;
 typedef std::vector<tetromino_t>                 tetromino_rotations_t;
+typedef std::vector<std::vector<Point>>          wall_kick_offsets_t;
 } // namespace Tetris::Game

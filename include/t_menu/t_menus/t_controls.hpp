@@ -24,7 +24,6 @@ class Controls
   private:
     Tetris::Config::Controls *controls;
 
-  public:
     ftxui::Component moveLeft;
     ftxui::Component moveRight;
     ftxui::Component rotateLeft;
@@ -36,8 +35,10 @@ class Controls
     ftxui::Component backButton;
     ftxui::Component retry;
 
-    ftxui::Component renderer;
     ftxui::Component inputs;
+
+  public:
+    ftxui::Component renderer;
 
     Controls() {};
 
