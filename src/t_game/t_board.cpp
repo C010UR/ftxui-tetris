@@ -71,7 +71,7 @@ Tetromino *Board::getCurrent()
 void Board::setCurrent(Tetromino tetromino)
 {
     this->current = tetromino;
-    this->current.reset(this->width, Board::actualHeight - Board::height);
+    this->current.reset(this->width, Board::actualHeight - Board::height - 1);
 
     this->isGameOver = this->current.isColliding(this->board);
 }

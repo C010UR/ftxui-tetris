@@ -37,10 +37,10 @@ Configuration of the project is stored in the `config.yaml` file
 
 ```yaml
 config:
-  easyMode: true # Turns on shardows of the tetrominoes
+  easyMode: true # Turns on ghosts of the Tetrominos
   level: 1 # Game level from 1 to 15
   updatesPerSecond: 240 # Can help with performance and power consumption
-  currentTheme: Autumn Haze # Chosebn theme
+  currentTheme: Autumn Haze # Chosen theme
   forceBackgroundColor: false # Forces background color
   storeDelayMs: 500 # Ms before tetromino is saved to the board
   softDropDelayMs: 50 # Detection rate of the soft drop press
