@@ -16,10 +16,10 @@ namespace Tetris::Menu {
 class MainMenu
 {
   private:
-    ftxui::Component startButton;
-    ftxui::Component optionsButton;
-    ftxui::Component controlsButton;
-    ftxui::Component exitButton;
+    ftxui::Component start;
+    ftxui::Component options;
+    ftxui::Component controls;
+    ftxui::Component exit;
 
     ftxui::Component inputs;
 

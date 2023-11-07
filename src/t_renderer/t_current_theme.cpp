@@ -16,7 +16,7 @@ ftxui::LinearGradient CurrentTheme::mainGradient(float angle)
     return gradient;
 }
 
-ftxui::LinearGradient CurrentTheme::badGradient(float angle)
+ftxui::LinearGradient CurrentTheme::gameOverGradient(float angle)
 {
     auto gradient = ftxui::LinearGradient().Angle(angle);
 

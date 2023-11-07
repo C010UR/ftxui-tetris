@@ -31,7 +31,7 @@ class CurrentTheme
     static ftxui::Color ZColor;
 
     static ftxui::LinearGradient mainGradient(float angle = 0);
-    static ftxui::LinearGradient badGradient(float angle = 0);
+    static ftxui::LinearGradient gameOverGradient(float angle = 0);
 };
 
 } // namespace Tetris::Renderer

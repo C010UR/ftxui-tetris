@@ -24,7 +24,7 @@ ftxui::Element Header::gameOver()
                ftxui::text("╚██████╔╝██║  ██║██║ ╚═╝ ██║███████╗    ╚██████╔╝ ╚████╔╝ ███████╗██║  ██║"),
                ftxui::text(" ╚═════╝ ╚═╝  ╚═╝╚═╝     ╚═╝╚══════╝     ╚═════╝   ╚═══╝  ╚══════╝╚═╝  ╚═╝"),
            })
-           | ftxui::color(CurrentTheme::badGradient());
+           | ftxui::color(CurrentTheme::gameOverGradient());
 }
 
 ftxui::Element Header::options()
@@ -156,6 +156,6 @@ ftxui::Element Header::number(int value)
         elements.push_back(ftxui::text(lines[i]));
     }
 
-    return ftxui::vbox(elements) | ftxui::color(CurrentTheme::badGradient());
+    return ftxui::vbox(elements) | ftxui::color(CurrentTheme::gameOverGradient());
 }
 } // namespace Tetris::Renderer

@@ -1,5 +1,6 @@
 #pragma once
 
+#include "ftxui/screen/color.hpp"
 #include "t_game/t_point.hpp"
 
 #include <vector>
@@ -66,6 +67,7 @@ enum class ScoreType
 };
 
 typedef std::vector<std::vector<BoardBlockType>> board_t;
+typedef std::vector<std::vector<ftxui::Color>> board_color_t;
 typedef std::vector<std::vector<BlockType>>      tetromino_t;
 typedef std::vector<tetromino_t>                 tetromino_rotations_t;
 typedef std::vector<std::vector<Point>>          wall_kick_offsets_t;

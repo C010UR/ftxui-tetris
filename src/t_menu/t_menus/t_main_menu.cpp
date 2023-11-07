@@ -7,13 +7,13 @@ void MainMenu::init(
     std::function<void()> controlsButtonHandler,
     std::function<void()> exitButtonHandler)
 {
-    this->startButton    = MenuHelper::getAnimatedButton("Start Game", startButtonHandler);
-    this->optionsButton  = MenuHelper::getAnimatedButton("Options", optionsButtonHandler);
-    this->controlsButton = MenuHelper::getAnimatedButton("Controls", controlsButtonHandler);
-    this->exitButton     = MenuHelper::getAnimatedButton("Exit", exitButtonHandler);
+    this->start    = MenuHelper::getAnimatedButton("Start Game", startButtonHandler);
+    this->options  = MenuHelper::getAnimatedButton("Options", optionsButtonHandler);
+    this->controls = MenuHelper::getAnimatedButton("Controls", controlsButtonHandler);
+    this->exit     = MenuHelper::getAnimatedButton("Exit", exitButtonHandler);
 
     this->inputs =
-        ftxui::Container::Vertical({this->startButton, this->optionsButton, this->controlsButton, this->exitButton});
+        ftxui::Container::Vertical({this->start, this->options, this->controls, this->exit});
 
     this->renderer = ftxui::Renderer(this->inputs, [this] {
         // clang-format off
@@ -21,10 +21,10 @@ void MainMenu::init(
             Tetris::Renderer::Header::tetris() | ftxui::center,
             ftxui::filler() | ftxui::size(ftxui::HEIGHT, ftxui::EQUAL, 3),
             ftxui::vbox(
-                {this->startButton->Render(),
-                    this->optionsButton->Render(),
-                    this->controlsButton->Render(),
-                    this->exitButton->Render()})
+                {this->start->Render(),
+                    this->options->Render(),
+                    this->controls->Render(),
+                    this->exit->Render()})
                 | ftxui::center
         }) | ftxui::center;
         // clang-format on

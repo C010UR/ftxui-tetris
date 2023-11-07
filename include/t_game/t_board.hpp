@@ -20,7 +20,7 @@ namespace Tetris::Game {
 class Board
 {
   private:
-    std::vector<std::vector<ftxui::Color>> boardColor;
+    board_color_t boardColor;
     board_t                                board;
 
     Tetromino current;

@@ -19,8 +19,6 @@ class Options
   private:
     Tetris::Config::Config *config;
 
-    const std::vector<std::string> onOffEntries = {"Off", "On"};
-
     ftxui::Component debugModeToggle;
     ftxui::Component easyModeToggle;
     ftxui::Component backgroundModeToggle;
@@ -44,7 +42,6 @@ class Options
 
     ftxui::Component inputs;
 
-  public:
     const int    storeDelayStep       = 50;
     const int    softDropDelayStep    = 10;
     const int    comboDelayStep       = 500;
@@ -55,6 +52,7 @@ class Options
     const int    minLevel             = 1;
     const int    maxLevel             = 15;
 
+  public:
     ftxui::Component renderer;
 
     Options(): config(nullptr) {};

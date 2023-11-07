@@ -26,11 +26,7 @@ void Canvas::drawTetromino(
     }
 }
 
-void Canvas::drawBoard(
-    ftxui::Canvas                                         &canvas,
-    std::vector<std::vector<Tetris::Game::BoardBlockType>> board,
-    std::vector<std::vector<ftxui::Color>>                 boardColor,
-    int                                                    offset)
+void Canvas::drawBoard(ftxui::Canvas &canvas, Game::board_t board, Game::board_color_t boardColor, int offset)
 {
     for (int row = offset; row < (int)board.size(); row++) {
         for (int col = 0; col < (int)board[row].size(); col++) {

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "ftxui/dom/canvas.hpp"
+#include "t_game/t_enums.hpp"
 #include "t_game/t_tetromino.hpp"
 #include "t_renderer/t_current_theme.hpp"
 
@@ -24,10 +25,10 @@ class Canvas
         int                     offset     = 0);
 
     static void drawBoard(
-        ftxui::Canvas                                         &canvas,
-        std::vector<std::vector<Tetris::Game::BoardBlockType>> board,
-        std::vector<std::vector<ftxui::Color>>                 boardColor,
-        int                                                    offset);
+        ftxui::Canvas                         &canvas,
+        Game::board_t                          board,
+        Game::board_color_t boardColor,
+        int                                    offset);
 
     static void drawBlock(
         ftxui::Canvas              &canvas,

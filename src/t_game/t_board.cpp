@@ -17,8 +17,8 @@ bool Board::isLineFull(int line)
 
 int Board::removeFullLines()
 {
-    std::vector<std::vector<ftxui::Color>> boardColor;
-    board_t                                board;
+    board_color_t boardColor;
+    board_t       board;
 
     int fullLineCount = 0;
 
