@@ -4,7 +4,7 @@ config:
   updatesPerSecond: 240
   fps: 60
   currentTheme: Autumn Haze
-  forceBackgroundColor: true
+  forceBackgroundColor: false
   storeDelayMs: 500
   softDropDelayMs: 20
   softDropGravityMsPerRow: 20
@@ -35,6 +35,68 @@ config:
       valueColor: "#4bb365"
       trueColor: "#4cd137"
       falseColor: "#e84118"
+      IColor: "#00a8ff"
+      OColor: "#fbc531"
+      TColor: "#9c88ff"
+      JColor: "#2b2cd5"
+      LColor: "#f28325"
+      SColor: "#4cd137"
+      ZColor: "#e84118"
+    - name: Tetromino
+      mainColorsGradient:
+        - "#4cd137"
+        - "#4cce3c"
+        - "#4ccb41"
+        - "#4cc54a"
+        - "#4bb85d"
+        - "#4bab70"
+        - "#42916a"
+        - "#387763"
+        - "#254f42"
+      gameOverColorsGradient:
+        - "#e84118"
+        - "#d63c1f"
+        - "#c43725"
+        - "#a02d32"
+        - "#57194b"
+      mainColor: "#3a9e83"
+      gameOverColor: "#e84118"
+      backgroundColor: "#141a14"
+      foregroundColor: "#dfdfdf"
+      valueColor: "#4bb365"
+      trueColor: "#4cd137"
+      falseColor: "#e84118"
+      IColor: "#37b586"
+      OColor: "#b79f3a"
+      TColor: "#cc4bbf"
+      JColor: "#5947ac"
+      LColor: "#ba6b3b"
+      SColor: "#89b83a"
+      ZColor: "#b7373e"
+    - name: Light
+      mainColorsGradient:
+        - "#4cd137"
+        - "#4cce3c"
+        - "#4ccb41"
+        - "#4cc54a"
+        - "#4bb85d"
+        - "#4bab70"
+        - "#42916a"
+        - "#387763"
+        - "#254f42"
+      gameOverColorsGradient:
+        - "#e84118"
+        - "#d63c1f"
+        - "#c43725"
+        - "#a02d32"
+        - "#57194b"
+      mainColor: "#3a9e83"
+      gameOverColor: "#e84118"
+      backgroundColor: "#ffffff"
+      foregroundColor: "#141a14"
+      valueColor: "#4bb365"
+      trueColor: "#40c030"
+      falseColor: "#e83910"
       IColor: "#00a8ff"
       OColor: "#fbc531"
       TColor: "#9c88ff"

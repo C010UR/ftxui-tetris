@@ -151,7 +151,7 @@ void Options::init(
 
         // clang-format off
         ftxui::Element element = ftxui::vbox({
-            Tetris::Renderer::Header::options() | ftxui::center,
+            Tetris::Renderer::Header::transform("options") | ftxui::center,
             ftxui::filler() | ftxui::size(ftxui::HEIGHT, ftxui::EQUAL, 3),
             ftxui::vbox({
                 MenuHelper::getHeaderElement("Theme"),

@@ -59,7 +59,7 @@ void Controls::init(
 
         // clang-format off
         return ftxui::vbox({
-            Tetris::Renderer::Header::controls(),
+            Tetris::Renderer::Header::transform("controls"),
             ftxui::filler() | ftxui::size(ftxui::HEIGHT, ftxui::EQUAL, 3),
             ftxui::vbox({
                 MenuHelper::getHeaderElement("Movement"),

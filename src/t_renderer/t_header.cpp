@@ -1,138 +1,59 @@
 #include "t_renderer/t_header.hpp"
 
+#include "ftxui/dom/node.hpp"
+
+#include <cctype>
+
+
 namespace Tetris::Renderer {
-ftxui::Element Header::tetris()
+ftxui::Element Header::transform(std::string str, bool isGameOver)
 {
-    return ftxui::vbox({
-               ftxui::text("████████╗███████╗████████╗██████╗ ██╗███████╗"),
-               ftxui::text("╚══██╔══╝██╔════╝╚══██╔══╝██╔══██╗██║██╔════╝"),
-               ftxui::text("   ██║   █████╗     ██║   ██████╔╝██║███████╗"),
-               ftxui::text("   ██║   ██╔══╝     ██║   ██╔══██╗██║╚════██║"),
-               ftxui::text("   ██║   ███████╗   ██║   ██║  ██║██║███████║"),
-               ftxui::text("   ╚═╝   ╚══════╝   ╚═╝   ╚═╝  ╚═╝╚═╝╚══════╝"),
-           })
-           | ftxui::color(CurrentTheme::mainGradient());
-}
+    std::vector<std::string> lines(Header::height, "");
 
-ftxui::Element Header::gameOver()
-{
-    return ftxui::vbox({
-               ftxui::text(" ██████╗  █████╗ ███╗   ███╗███████╗     ██████╗ ██╗   ██╗███████╗██████╗ "),
-               ftxui::text("██╔════╝ ██╔══██╗████╗ ████║██╔════╝    ██╔═══██╗██║   ██║██╔════╝██╔══██╗"),
-               ftxui::text("██║  ███╗███████║██╔████╔██║█████╗      ██║   ██║██║   ██║█████╗  ██████╔╝"),
-               ftxui::text("██║   ██║██╔══██║██║╚██╔╝██║██╔══╝      ██║   ██║╚██╗ ██╔╝██╔══╝  ██╔══██╗"),
-               ftxui::text("╚██████╔╝██║  ██║██║ ╚═╝ ██║███████╗    ╚██████╔╝ ╚████╔╝ ███████╗██║  ██║"),
-               ftxui::text(" ╚═════╝ ╚═╝  ╚═╝╚═╝     ╚═╝╚══════╝     ╚═════╝   ╚═══╝  ╚══════╝╚═╝  ╚═╝"),
-           })
-           | ftxui::color(CurrentTheme::gameOverGradient());
-}
+    for (int i = 0; i < (int)str.size(); i++) {
+        for (int j = 0; j < Header::height; j++) {
+            if (std::isalpha(str[i])) {
+                lines[j] += Header::letters[std::toupper(str[i]) - 'A'][j];
+            } else if (std::isdigit(str[i])) {
+                lines[j] += Header::numbers[str[i] - '0'][j];
+            } else if (std::isspace(str[i])) {
+                lines[j] += std::string(3, ' ');
+            } else {
+                int index = -1;
 
-ftxui::Element Header::options()
-{
-    return ftxui::vbox({
-               ftxui::text(" ██████╗ ██████╗ ████████╗██╗ ██████╗ ███╗   ██╗███████╗"),
-               ftxui::text("██╔═══██╗██╔══██╗╚══██╔══╝██║██╔═══██╗████╗  ██║██╔════╝"),
-               ftxui::text("██║   ██║██████╔╝   ██║   ██║██║   ██║██╔██╗ ██║███████╗"),
-               ftxui::text("██║   ██║██╔═══╝    ██║   ██║██║   ██║██║╚██╗██║╚════██║"),
-               ftxui::text("╚██████╔╝██║        ██║   ██║╚██████╔╝██║ ╚████║███████║"),
-               ftxui::text(" ╚═════╝ ╚═╝        ╚═╝   ╚═╝ ╚═════╝ ╚═╝  ╚═══╝╚══════╝"),
-           })
-           | ftxui::color(CurrentTheme::mainGradient());
-}
+                switch (str[i]) {
+                    case '-':
+                        index = 0;
+                        break;
+                    case '!':
+                        index = 1;
+                        break;
+                    case '?':
+                        index = 2;
+                        break;
+                    case ':':
+                        index = 3;
+                }
 
-ftxui::Element Header::controls()
-{
-    return ftxui::vbox({
-               ftxui::text(" ██████╗ ██████╗ ███╗   ██╗████████╗██████╗  ██████╗ ██╗     ███████╗"),
-               ftxui::text("██╔════╝██╔═══██╗████╗  ██║╚══██╔══╝██╔══██╗██╔═══██╗██║     ██╔════╝"),
-               ftxui::text("██║     ██║   ██║██╔██╗ ██║   ██║   ██████╔╝██║   ██║██║     ███████╗"),
-               ftxui::text("██║     ██║   ██║██║╚██╗██║   ██║   ██╔══██╗██║   ██║██║     ╚════██║"),
-               ftxui::text("╚██████╗╚██████╔╝██║ ╚████║   ██║   ██║  ██║╚██████╔╝███████╗███████║"),
-               ftxui::text(" ╚═════╝ ╚═════╝ ╚═╝  ╚═══╝   ╚═╝   ╚═╝  ╚═╝ ╚═════╝ ╚══════╝╚══════╝"),
-           })
-           | ftxui::color(CurrentTheme::mainGradient());
-}
-
-ftxui::Element Header::number(int value)
-{
-    int height = 6;
-    // clang-format off
-    const std::vector<std::vector<std::string>> numbers = {
-        {
-            " ██████╗ ",
-            "██╔═████╗",
-            "██║██╔██║",
-            "████╔╝██║",
-            "╚██████╔╝",
-            " ╚═════╝ "
-        }, {
-            " ██╗ ",
-            "███║ ",
-            "╚██║ ",
-            " ██║ ",
-            " ██║ ",
-            " ╚═╝ "
-        }, {
-            "██████╗  ",
-            "╚════██╗ ",
-            " █████╔╝ ",
-            "██╔═══╝  ",
-            "███████╗ ",
-            "╚══════╝ "
-        }, {
-            "██████╗  ",
-            "╚════██╗ ",
-            " █████╔╝ ",
-            " ╚═══██╗ ",
-            "██████╔╝ ",
-            "╚═════╝  "
-        }, {
-            "██╗  ██╗ ",
-            "██║  ██║ ",
-            "███████║ ",
-            "╚════██║ ",
-            "     ██║ ",
-            "     ╚═╝ "
-        }, {
-            "███████╗ ",
-            "██╔════╝ ",
-            "███████╗ ",
-            "╚════██║ ",
-            "███████║ ",
-            "╚══════╝ "
-        }, {
-            " ██████╗ ",
-            "██╔════╝ ",
-            "███████╗ ",
-            "██╔═══██╗",
-            "╚██████╔╝",
-            " ╚═════╝ "
-        }, {
-            "███████╗ ",
-            "╚════██║ ",
-            "    ██╔╝ ",
-            "   ██╔╝  ",
-            "   ██║   ",
-            "   ╚═╝   "
-        }, {
-            " █████╗  ",
-            "██╔══██╗ ",
-            "╚█████╔╝ ",
-            "██╔══██╗ ",
-            "╚█████╔╝ ",
-            " ╚════╝  "
-        }, {
-            " █████╗  ",
-            "██╔══██╗ ",
-            "╚██████║ ",
-            " ╚═══██║ ",
-            " █████╔╝ ",
-            " ╚════╝  "
+                if (index >= 0) {
+                    lines[j] += Header::special[index][j];
+                }
+            }
         }
-    };
-    // clang-format on
+    }
+    
+    ftxui::Elements elements;
 
-    std::vector<std::string> lines(height, "");
+    for (int i = 0; i < Header::height; i++) {
+        elements.push_back(ftxui::text(lines[i]));
+    }
+
+    return ftxui::vbox(elements) | ftxui::color(isGameOver ? CurrentTheme::gameOverGradient() : CurrentTheme::mainGradient());
+}
+
+ftxui::Element Header::transform(int value, bool isGameOver)
+{
+    std::vector<std::string> lines(Header::height, "");
     std::vector<int>         digits;
 
     if (value == 0) {
@@ -145,17 +66,17 @@ ftxui::Element Header::number(int value)
     }
 
     for (int i = (int)digits.size() - 1; i >= 0; i--) {
-        for (int j = 0; j < height; j++) {
-            lines[j] += numbers[digits[i]][j];
+        for (int j = 0; j < Header::height; j++) {
+            lines[j] += Header::numbers[digits[i]][j];
         }
     }
 
     ftxui::Elements elements;
 
-    for (int i = 0; i < height; i++) {
+    for (int i = 0; i < Header::height; i++) {
         elements.push_back(ftxui::text(lines[i]));
     }
 
-    return ftxui::vbox(elements) | ftxui::color(CurrentTheme::gameOverGradient());
+    return ftxui::vbox(elements) | ftxui::color(isGameOver ? CurrentTheme::gameOverGradient() : CurrentTheme::mainGradient());
 }
 } // namespace Tetris::Renderer

@@ -8,6 +8,7 @@
 #include "t_config/t_config.hpp"
 #include "t_config/t_controls.hpp"
 #include "t_engine/t_enums.hpp"
+#include "t_game/game_data.hpp"
 #include "t_game/t_board.hpp"
 #include "t_game/t_enums.hpp"
 #include "t_game/t_hold.hpp"
@@ -67,7 +68,7 @@ class Game
     ftxui::Element   getDebugElement();
     ftxui::Component getRenderer();
 
-    bool isGameOver();
-    int  getScore();
+    bool     isGameOver();
+    GameData getGameData();
 };
 } // namespace Tetris::Game

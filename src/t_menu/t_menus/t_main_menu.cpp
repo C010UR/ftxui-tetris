@@ -18,7 +18,7 @@ void MainMenu::init(
     this->renderer = ftxui::Renderer(this->inputs, [this] {
         // clang-format off
         return ftxui::vbox({
-            Tetris::Renderer::Header::tetris() | ftxui::center,
+            Tetris::Renderer::Header::transform("tetraminal") | ftxui::center,
             ftxui::filler() | ftxui::size(ftxui::HEIGHT, ftxui::EQUAL, 3),
             ftxui::vbox(
                 {this->start->Render(),

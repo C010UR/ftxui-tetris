@@ -8,6 +8,7 @@
 #include "t_config/t_config.hpp"
 #include "t_config/t_controls.hpp"
 #include "t_engine/t_enums.hpp"
+#include "t_game/game_data.hpp"
 #include "t_game/t_game.hpp"
 #include "t_menu/t_enums.hpp"
 #include "t_menu/t_menu.hpp"
@@ -24,10 +25,14 @@ class Renderer
     static void   configureScreen(ftxui::ScreenInteractive &screen);
 
   public:
-    static ExitType
-    menuLoop(Tetris::Config::Config &config, Tetris::Config::Controls &controls, bool isGameOver, int score);
+    static ExitType menuLoop(
+        Tetris::Config::Config       &config,
+        Tetris::Config::Controls     &controls,
+        const bool                    isGameOver,
+        const Tetris::Game::GameData &gameData);
 
-    static ExitType gameLoop(Tetris::Config::Config &config, Tetris::Config::Controls &controls, int &score);
-    static int      mainLoop(Tetris::Config::Config &config, Tetris::Config::Controls &controls);
+    static ExitType
+    gameLoop(Tetris::Config::Config &config, Tetris::Config::Controls &controls, Tetris::Game::GameData &gameData);
+    static int mainLoop(Tetris::Config::Config &config, Tetris::Config::Controls &controls);
 };
 } // namespace Tetris::Engine

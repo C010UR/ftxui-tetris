@@ -27,11 +27,11 @@ void Menu::restartMenu()
 }
 
 Menu::Menu(
-    ftxui::ScreenInteractive &screen,
-    Tetris::Config::Config   &config,
-    Tetris::Config::Controls &controls,
-    bool                      isGameOver,
-    int                       lastScore):
+    ftxui::ScreenInteractive     &screen,
+    Tetris::Config::Config       &config,
+    Tetris::Config::Controls     &controls,
+    const bool                    isGameOver,
+    const Tetris::Game::GameData &gameData):
     config(config),
     controls(controls), screen(screen)
 {
@@ -63,7 +63,7 @@ Menu::Menu(
     this->mainMenu.init(startButtonHandler, optionsButtonHandler, controlsButtonHandler, exitButtonHandler);
 
     this->gameOverMenu = GameOver();
-    this->gameOverMenu.init(mainMenuButtonHandler, startButtonHandler, exitButtonHandler, lastScore);
+    this->gameOverMenu.init(mainMenuButtonHandler, startButtonHandler, exitButtonHandler, gameData);
 
     this->optionsMenu = Options();
     this->optionsMenu.init(this->config, mainMenuButtonHandler, restartHandler);

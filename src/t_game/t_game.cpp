@@ -3,6 +3,7 @@
 #include "ftxui/dom/elements.hpp"
 #include "ftxui/dom/node.hpp"
 #include "t_engine/t_enums.hpp"
+#include "t_game/game_data.hpp"
 #include "t_renderer/t_key_value.hpp"
 
 namespace Tetris::Game {
@@ -284,9 +285,9 @@ bool Game::isGameOver()
     return this->board.isGameOver;
 }
 
-int Game::getScore()
+GameData Game::getGameData()
 {
-    return this->score.score;
+    return {this->score.score, this->score.totalLinesCleared};
 }
 
 } // namespace Tetris::Game

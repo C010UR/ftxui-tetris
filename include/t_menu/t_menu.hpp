@@ -8,6 +8,7 @@
 #include "t_config/t_config.hpp"
 #include "t_config/t_controls.hpp"
 #include "t_engine/t_enums.hpp"
+#include "t_game/game_data.hpp"
 #include "t_menu/t_enums.hpp"
 #include "t_menu/t_menus/t_controls.hpp"
 #include "t_menu/t_menus/t_game_over.hpp"
@@ -47,11 +48,11 @@ class Menu
     Tetris::Engine::ExitType exitType;
 
     Menu(
-        ftxui::ScreenInteractive &screen,
-        Tetris::Config::Config   &config,
-        Tetris::Config::Controls &controls,
-        bool                      isGameOver = false,
-        int                       lastScore  = 0);
+        ftxui::ScreenInteractive     &screen,
+        Tetris::Config::Config       &config,
+        Tetris::Config::Controls     &controls,
+        const bool                    isGameOver,
+        const Tetris::Game::GameData &gameData);
 
     void setMenu(MenuType menu);
 
