@@ -190,12 +190,12 @@ config:
       SColor: "#ed4139"
       ZColor: "#d81159"
 controls:
-  moveLeft: a
-  moveRight: d
-  rotateLeft: ","
-  rotateRight: .
-  swapHold: z
-  softDrop: s
+  moveLeft: "\x1b[D"
+  moveRight: "\x1b[C"
+  rotateLeft: z
+  rotateRight: "\x1b[A"
+  swapHold: c
+  softDrop: "\x1b[B"
   hardDrop: " "
   forfeit: t
   retry: r
